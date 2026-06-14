@@ -1,0 +1,32 @@
+---
+/**
+ * ScrollProgress: A reading progress bar fixed at the top of the viewport.
+ * Smoothly fills with an animated gradient as the user scrolls down.
+ */
+---
+
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+<script>
+	const setupScrollProgress = () => {
+		const progressBar = document.getElementById('scroll-progress');
+		if (!progressBar) return;
+
+		const updateProgress = () => {
+			const scrollTop = window.scrollY;
+			const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+			if (docHeight <= 0) {
+				progressBar.style.width = '0%';
+				return;
+			}
+			const progress = Math.min((scrollTop / docHeight) * 100, 100);
+			progressBar.style.width = `${progress}%`;
+		};
+
+		window.addEventListener('scroll', updateProgress, { passive: true });
+		updateProgress();
+	};
+
+	setupScrollProgress();
+	document.addEventListener('astro:after-swap', setupScrollProgress);
+</script>
