@@ -1,0 +1,109 @@
+---
+title: Por que migrei meu blog para Keystatic em vez de apenas usar Markdown
+description: Usando keystatic
+pubDate: 2026-06-14
+updatedDate: 2026-06-15
+heroImage: >-
+  ../../assets/por-que-migrei-meu-blog-para-keystatic-em-vez-de-apenas-usar-markdown/heroImage.png
+---
+### **O problema com Markdown puro**
+
+Não me entenda mal: Markdown é excelente. Mas quando você está criando conteúdo regularmente, algumas coisas começam a incomodar:
+
+* **Sem editor visual**: Preciso lembrar da sintaxe, marcar links manualmente, estruturar tudo pelo puro texto
+* **Difícil gerenciar assets**: Imagens espalhadas, sem preview antes de publicar
+* **Erros de metadados**: Frontmatter desformatado quebra tudo
+* **Sem controle de rascunho**: Tudo é um arquivo solto esperando ser commitado
+
+### **O que é Keystatic?**
+
+Keystatic é um **CMS headless baseado em arquivos**. Ele:
+
+Mantém seus arquivos `.md` / `.yaml` no Git (sem banco de dados!)\
+Oferece um **editor visual** limpo e intuitivo\
+Valida schemas de conteúdo automaticamente\
+Gerencia imagens e assets nativamente\
+Funciona com Next.js, Astro e outros frameworks
+
+### **Por que mudei**
+
+**1. Editor visual sem perder Git**
+
+Agora consigo escrever posts com uma interface bonita, mas o conteúdo continua como arquivos `.md` commitados no meu repositório. Melhor dos dois mundos.
+
+**2. Segurança de schema**
+
+Posso definir que todo post *precisa* ter: título, slug, data, tags. Keystatic garante isso. Não há mais typos em frontmatter que quebram o build.
+
+typescript
+
+```
+// Exemplo de schema no Keystatic
+export const BlogSchema = collection({
+  label: 'Posts do Blog',
+  path: 'src/content/blog/',
+  format: { data: 'yaml' },
+  schema: {
+    title: fields.text({ validation: { isRequired: true } }),
+    slug: fields.slug({ name: { validate: isValidSlug } }),
+    date: fields.date({ validation: { isRequired: true } }),
+    tags: fields.array(fields.text()),
+    content: fields.document(),
+  }
+});
+```
+
+**3. Gerenciar imagens é chato sem uma interface**
+
+Com Keystatic, arrastar uma imagem para o editor é trivial. Ela vai para a pasta certa automaticamente. Sem filename conflicts, sem manual uploads.
+
+**4. Preview em tempo real**
+
+Vejo exatamente como o post vai ficar enquanto escrevo. Não é só "espero que o Markdown renderize certo".
+
+### **As desvantagens (sim, existem)**
+
+* **Mais complexo de setup**: Não é tão simples quanto um diretório de `.md`
+* **Learning curve**: Precisa aprender a API do Keystatic
+* **Dependência de framework**: Funciona bem com Next.js/Astro, mas não é universal como Markdown puro
+
+### **Vale a pena?**
+
+Para **blogs pessoais simples**, Markdown é suficiente.
+
+Mas se você:
+
+* Publica com frequência
+* Quer uma interface mais profissional
+* Gosta de validação automática
+* Ainda quer tudo versionado no Git
+
+...então Keystatic é sensacional.
+
+---
+
+### **Dicas de implementação**
+
+Se quiser tentar, comece assim:
+
+bash
+
+```
+pnpm install keystatic
+```
+
+E configure no seu `keystatic.config.ts`:
+
+typescript
+
+```
+import { config } from '@keystatic/core';
+import { blogCollection } from './content/blog';
+
+export default config({
+  ui: { brand: { name: 'Meu Blog' } },
+  collections: {
+    blog: blogCollection,
+  },
+});
+```
