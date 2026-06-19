@@ -1,0 +1,108 @@
+---
+title: 'Java Ensino Didático: O livro'
+description: Livro que estou lendo
+pubDate: 2026-06-19
+heroImage: ../../assets/java-ensino-didatico-o-livro/heroImage.jpg
+---
+Tem alguns meses que estou estudando Java — passou por OOP, exceções, threading — mas havia algo que eu não tinha explorado a fundo: **métodos de forma estruturada e didática**. Até que peguei o "Java Ensino Didático" e tudo mudou.
+
+### **O livro**
+
+"Java Ensino Didático" de Sérgio Furtado é exatamente o que o nome promete: didático. Não é um compêndio acadêmico pesado. É um livro que **te ensina fazendo**, com exemplos práticos que você realmente usa.
+
+Estou atualmente no **Capítulo 5: Criação de Métodos** (página 109), especificamente na seção sobre acesso a métodos de outras classes. Mas antes de chegar aqui, passei pelo que considero o capítulo mais revelador do livro.
+
+### **Capítulo 4: O turning point**
+
+O Capítulo 4 foi uma descoberta. Ali estão os **métodos que você vai usar todo dia**:
+
+**Funções Matemáticas:**
+
+* `Math.ceil()` — arredondar para cima (aquele `Math.ceil(3.2)` que te dá `4`)
+* `Math.floor()` — arredondar para baixo
+* `Math.random()` — gerar números aleatórios
+* Trigonometria, potência... tudo explicado de forma simples
+
+**Métodos de String:**
+
+* `charAt()` — pegar um caractere específico
+* `substring()` — extrair parte de uma string
+* `replace()` — substituir texto
+* `toUpperCase()`, `toLowerCase()` — manipular maiúsculas/minúsculas
+* E mais!
+
+Tudo isso que eu estava usando meio "no escuro" — sabendo que funcionava, mas não compreendendo bem — está ali estruturado e explicado.
+
+### **Banners e criatividade**
+
+Mas o que realmente me impressionou foi que **o livro te incentiva a criar coisas**. Uma das aplicações práticas é a **criação de banners** usando strings e caracteres repetidos.
+
+Tipo assim:
+
+java
+
+```
+public class Banner {
+    public static void main(String[] args) {
+        String mensagem = "Olá, Mundo!";
+        int largura = mensagem.length() + 4;
+        
+        // Borda superior
+        for (int i = 0; i < largura; i++) {
+            System.out.print("*");
+        }
+        System.out.println();
+        
+        // Mensagem
+        System.out.println("* " + mensagem + " *");
+        
+        // Borda inferior
+        for (int i = 0; i < largura; i++) {
+            System.out.print("*");
+        }
+        System.out.println();
+    }
+}
+```
+
+Output:
+
+```
+**************
+* Olá, Mundo! *
+**************
+```
+
+É simples, mas **você entende por que funciona**. Não é só "copiar e colar código aleatório".
+
+### **Capítulo 5: Organizando o caos**
+
+Agora no Capítulo 5, a coisa fica seria: **métodos em outras classes**.
+
+Até agora, tudo era `public static void main()` ou métodos isolados. Mas aqui estou aprendendo a estrutura real: criar métodos em uma classe, chamar de outra. É o fundamento de qualquer projeto Java que funciona.
+
+Na página 109, está claro como a água:
+
+* Como definir um método em uma classe separada
+* Como instanciar a classe e acessar o método
+* Visibilidade (`public`, `private`)
+* Retorno de valores
+
+### **Por que esse livro é diferente**
+
+Não é um dos livros "1000 páginas de teoria". É focado. Cada capítulo:
+
+Explica um conceito\
+Mostra exemplos práticos\
+Te deixa *entender*, não memorizar
+
+Usa português (sem perder clareza técnica)\
+Progride gradualmente — não pula etapas
+
+Para quem está aprendendo Java como eu, especialmente em um curso técnico, esse livro é **exatamente o passo intermediário** entre "Olá, mundo!" e "entender arquitetura real de projetos".
+
+### **O próximo passo**
+
+Estou animado para ver como os próximos capítulos vão conectar essas peças. Métodos, classes, organização... é aí que Java deixa de ser "uma linguagem de programação" e vira uma **forma de pensar** sobre código.
+
+Se você está começando em Java, recomendo fortemente esse livro. Se você já conhece a linguagem mas quer uma revisão didática e bem estruturada, também funciona.
