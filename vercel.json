@@ -5,7 +5,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'sha256-cbeNSkiuVXIwnFwE71NNviMS24z/lP7RpRtbr7h8ogE=' 'sha256-2u91LPWdBLJveTusxcg8KvCECb64UM7KkrZJBdByp1k=' 'sha256-NvU4mcmWBq3Swkyqc26HopjvzT9WuspNr53S2JZgTE0=' 'sha256-hm1k1nPvX3Kf+ApVhS6vEnFacAkoo/3teOXVCuBjLTE=' 'sha256-1W9x5v3U2qN21cvuPXs1JY2Cve+BTZ4jFKUDuW5gSGQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' https://vercel.live 'sha256-cbeNSkiuVXIwnFwE71NNviMS24z/lP7RpRtbr7h8ogE=' 'sha256-2u91LPWdBLJveTusxcg8KvCECb64UM7KkrZJBdByp1k=' 'sha256-NvU4mcmWBq3Swkyqc26HopjvzT9WuspNr53S2JZgTE0=' 'sha256-hm1k1nPvX3Kf+ApVhS6vEnFacAkoo/3teOXVCuBjLTE=' 'sha256-1W9x5v3U2qN21cvuPXs1JY2Cve+BTZ4jFKUDuW5gSGQ=' 'sha256-GUO+0HiE4eCPHxD1YkQ/+mXDfn/hH7GiSJI76pVesSA=' 'sha256-MCez9N66VAKIneH0xv1NJ8g6cC9cild+qLT/eQC5yCw=' 'sha256-KpMWMOGqN+ILR05TCjCVgSIAxhRKtzN8fdrx3wslfnk=' 'sha256-ivvYKGjPgtubikAjv2A8rLABe12o6fPZ6ak46AQqwW4=' 'sha256-3sMRNeUPiCy8xGzuiQdaeX+CTMMUFz8PsvJq2QQ0YdY=' 'sha256-EBMaHVFNg1A3xRBq+YrZMIl/riwm4LkVPIHLubLFrgA='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://vercel.live; connect-src 'self' https://vercel.live wss://ws-us3.pusher.com; frame-src https://vercel.live; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
         },
         {
           "key": "X-Frame-Options",
