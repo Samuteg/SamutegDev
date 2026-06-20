@@ -12,6 +12,9 @@ const dev = process.env.NODE_ENV !== 'production';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://samuteg.dev',
+	build: {
+		sourcemap: false,
+	},
 	integrations: [
 		mdx(),
 		sitemap(),
