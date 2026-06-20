@@ -1,0 +1,178 @@
+---
+title: 'Exercícios do Capítulo 4: Praticando Math, Random e Strings'
+description: Livro java 2 Ensino Didatico
+pubDate: 2026-06-20
+heroImage: >-
+  ../../assets/exercicios-do-capitulo-4-praticando-math-random-e-strings/heroImage.jpg
+---
+Capítulo 4 de Java Ensino Didático não é apenas teoria. Ele traz **exercícios práticos** que fazem você entender de verdade como usar Math.random(), Math.ceil(), charAt(), substring() e companhia.
+
+Resolvi todos os 4 exercícios principais e quero compartilhar minha solução e o que aprendi com cada um.
+
+## Exercício 1: Simulador de Dados
+
+**Desafio**: Simular uma jogada de dados de 6 lados.
+
+A gente sabe que Math.random() gera um número entre 0 (incluído) e 1 (excluído). Para transformar isso em um dado de 6 lados:
+
+```
+public class SimuladorDados {
+    public static void main(String[] args) {
+        int dado = (int)(Math.random() * 6) + 1;
+        System.out.println("Você tirou: " + dado);
+    }
+}
+```
+
+**Por que funciona?**
+
+* Math.random() retorna algo como 0.5234...
+* Multiplica por 6: 3.1404...
+* Converte pra int (trunca): 3
+* Soma 1: 4
+
+Resultado: número entre 1 e 6. Perfeito.
+
+**O "clique"**: Isso me fez entender que random() é uma ferramenta versátil. Não é só "número aleatório", é um número que você **transforma** pra usar.
+
+## Exercício 2: Distância Percorrida por uma Roda
+
+**Desafio**: Dado o diâmetro da roda e número de voltas, calcular quantos metros foram percorridos. Arredondar para o próximo valor inteiro.
+
+A fórmula é simples: perímetro = π × diâmetro. Depois: distância = perímetro × voltas.
+
+E para arredondar **para cima**, usamos Math.ceil():
+
+```
+import java.util.Scanner;
+
+public class DistanciaRoda {
+    public static void main(String[] args) {
+        Scanner entrada = new Scanner(System.in);
+        
+        System.out.print("Digite o diâmetro da roda (em metros): ");
+        double diametro = entrada.nextDouble();
+        
+        System.out.print("Digite o número de voltas: ");
+        int voltas = entrada.nextInt();
+        
+        double perimetro = Math.PI * diametro;
+        double distancia = perimetro * voltas;
+        double distanciaArredondada = Math.ceil(distancia);
+        
+        System.out.println("Distância percorrida: " + distanciaArredondada + " metros");
+    }
+}
+```
+
+**Exemplo de execução:**
+
+```
+Digite o diâmetro da roda (em metros): 0.5
+Digite o número de voltas: 10
+Distância percorrida: 16.0 metros
+```
+
+**O "clique"**: Entender que Math.PI é uma constante. Não é uma função — é um valor. E Math.ceil() é exatamente para quando você precisa "subir" pra o próximo inteiro. Simples, mas poderoso.
+
+## Exercício 3: Volume de Caixa d'Água
+
+**Desafio**: Calcular o volume em metros cúbicos de uma caixa d'água. O usuário passa apenas um número chamado "lado".
+
+Deduz-se que é um cubo, então: volume = lado³
+
+```
+import java.util.Scanner;
+
+public class CaixaDAgua {
+    public static void main(String[] args) {
+        Scanner entrada = new Scanner(System.in);
+        
+        System.out.print("Digite o lado da caixa d'água (em metros): ");
+        double lado = entrada.nextDouble();
+        
+        double volume = Math.pow(lado, 3);
+        
+        System.out.println("Volume da caixa d'água: " + volume + " metros cúbicos");
+    }
+}
+```
+
+**Exemplo de execução:**
+
+```
+Digite o lado da caixa d'água (em metros): 2
+Volume da caixa d'água: 8.0 metros cúbicos
+```
+
+**O "clique"**: Math.pow() é subestimado. Você pode fazer isso com lado \* lado \* lado, mas Math.pow(lado, 3) é mais legível e escalável. Se precisasse da 4ª potência, seria trivial mudar.
+
+## Exercício 4: Inverter uma String
+
+**Desafio**: Pegar uma string e invertê-la.
+
+Existem várias formas. A mais didática (usando os métodos do Capítulo 4):
+
+```
+import java.util.Scanner;
+
+public class InverterString {
+    public static void main(String[] args) {
+        Scanner entrada = new Scanner(System.in);
+        
+        System.out.print("Digite uma palavra: ");
+        String palavra = entrada.nextLine();
+        
+        String invertida = "";
+        for (int i = palavra.length() - 1; i >= 0; i--) {
+            invertida += palavra.charAt(i);
+        }
+        
+        System.out.println("Palavra invertida: " + invertida);
+    }
+}
+```
+
+**Exemplo de execução:**
+
+```
+Digite uma palavra: Java
+Palavra invertida: avaJ
+```
+
+**Como funciona:**
+
+* `palavra.length()` retorna o tamanho
+* Começamos do último índice (length - 1)
+* charAt(i) pega cada caractere, de trás pra frente
+* Junta tudo em invertida
+
+**O "clique"**: Isso solidifica dois conceitos: loops e métodos de string. charAt() não é mágico — é só uma forma de acessar cada letra.
+
+## O que esses 4 exercícios têm em comum
+
+Todos praticam os temas do Capítulo 4:
+
+* **Math.random()**: Dado (exercício 1)
+* **Math.ceil()**: Arredondar para cima (exercício 2)
+* **Math.PI**: Constante matemática (exercício 2)
+* **Math.pow()**: Potência (exercício 3)
+* **charAt()**: Acessar caracteres (exercício 4)
+* **Estruturas de controle**: Loops, condições
+
+Mas o mais legal é que **cada exercício é prático**. Não é teórico. Você sai dali sabendo que:
+
+* Pode simular sorteios e dados
+* Pode calcular distâncias e perímetros
+* Pode trabalhar com volumes
+* Pode manipular texto
+
+## Minha experiência resolvendo
+
+Confesso: o exercício 2 (distância da roda) foi o que mais me fez pensar. Não era óbvio que precisava usar Math.ceil(). Tive que pensar no problema real: "se a roda percorre 15.7 metros, quantos metros completos foram?". E aí clicou — preciso arredondar para cima, porque você não percorre "15.7 metros inteiros", você percorre 16.
+
+Os outros foram mais diretos, mas todos solidificaram a ideia de que **ferramentas matemáticas e de string são blocos de construção**. Você não memoriza tudo — você sabe que existem, e quando precisa, usa.
+
+## Próximos passos
+
+Terminado o Capítulo 4, estou indo pro Capítulo 5 — **Criação de Métodos**. Aposto que vou usar tudo isso que aprendi (random, ceil, pow, charAt) dentro de métodos reutilizáveis.
