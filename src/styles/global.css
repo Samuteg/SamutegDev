@@ -77,6 +77,8 @@ html[data-theme='dark'] {
 
 html {
 	scroll-behavior: smooth;
+	scrollbar-color: var(--card-border) transparent;
+	scrollbar-width: thin;
 }
 
 body {
@@ -93,22 +95,6 @@ body {
 	background-image: var(--bg-radial);
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
-}
-
-/* ───────── Scrollbar ───────── */
-::-webkit-scrollbar {
-	width: 8px;
-	height: 8px;
-}
-::-webkit-scrollbar-track {
-	background: transparent;
-}
-::-webkit-scrollbar-thumb {
-	background: var(--card-border);
-	border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-	background: var(--text-muted);
 }
 
 /* ───────── Layout ───────── */
