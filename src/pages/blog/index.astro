@@ -1,15 +1,15 @@
 ---
-import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
-import NoiseBackground from '../../components/NoiseBackground.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import BaseHead from "../../components/BaseHead.astro";
+import Footer from "../../components/Footer.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import Header from "../../components/Header.astro";
+import NoiseBackground from "../../components/NoiseBackground.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+const posts = (await getCollection("blog")).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
 
@@ -43,11 +43,11 @@ const posts = (await getCollection('blog')).sort(
 				margin-bottom: 4rem;
 			}
 
-			.post-item-link {
-				text-decoration: none;
-				color: inherit;
-				display: block;
-			}
+            .post-item-link {
+                text-decoration: none;
+                color: inherit;
+                display: block;
+            }
 
 			.post-item {
 				display: grid;
@@ -87,11 +87,11 @@ const posts = (await getCollection('blog')).sort(
 				filter: grayscale(0%) contrast(1);
 			}
 
-			.item-content {
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-			}
+            .item-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
 
 			.date {
 				font-size: 0.85rem;

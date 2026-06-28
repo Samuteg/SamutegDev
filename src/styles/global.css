@@ -1,325 +1,320 @@
 /*
-  SamutegDev — Neo-Minimalist Design System (Linear/Vercel style)
-  Focus: high contrast, strict monochrome, single accent, 1px borders, subtle glow.
+  SamutegDev — Modern Developer Blog Design
+  Focus: teal accent, Inter/JetBrains Mono fonts, glassmorphism, micro-interactions
 */
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
 :root {
-	/* ── Fonts ── */
-	--font-sans: var(--font-atkinson), system-ui, -apple-system, sans-serif;
-	--font-mono: ui-monospace, monospace;
+    /* ── Fonts ── */
+    --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-	/* ── Light Theme ── */
-	--bg-color: #ffffff;
-	--bg-subtle: #fafafa;
-	--bg-radial: radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.03) 0%, transparent 60%);
+    /* ── Light Theme ── */
+    --bg-color: #ffffff;
+    --bg-subtle: #f5fafa;
+    --bg-radial: radial-gradient(
+        circle at 50% 0%,
+        rgba(0, 0, 0, 0.03) 0%,
+        transparent 60%
+    );
 
-	--text-color: #111111;
-	--text-muted: #666666;
-	--text-inverse: #ffffff;
+    --text-color: #111111;
+    --text-muted: #555555;
+    --text-inverse: #ffffff;
 
-	--card-bg: rgba(255, 255, 255, 0.8);
-	--card-bg-solid: #ffffff;
-	--card-border: rgba(0, 0, 0, 0.08);
-	--card-hover-bg: #fafafa;
-	--card-hover-border: rgba(0, 0, 0, 0.15);
+    --card-bg: rgba(255, 255, 255, 0.8);
+    --card-bg-solid: #ffffff;
+    --card-border: rgba(0, 0, 0, 0.08);
+    --card-hover-bg: #fafafa;
+    --card-hover-border: rgba(0, 0, 0, 0.15);
 
-	--header-bg: rgba(255, 255, 255, 0.65);
-	--header-border: rgba(0, 0, 0, 0.08);
+    --header-bg: rgba(255, 255, 255, 0.65);
+    --header-border: rgba(0, 0, 0, 0.08);
 
-	/* Accent Color: Indigo (Standard Vercel-ish blue/indigo) */
-	--accent-rgb: 99, 102, 241;
-	--accent-color: rgb(var(--accent-rgb));
-	--accent-subtle: rgba(var(--accent-rgb), 0.1);
+    /* Accent Color: Teal (modern developer aesthetic) */
+    --accent-rgb: 14, 165, 165;
+    --accent-color: rgb(var(--accent-rgb));
+    --accent-hover: rgb(13, 148, 148);
+    --accent-subtle: rgba(var(--accent-rgb), 0.1);
 
-	--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
-	--shadow-glow: 0 0 0 1px rgba(var(--accent-rgb), 0.3), 0 0 12px 0 rgba(var(--accent-rgb), 0.15);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md:
+        0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+    --shadow-glow:
+        0 0 0 1px var(--accent-color), 0 0 12px 0 var(--accent-subtle);
 
-	--border-radius-sm: 6px;
-	--border-radius-md: 10px;
-	--border-radius-lg: 16px;
+    --border-radius-sm: 6px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 16px;
 
-	--transition-fast: 0.15s cubic-bezier(0, 0, 0.2, 1);
-	--transition-normal: 0.25s cubic-bezier(0, 0, 0.2, 1);
+    --transition-fast: 0.15s cubic-bezier(0, 0, 0.2, 1);
+    --transition-normal: 0.25s cubic-bezier(0, 0, 0.2, 1);
 }
 
-html[data-theme='dark'] {
-	/* ── Dark Theme ── */
-	--bg-color: #000000;
-	--bg-subtle: #0a0a0a;
-	--bg-radial: radial-gradient(ellipse 70% 40% at 50% -10%, rgba(255, 255, 255, 0.08) 0%, transparent 80%);
+html[data-theme="dark"] {
+    /* ── Dark Theme ── */
+    --bg-color: #050d0c;
+    --bg-subtle: #0a1413;
+    --bg-radial: radial-gradient(
+        ellipse 70% 40% at 50% -10%,
+        rgba(255, 255, 255, 0.08) 0%,
+        transparent 80%
+    );
 
-	--text-color: #ededed;
-	--text-muted: #a1a1aa;
-	--text-inverse: #000000;
+    --text-color: #e2e8f0;
+    --text-muted: #a1a1aa;
+    --text-inverse: #000000;
 
-	--card-bg: rgba(10, 10, 10, 0.5);
-	--card-bg-solid: #0a0a0a;
-	--card-border: rgba(255, 255, 255, 0.12);
-	--card-hover-bg: rgba(20, 20, 20, 0.8);
-	--card-hover-border: rgba(255, 255, 255, 0.25);
+    --card-bg: rgba(10, 20, 19, 0.5);
+    --card-bg-solid: #0a1413;
+    --card-border: rgba(255, 255, 255, 0.12);
+    --card-hover-bg: rgba(20, 30, 29, 0.8);
+    --card-hover-border: rgba(255, 255, 255, 0.25);
 
-	--header-bg: rgba(0, 0, 0, 0.5);
-	--header-border: rgba(255, 255, 255, 0.12);
+    --header-bg: rgba(0, 0, 0, 0.5);
+    --header-border: rgba(255, 255, 255, 0.12);
 
-	--accent-rgb: 129, 140, 248; /* Indigo-400 */
-	--accent-subtle: rgba(var(--accent-rgb), 0.15);
+    --accent-rgb: 20, 184, 166; /* Teal-400 */
+    --accent-color: rgb(var(--accent-rgb));
+    --accent-hover: rgb(45, 212, 191);
+    --accent-subtle: rgba(var(--accent-rgb), 0.15);
 
-	--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.8);
-	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6), 0 2px 4px -2px rgba(0, 0, 0, 0.5);
-	--shadow-glow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.4), 0 0 20px 0 rgba(var(--accent-rgb), 0.25);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.8);
+    --shadow-md:
+        0 4px 6px -1px rgba(0, 0, 0, 0.6), 0 2px 4px -2px rgba(0, 0, 0, 0.5);
+    --shadow-glow:
+        inset 0 0 0 1px var(--accent-color), 0 0 20px 0 var(--accent-subtle);
 }
 
 /* ───────── Base Resets ───────── */
-*, *::before, *::after {
-	box-sizing: border-box;
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 html {
-	scroll-behavior: smooth;
-	scrollbar-color: var(--card-border) transparent;
-	scrollbar-width: thin;
+    scroll-behavior: smooth;
+    scrollbar-color: var(--card-border) transparent;
+    scrollbar-width: thin;
 }
 
 body {
-	font-family: var(--font-sans);
-	margin: 0;
-	padding: 0;
-	background-color: var(--bg-color);
-	color: var(--text-color);
-	line-height: 1.6;
-	font-size: 16px;
-	overflow-x: hidden;
-	transition: background-color var(--transition-normal), color var(--transition-normal);
-	/* Subtle lighting */
-	background-image: var(--bg-radial);
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    font-size: 16px;
+    overflow-x: hidden;
+    transition:
+        background-color var(--transition-normal),
+        color var(--transition-normal);
+    /* Subtle lighting */
+    background-image: var(--bg-radial);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 
 /* ───────── Layout ───────── */
 main {
-	width: 100%;
-	max-width: 840px;
-	margin: 0 auto;
-	padding: 3rem 1.5rem;
-	min-height: calc(100vh - 65px - 150px);
+    width: 100%;
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    min-height: calc(100vh - 65px - 150px);
 }
 
 /* ───────── Typography ───────── */
-h1, h2, h3, h4, h5, h6 {
-	font-family: var(--font-sans);
-	color: var(--text-color);
-	font-weight: 700;
-	line-height: 1.2;
-	margin-top: 0;
-	margin-bottom: 1rem;
-	letter-spacing: -0.04em;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-sans);
+    color: var(--text-color);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    letter-spacing: -0.04em;
 }
 
-h1 { font-size: 2.5rem; letter-spacing: -0.05em; font-weight: 800; }
-h2 { font-size: 1.75rem; }
-h3 { font-size: 1.25rem; }
-h4 { font-size: 1.1rem; }
+h1 {
+    font-size: 2.5rem;
+    letter-spacing: -0.05em;
+    font-weight: 800;
+}
+h2 {
+    font-size: 1.75rem;
+}
+h3 {
+    font-size: 1.25rem;
+}
+h4 {
+    font-size: 1.1rem;
+}
 
 p {
-	margin-top: 0;
-	margin-bottom: 1.5rem;
-	color: var(--text-muted);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--text-muted);
 }
 
 /* ───────── Links ───────── */
 a {
-	color: var(--text-color);
-	text-decoration: none;
-	transition: color var(--transition-fast);
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color var(--transition-fast);
 }
 a:hover {
-	color: var(--accent-color);
+    color: var(--accent-color);
 }
 
 /* ───────── Buttons ───────── */
 .btn {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	padding: 0.5rem 1rem;
-	border-radius: var(--border-radius-sm);
-	font-weight: 500;
-	font-size: 0.9rem;
-	cursor: pointer;
-	transition: all var(--transition-fast);
-	gap: 0.5rem;
-	border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    gap: 0.5rem;
+    border: 1px solid transparent;
 }
 
 .btn-primary {
-	background: var(--text-color);
-	color: var(--text-inverse);
-	box-shadow: var(--shadow-sm);
+    background: var(--accent-color);
+    color: var(--text-inverse);
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
-	opacity: 0.9;
-	color: var(--text-inverse);
-	transform: scale(0.98);
+    background: var(--accent-hover);
+    color: var(--text-inverse);
+    transform: scale(0.98);
 }
 
 .btn-secondary {
-	background: transparent;
-	color: var(--text-color);
-	border-color: var(--card-border);
+    background: transparent;
+    color: var(--text-color);
+    border-color: var(--card-border);
 }
 
 .btn-secondary:hover {
-	background: var(--card-hover-bg);
-	border-color: var(--card-hover-border);
+    background: var(--card-hover-bg);
+    border-color: var(--accent-color);
 }
 
 /* ───────── Cards ───────── */
 .card {
-	background-color: var(--card-bg);
-	border: 1px solid var(--card-border);
-	border-radius: var(--border-radius-md);
-	padding: 1.5rem;
-	transition: all var(--transition-fast);
-	position: relative;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius-md);
+    padding: 1.5rem;
+    transition: all var(--transition-fast);
+    position: relative;
 }
 
 .card:hover {
-	border-color: var(--card-hover-border);
-	background-color: var(--card-hover-bg);
+    border-color: var(--card-hover-border);
+    background-color: var(--card-hover-bg);
 }
 
 /* Glow effect for interactive cards */
 .card-glow:hover {
-	box-shadow: var(--shadow-glow);
-	border-color: transparent;
+    box-shadow: var(--shadow-glow);
+    border-color: transparent;
 }
 
 /* ───────── Badges ───────── */
 .badge {
-	display: inline-flex;
-	align-items: center;
-	padding: 0.2rem 0.6rem;
-	border-radius: 9999px;
-	font-size: 0.75rem;
-	font-weight: 500;
-	background: var(--bg-subtle);
-	color: var(--text-color);
-	border: 1px solid var(--card-border);
-	letter-spacing: 0.02em;
-	margin-bottom: 1rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: var(--bg-subtle);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+    letter-spacing: 0.02em;
+    margin-bottom: 1rem;
 }
 
 /* ───────── Code & Pre Formatting ───────── */
 code {
-	font-family: var(--font-mono);
-	font-size: 0.85em;
-	padding: 0.2rem 0.4rem;
-	background-color: var(--bg-subtle);
-	color: var(--text-color);
-	border: 1px solid var(--card-border);
-	border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    padding: 0.2rem 0.4rem;
+    background-color: var(--bg-subtle);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
 }
 
 pre {
-	font-family: var(--font-mono);
-	padding: 1.25rem;
-	border-radius: var(--border-radius-md);
-	background-color: #050505 !important;
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	overflow-x: auto;
-	margin: 2rem 0;
+    font-family: var(--font-mono);
+    padding: 1.25rem;
+    border-radius: var(--border-radius-md);
+    background-color: #050505 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow-x: auto;
+    margin: 2rem 0;
 }
 
 pre code {
-	all: unset;
-	display: block;
-	font-family: var(--font-mono);
-	font-size: 0.85rem;
-	line-height: 1.6;
-	color: #e2e8f0;
+    all: unset;
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #e2e8f0;
 }
 
 blockquote {
-	border-left: 2px solid var(--card-border);
-	padding: 0.5rem 1.5rem;
-	margin: 2rem 0;
-	color: var(--text-muted);
+    border-left: 2px solid var(--accent-color);
+    padding: 0.5rem 1.5rem;
+    margin: 2rem 0;
+    color: var(--text-muted);
+    background: var(--accent-subtle);
 }
 
 blockquote p {
-	margin-bottom: 0;
-	font-size: 1.05em;
+    margin-bottom: 0;
+    font-size: 1.05em;
 }
 
 img {
-	max-width: 100%;
-	height: auto;
-	border-radius: var(--border-radius-md);
-	border: 1px solid var(--card-border);
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--card-border);
 }
 
 hr {
-	border: none;
-	height: 1px;
-	background: var(--card-border);
-	margin: 3rem 0;
+    border: none;
+    height: 1px;
+    background: var(--card-border);
+    margin: 3rem 0;
 }
 
 /* ───────── Scroll Progress Bar ───────── */
 .scroll-progress {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 0%;
-	height: 2px;
-	background: var(--text-color);
-	z-index: 100;
-	transition: width 0.1s linear;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--accent-color);
+    z-index: 100;
+    transition: width 0.1s linear;
 }
 
 /* ───────── Fade-in Animations ───────── */
-.fade-in-up {
-	opacity: 0;
-	transform: translateY(10px);
-	animation: fadeInUp 0.5s cubic-bezier(0, 0, 0.2, 1) forwards;
-}
-
-@keyframes fadeInUp {
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-.delay-1 { animation-delay: 0.05s; }
-.delay-2 { animation-delay: 0.1s; }
-.delay-3 { animation-delay: 0.15s; }
-.delay-4 { animation-delay: 0.2s; }
-.delay-5 { animation-delay: 0.25s; }
-
-/* ───────── Screen reader utility ───────── */
-.sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	clip: rect(1px 1px 1px 1px);
-	clip-path: inset(50%);
-	white-space: nowrap;
-}
-
-/* ───────── Responsive ───────── */
-@media (max-width: 768px) {
-	h1 { font-size: 2rem; }
-	h2 { font-size: 1.5rem; }
-	body { font-size: 15px; }
-	main {
-		padding: 2rem 1rem;
-	}
-}

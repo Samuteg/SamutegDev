@@ -1,180 +1,190 @@
 ---
-import { SITE_TITLE, SOCIAL_LINKS } from '../consts';
-import HeaderLink from './HeaderLink.astro';
-import ThemeToggle from './ThemeToggle.astro';
+import Logo from "./Logo.astro";
+import HeaderLink from "./HeaderLink.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import { SOCIAL_LINKS } from "../consts";
 ---
 
 <header>
-	<nav>
-		<div class="logo">
-			<a href="/">
-				{SITE_TITLE}
-			</a>
-		</div>
-		<div class="internal-links" id="nav-links">
-			<HeaderLink href="/">Início</HeaderLink>
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/about">Sobre</HeaderLink>
-		</div>
-		<div class="actions">
-			<ThemeToggle />
-			<a class="github-link" href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-				<span class="sr-only">GitHub</span>
-				<svg viewBox="0 0 16 16" aria-hidden="true" width="18" height="18">
-					<path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
-				</svg>
-			</a>
-			<button class="hamburger" id="hamburger-btn" aria-label="Abrir menu" aria-expanded="false">
-				<span></span>
-				<span></span>
-			</button>
-		</div>
-	</nav>
+    <nav>
+        <Logo />
+        <div class="nav-links" id="nav-links">
+            <HeaderLink href="/">Início</HeaderLink>
+            <HeaderLink href="/blog">Blog</HeaderLink>
+            <HeaderLink href="/about">Sobre</HeaderLink>
+        </div>
+        <div class="actions">
+            <ThemeToggle />
+            <a
+                class="github-link"
+                href={SOCIAL_LINKS.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+            >
+                <svg
+                    viewBox="0 0 16 16"
+                    width="18"
+                    height="18"
+                    aria-hidden="true"
+                >
+                    <path
+                        fill="currentColor"
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0016 8c0-4.42-3.58-8-8-8z"
+                    ></path>
+                </svg>
+            </a>
+            <button
+                class="hamburger"
+                id="hamburger-btn"
+                aria-label="Abrir menu"
+                aria-expanded="false"
+            >
+                <span></span><span></span>
+            </button>
+        </div>
+    </nav>
 </header>
 
 <style>
-	header {
-		position: sticky;
-		top: 0;
-		z-index: 50;
-		background: var(--bg-subtle);
-		border-bottom: 1px solid var(--header-border);
-		transition: background-color var(--transition-fast), border-color var(--transition-fast);
-	}
-	nav {
-		max-width: 840px;
-		margin: 0 auto;
-		padding: 0 1.5rem;
-		height: 65px;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-	.logo a {
-		font-size: 1.1rem;
-		font-weight: 700;
-		letter-spacing: -0.02em;
-		text-decoration: none;
-		color: var(--text-color);
-		transition: opacity var(--transition-fast);
-	}
-	.logo a:hover {
-		opacity: 0.7;
-	}
-	.internal-links {
-		display: flex;
-		gap: 0.25rem;
-	}
-	.actions {
-		display: flex;
-		align-items: center;
-		gap: 0.25rem;
-	}
-	.github-link {
-		color: var(--text-muted);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.5rem;
-		border-radius: var(--border-radius-sm);
-		transition: all var(--transition-fast);
-		background: transparent;
-	}
-	.github-link:hover {
-		color: var(--text-color);
-		background: var(--bg-subtle);
-	}
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: var(--bg-subtle);
+        border-bottom: 1px solid var(--header-border);
+        transition:
+            background var(--transition-fast),
+            border-color var(--transition-fast);
+        backdrop-filter: blur(8px);
+    }
 
-	/* ── Hamburger ── */
-	.hamburger {
-		display: none;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		gap: 4px;
-		width: 36px;
-		height: 36px;
-		background: transparent;
-		border: none;
-		border-radius: var(--border-radius-sm);
-		cursor: pointer;
-		padding: 0;
-		transition: background var(--transition-fast);
-	}
-	.hamburger span {
-		display: block;
-		width: 16px;
-		height: 1.5px;
-		background: var(--text-color);
-		transition: all var(--transition-fast);
-		transform-origin: center;
-	}
-	.hamburger:hover {
-		background: var(--bg-subtle);
-	}
-	/* Animated X state */
-	.hamburger[aria-expanded='true'] span:nth-child(1) {
-		transform: translateY(2.75px) rotate(45deg);
-	}
-	.hamburger[aria-expanded='true'] span:nth-child(2) {
-		transform: translateY(-2.75px) rotate(-45deg);
-	}
+    nav {
+        max-width: 840px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-	@media (max-width: 680px) {
-		nav {
-			padding: 0 1rem;
-		}
-		.hamburger {
-			display: flex;
-		}
-		.internal-links {
-			position: fixed;
-			top: 65px;
-			left: 0;
-			right: 0;
-			background: rgba(255,255,255,0.95);
-			flex-direction: column;
-			padding: 1rem 1.5rem 1.5rem;
-			gap: 0.25rem;
-			border-bottom: 1px solid var(--header-border);
-			transform: translateY(-110%);
-			opacity: 0;
-			transition: transform var(--transition-fast), opacity var(--transition-fast);
-			z-index: 49;
-		}
-		.internal-links.open {
-			transform: translateY(0);
-			opacity: 1;
-		}
-		.github-link {
-			display: none;
-		}
-	}
+    .nav-links {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .github-link {
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        border-radius: var(--border-radius-sm);
+        transition: all var(--transition-fast);
+        background: transparent;
+    }
+
+    .github-link:hover {
+        color: var(--text-color);
+        background: var(--bg-subtle);
+    }
+
+    /* Hamburger (mobile) */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: transparent;
+        border: none;
+        border-radius: var(--border-radius-sm);
+        cursor: pointer;
+        padding: 0;
+        transition: background var(--transition-fast);
+    }
+
+    .hamburger span {
+        display: block;
+        width: 16px;
+        height: 1.5px;
+        background: var(--text-color);
+        transition: all var(--transition-fast);
+        transform-origin: center;
+    }
+
+    .hamburger:hover {
+        background: var(--bg-subtle);
+    }
+
+    .hamburger[aria-expanded="true"] span:nth-child(1) {
+        transform: translateY(2.75px) rotate(45deg);
+    }
+
+    .hamburger[aria-expanded="true"] span:nth-child(2) {
+        transform: translateY(-2.75px) rotate(-45deg);
+    }
+
+    /* Mobile layout */
+    @media (max-width: 680px) {
+        nav {
+            padding: 0 1rem;
+        }
+        .hamburger {
+            display: flex;
+        }
+        .nav-links {
+            position: fixed;
+            top: 65px;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            flex-direction: column;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--header-border);
+            transform: translateY(-110%);
+            opacity: 0;
+            transition:
+                transform var(--transition-fast),
+                opacity var(--transition-fast);
+            z-index: 49;
+        }
+        .nav-links.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .github-link {
+            display: none;
+        }
+    }
 </style>
 
 <script>
-	const setupHamburger = () => {
-		const btn = document.getElementById('hamburger-btn');
-		const links = document.getElementById('nav-links');
-		if (!btn || !links) return;
-
-		const toggle = () => {
-			const expanded = btn.getAttribute('aria-expanded') === 'true';
-			btn.setAttribute('aria-expanded', String(!expanded));
-			links.classList.toggle('open');
-		};
-
-		btn.removeEventListener('click', toggle);
-		btn.addEventListener('click', toggle);
-
-		links.querySelectorAll('a').forEach((a) => {
-			a.addEventListener('click', () => {
-				btn.setAttribute('aria-expanded', 'false');
-				links.classList.remove('open');
-			});
-		});
-	};
-
-	setupHamburger();
-	document.addEventListener('astro:after-swap', setupHamburger);
+    const setupHamburger = () => {
+        const btn = document.getElementById("hamburger-btn");
+        const links = document.getElementById("nav-links");
+        if (!btn || !links) return;
+        const toggle = () => {
+            const expanded = btn.getAttribute("aria-expanded") === "true";
+            btn.setAttribute("aria-expanded", String(!expanded));
+            links.classList.toggle("open");
+        };
+        btn.removeEventListener("click", toggle);
+        btn.addEventListener("click", toggle);
+        links.querySelectorAll("a").forEach((a) => {
+            a.addEventListener("click", () => {
+                btn.setAttribute("aria-expanded", "false");
+                links.classList.remove("open");
+            });
+        });
+    };
+    setupHamburger();
+    document.addEventListener("astro:after-swap", setupHamburger);
 </script>
