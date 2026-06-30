@@ -1,0 +1,64 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import NoiseBackground from '../components/NoiseBackground.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <BaseHead title={`Obrigado | ${SITE_TITLE}`} description="Obrigado pelo seu comentário!" />
+    <style>
+      .thank-you {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 60vh;
+        text-align: center;
+        padding: 3rem 1.5rem;
+      }
+      .thank-you h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, var(--accent-color), #6366f1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .thank-you p {
+        font-size: 1.15rem;
+        color: var(--text-muted);
+        max-width: 500px;
+        margin-bottom: 2rem;
+      }
+      .thank-you .btn {
+        margin-top: 1rem;
+      }
+      .icon {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1.5rem;
+        color: var(--accent-color);
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <NoiseBackground />
+    <main>
+      <section class="thank-you fade-in-up">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <h1>Comentário enviado!</h1>
+        <p>Obrigado por participar da conversa. Seu comentário foi recebido e será publicado em breve após moderação.</p>
+        <a href="/" class="btn btn-primary">Voltar ao início</a>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
