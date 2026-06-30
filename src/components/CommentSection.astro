@@ -197,20 +197,20 @@
     // ============================================
 
     (() => {
-        const form = document.getElementById("comment-form");
-        const statusEl = document.getElementById("comment-status");
-        const submitBtn = document.getElementById("comment-submit");
-        const gotchaField = document.getElementById("comment-gotcha");
+        // Get elements with explicit type assertions
+        const form = document.getElementById("comment-form") as HTMLFormElement;
+        const statusEl = document.getElementById(
+            "comment-status",
+        ) as HTMLDivElement;
+        const submitBtn = document.getElementById(
+            "comment-submit",
+        ) as HTMLButtonElement;
+        const gotchaField = document.getElementById(
+            "comment-gotcha",
+        ) as HTMLInputElement;
 
-        // Type guards - exit early if any element is missing
-        if (
-            !(form instanceof HTMLFormElement) ||
-            !(statusEl instanceof HTMLDivElement) ||
-            !(submitBtn instanceof HTMLButtonElement) ||
-            !(gotchaField instanceof HTMLInputElement)
-        ) {
-            return;
-        }
+        // Exit early if any element is missing (defensive)
+        if (!form || !statusEl || !submitBtn || !gotchaField) return;
 
         // Helper: show status message
         function showStatus(
