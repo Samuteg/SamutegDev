@@ -1,29 +1,64 @@
 ---
-// Simple static comment form – replace `action` with your comment service (e.g., Formspree, Netlify Forms, etc.)
+// Comment form with AJAX, honeypot, and success/error handling
+// Formspree endpoint: https://formspree.io/f/mgojzqob
 ---
 
 <section class="comment-section">
     <h2>Deixe um comentário</h2>
+
     <form
+        id="comment-form"
         method="POST"
         action="https://formspree.io/f/mgojzqob"
         class="comment-form"
         data-netlify="true"
+        novalidate
     >
+        <!-- Honeypot field (hidden from humans, filled by bots) -->
+        <input
+            type="checkbox"
+            name="_gotcha"
+            id="comment-gotcha"
+            tabindex="-1"
+            autocomplete="off"
+            style="display:none !important; position:absolute; left:-9999px;"
+        />
+
+        <!-- Redirect after successful submit (Formspree will redirect here) -->
+        <input type="hidden" name="_next" value="/obrigado-comentario" />
+
         <label>
             Nome
-            <input type="text" name="name" required />
+            <input type="text" name="name" required aria-required="true" />
         </label>
+
         <label>
             Email (não será exibido)
-            <input type="email" name="email" required />
+            <input type="email" name="email" required aria-required="true" />
         </label>
+
         <label>
             Comentário
-            <textarea name="message" rows="4" required></textarea>
+            <textarea name="message" rows="4" required aria-required="true"
+            ></textarea>
         </label>
-        <button type="submit" class="btn btn-primary">Enviar</button>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="comment-submit">
+                <span class="btn-text">Enviar</span>
+                <span class="btn-loading" hidden>Enviando…</span>
+            </button>
+        </div>
+
+        <!-- Status messages (injected by JS) -->
+        <div id="comment-status" class="comment-status" aria-live="polite">
+        </div>
     </form>
+
+    <!-- Lista de comentários existentes (placeholder para futuras integrações) -->
+    <div class="comments-list" id="comments-list">
+        <p class="comments-empty">Seja o primeiro a comentar!</p>
+    </div>
 </section>
 
 <style>
@@ -56,10 +91,226 @@
         font-size: 0.9rem;
         background: var(--bg-subtle);
         color: var(--text-color);
+        transition: border-color var(--transition-fast);
     }
     .comment-form input:focus,
     .comment-form textarea:focus {
         outline: none;
         border-color: var(--accent-color);
     }
+    .comment-form input[aria-invalid="true"],
+    .comment-form textarea[aria-invalid="true"] {
+        border-color: #dc2626; /* red-600 */
+    }
+    .form-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    .btn-loading {
+        display: none;
+    }
+    .btn:disabled .btn-text {
+        display: none;
+    }
+    .btn:disabled .btn-loading {
+        display: inline;
+    }
+
+    /* Status messages */
+    .comment-status {
+        padding: 0.75rem 1rem;
+        border-radius: var(--border-radius-sm);
+        font-size: 0.9rem;
+        display: none;
+    }
+    .comment-status.visible {
+        display: block;
+        animation: fadeIn 0.3s var(--transition-fast);
+    }
+    .comment-status.success {
+        background: rgba(14, 165, 165, 0.15);
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+    }
+    .comment-status.error {
+        background: rgba(220, 38, 38, 0.15);
+        border: 1px solid #dc2626;
+        color: #dc2626;
+    }
+
+    .comments-list {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--card-border);
+    }
+    .comments-empty {
+        color: var(--text-muted);
+        font-style: italic;
+        text-align: center;
+    }
+    .comment-item {
+        padding: 1rem;
+        border: 1px solid var(--card-border);
+        border-radius: var(--border-radius-md);
+        margin-bottom: 1rem;
+        background: var(--bg-subtle);
+    }
+    .comment-item header {
+        display: flex;
+        gap: 0.5rem;
+        align-items: baseline;
+        margin-bottom: 0.5rem;
+        font-size: 0.85rem;
+    }
+    .comment-item .author {
+        font-weight: 600;
+        color: var(--text-color);
+    }
+    .comment-item .date {
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+    }
+    .comment-item .message {
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
 </style>
+
+<script>
+    // ============================================
+    //  Comment Form Enhancements
+    //  - Honeypot validation
+    //  - AJAX submit (Formspree supports JSON)
+    //  - Success/Error UI feedback
+    //  - Optional redirect after success
+    // ============================================
+
+    (() => {
+        const form = document.getElementById("comment-form");
+        const statusEl = document.getElementById("comment-status");
+        const submitBtn = document.getElementById("comment-submit");
+        const gotchaField = document.getElementById("comment-gotcha");
+
+        if (!form) return;
+
+        // Helper: show status message
+        function showStatus(message, type = "success") {
+            statusEl.textContent = message;
+            statusEl.className = `comment-status visible ${type}`;
+            // Auto-hide success after 6s
+            if (type === "success") {
+                setTimeout(() => {
+                    statusEl.classList.remove("visible");
+                }, 6000);
+            }
+        }
+
+        // Helper: set field error state
+        function setFieldError(field, hasError) {
+            field.setAttribute("aria-invalid", hasError);
+            if (hasError) {
+                field.style.borderColor = "#dc2626";
+            } else {
+                field.style.borderColor = "";
+            }
+        }
+
+        // Validate required fields + honeypot
+        function validateForm() {
+            let valid = true;
+            const requiredFields = form.querySelectorAll("[required]");
+            requiredFields.forEach((field) => {
+                if (!field.value.trim()) {
+                    setFieldError(field, true);
+                    valid = false;
+                } else {
+                    setFieldError(field, false);
+                }
+            });
+            // Honeypot: if filled, it's a bot -> reject silently
+            if (gotchaField.checked) {
+                return false;
+            }
+            return valid;
+        }
+
+        // Clear errors on input
+        form.querySelectorAll("input, textarea").forEach((field) => {
+            field.addEventListener("input", () => setFieldError(field, false));
+        });
+
+        // AJAX submit
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            if (!validateForm()) {
+                showStatus(
+                    "Por favor, preencha todos os campos obrigatórios.",
+                    "error",
+                );
+                return;
+            }
+
+            // Disable button & show loading
+            submitBtn.disabled = true;
+            statusEl.classList.remove("visible");
+
+            const formData = new FormData(form);
+            // Formspree expects form data; we send as fetch with FormData
+            // Add Accept: application/json to get JSON response
+            try {
+                const response = await fetch(form.action, {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        Accept: "application/json",
+                    },
+                });
+
+                if (response.ok) {
+                    showStatus(
+                        "🎉 Comentário enviado com sucesso! Obrigado por participar.",
+                    );
+                    form.reset();
+                    // Optional redirect after 2s (Formspree also redirects via _next)
+                    setTimeout(() => {
+                        const nextUrl =
+                            form.querySelector('[name="_next"]')?.value;
+                        if (nextUrl) window.location.href = nextUrl;
+                    }, 2000);
+                } else {
+                    // Try to parse error from Formspree
+                    let errorMsg =
+                        "Ocorreu um erro ao enviar. Tente novamente.";
+                    try {
+                        const data = await response.json();
+                        if (data.errors) {
+                            errorMsg = data.errors
+                                .map((e) => e.message)
+                                .join(", ");
+                        }
+                    } catch (_) {}
+                    showStatus(errorMsg, "error");
+                }
+            } catch (err) {
+                showStatus(
+                    "Erro de conexão. Verifique sua internet e tente novamente.",
+                    "error",
+                );
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+    })();
+</script>
