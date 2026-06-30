@@ -202,10 +202,21 @@
         const submitBtn = document.getElementById("comment-submit");
         const gotchaField = document.getElementById("comment-gotcha");
 
-        if (!form) return;
+        // Type guards - exit early if any element is missing
+        if (
+            !(form instanceof HTMLFormElement) ||
+            !(statusEl instanceof HTMLDivElement) ||
+            !(submitBtn instanceof HTMLButtonElement) ||
+            !(gotchaField instanceof HTMLInputElement)
+        ) {
+            return;
+        }
 
         // Helper: show status message
-        function showStatus(message, type = "success") {
+        function showStatus(
+            message: string,
+            type: "success" | "error" = "success",
+        ): void {
             statusEl.textContent = message;
             statusEl.className = `comment-status visible ${type}`;
             // Auto-hide success after 6s
@@ -217,8 +228,11 @@
         }
 
         // Helper: set field error state
-        function setFieldError(field, hasError) {
-            field.setAttribute("aria-invalid", hasError);
+        function setFieldError(
+            field: HTMLInputElement | HTMLTextAreaElement,
+            hasError: boolean,
+        ): void {
+            field.setAttribute("aria-invalid", String(hasError));
             if (hasError) {
                 field.style.borderColor = "#dc2626";
             } else {
@@ -227,9 +241,11 @@
         }
 
         // Validate required fields + honeypot
-        function validateForm() {
+        function validateForm(): boolean {
             let valid = true;
-            const requiredFields = form.querySelectorAll("[required]");
+            const requiredFields = form.querySelectorAll<
+                HTMLInputElement | HTMLTextAreaElement
+            >("[required]");
             requiredFields.forEach((field) => {
                 if (!field.value.trim()) {
                     setFieldError(field, true);
@@ -246,71 +262,82 @@
         }
 
         // Clear errors on input
-        form.querySelectorAll("input, textarea").forEach((field) => {
+        form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
+            "input, textarea",
+        ).forEach((field) => {
             field.addEventListener("input", () => setFieldError(field, false));
         });
 
         // AJAX submit
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
+        form.addEventListener(
+            "submit",
+            async (e: SubmitEvent): Promise<void> => {
+                e.preventDefault();
 
-            if (!validateForm()) {
-                showStatus(
-                    "Por favor, preencha todos os campos obrigatórios.",
-                    "error",
-                );
-                return;
-            }
-
-            // Disable button & show loading
-            submitBtn.disabled = true;
-            statusEl.classList.remove("visible");
-
-            const formData = new FormData(form);
-            // Formspree expects form data; we send as fetch with FormData
-            // Add Accept: application/json to get JSON response
-            try {
-                const response = await fetch(form.action, {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        Accept: "application/json",
-                    },
-                });
-
-                if (response.ok) {
+                if (!validateForm()) {
                     showStatus(
-                        "🎉 Comentário enviado com sucesso! Obrigado por participar.",
+                        "Por favor, preencha todos os campos obrigatórios.",
+                        "error",
                     );
-                    form.reset();
-                    // Optional redirect after 2s (Formspree also redirects via _next)
-                    setTimeout(() => {
-                        const nextUrl =
-                            form.querySelector('[name="_next"]')?.value;
-                        if (nextUrl) window.location.href = nextUrl;
-                    }, 2000);
-                } else {
-                    // Try to parse error from Formspree
-                    let errorMsg =
-                        "Ocorreu um erro ao enviar. Tente novamente.";
-                    try {
-                        const data = await response.json();
-                        if (data.errors) {
-                            errorMsg = data.errors
-                                .map((e) => e.message)
-                                .join(", ");
-                        }
-                    } catch (_) {}
-                    showStatus(errorMsg, "error");
+                    return;
                 }
-            } catch (err) {
-                showStatus(
-                    "Erro de conexão. Verifique sua internet e tente novamente.",
-                    "error",
-                );
-            } finally {
-                submitBtn.disabled = false;
-            }
-        });
+
+                // Disable button & show loading
+                submitBtn.disabled = true;
+                statusEl.classList.remove("visible");
+
+                const formData = new FormData(form);
+                // Formspree expects form data; we send as fetch with FormData
+                // Add Accept: application/json to get JSON response
+                try {
+                    const response = await fetch(form.action, {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            Accept: "application/json",
+                        },
+                    });
+
+                    if (response.ok) {
+                        showStatus(
+                            "🎉 Comentário enviado com sucesso! Obrigado por participar.",
+                        );
+                        form.reset();
+                        // Optional redirect after 2s (Formspree also redirects via _next)
+                        setTimeout(() => {
+                            const nextInput =
+                                form.querySelector<HTMLInputElement>(
+                                    '[name="_next"]',
+                                );
+                            const nextUrl = nextInput?.value;
+                            if (nextUrl) window.location.href = nextUrl;
+                        }, 2000);
+                    } else {
+                        // Try to parse error from Formspree
+                        let errorMsg =
+                            "Ocorreu um erro ao enviar. Tente novamente.";
+                        try {
+                            const data = await response.json();
+                            if (data.errors) {
+                                errorMsg = data.errors
+                                    .map(
+                                        (err: { message: string }) =>
+                                            err.message,
+                                    )
+                                    .join(", ");
+                            }
+                        } catch (_) {}
+                        showStatus(errorMsg, "error");
+                    }
+                } catch (err) {
+                    showStatus(
+                        "Erro de conexão. Verifique sua internet e tente novamente.",
+                        "error",
+                    );
+                } finally {
+                    submitBtn.disabled = false;
+                }
+            },
+        );
     })();
 </script>
