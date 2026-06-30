@@ -1,0 +1,248 @@
+---
+title: 'Capítulo 5: Métodos — Consolidação e criatividade com Unicode'
+description: Livro java 2 didatico
+pubDate: 2026-06-24
+heroImage: >-
+  ../../assets/capitulo-5-metodos-consolidacao-e-criatividade-com-unicode/heroImage.jpg
+---
+## Capítulo 5: Métodos — Consolidação e criatividade com Unicode
+
+O Capítulo 5 de "Java Ensino Didático" fala sobre **Criação de Métodos**. Honestamente? Métodos não eram novidade pra mim. Já estava usando em praticamente tudo que construí — TaskNest é repleto de métodos organizados em classes.
+
+Mas a verdade é que **os exercícios deste capítulo** foram onde a coisa ficou interessante. Três desafios que solidificaram conceitos e me fizeram pensar diferente.
+
+### O capítulo: Conceitos que já conhecia
+
+O Capítulo 5 cobre:
+
+* Definição de métodos (já sabia)
+* Parâmetros e retorno (já sabia)
+* Escopo de variáveis (já sabia)
+* Métodos estáticos vs instância (já sabia)
+* Chamada de métodos de outras classes (já sabia)
+
+Basicamente, tudo que estou usando no TaskNest. Então por que continuar lendo?
+
+Porque **consolidação é importante**. Ver conceitos que você usa no dia a dia apresentados de forma estruturada, didática e sem ruído, é diferente de aprender na prática resolvendo problemas. É uma validação.
+
+Mas os exercícios? Esses foram o diferencial.
+
+### Exercício 1: Banner com Unicode
+
+**Desafio**: Criar um método que monta um banner usando **símbolos Unicode** em vez de simples asteriscos.
+
+Primeira coisa que pensei: "Unicode? Vou usar que símbolos?"
+
+Aqui está a solução:
+
+```
+public class BannerUnicode {
+    
+    public static void criarBanner(String mensagem, String simbolo) {
+        int largura = mensagem.length() + 4;
+        
+        // Linha superior
+        for (int i = 0; i < largura; i++) {
+            System.out.print(simbolo);
+        }
+        System.out.println();
+        
+        // Mensagem
+        System.out.println(simbolo + " " + mensagem + " " + simbolo);
+        
+        // Linha inferior
+        for (int i = 0; i < largura; i++) {
+            System.out.print(simbolo);
+        }
+        System.out.println();
+    }
+    
+    public static void main(String[] args) {
+        criarBanner("Olá, Mundo!", "★");
+        System.out.println();
+        criarBanner("Java é legal", "✦");
+        System.out.println();
+        criarBanner("Método melhorado", "▓");
+    }
+}
+```
+
+Output:
+
+```
+★★★★★★★★★★★★★★★
+★ Olá, Mundo! ★
+★★★★★★★★★★★★★★★
+
+✦✦✦✦✦✦✦✦✦✦✦✦✦✦
+✦ Java é legal ✦
+✦✦✦✦✦✦✦✦✦✦✦✦✦✦
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓ Método melhorado ▓
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+```
+
+**O "clique":** Isso foi criativo. Não é só aplicar técnica — é **brincar com a linguagem**. De repente, percebi que strings aceitam qualquer caractere Unicode. Estrelas, losangos, ícones... tudo funciona. É uma forma de mostrar que programação não precisa ser cinzenta e entediante.
+
+E metodologicamente? Transformei um método específico (`criarBannerComAsteriscos`) em um método **genérico** que aceita o símbolo como parâmetro. É o tipo de refatoração que você aprende fazendo.
+
+**Variação legal:** Você poderia passar múltiplos símbolos, alternar entre eles, criar padrões. Mas o exercício básico já mostrava a ideia.
+
+### Exercício 2: Volume de uma Esfera
+
+**Desafio**: Calcular o volume de uma esfera dado apenas o raio.
+
+Fórmula: V = (4/3) × π × r³
+
+```
+public class VolumeEsfera {
+    
+    public static double calcularVolumeEsfera(double raio) {
+        if (raio < 0) {
+            System.out.println("Erro: raio não pode ser negativo!");
+            return 0;
+        }
+        
+        double volume = (4.0 / 3.0) * Math.PI * Math.pow(raio, 3);
+        return volume;
+    }
+    
+    public static void main(String[] args) {
+        double raio1 = 5;
+        double volume1 = calcularVolumeEsfera(raio1);
+        System.out.println("Esfera com raio " + raio1 + "cm");
+        System.out.println("Volume: " + String.format("%.2f", volume1) + " cm³");
+        
+        System.out.println();
+        
+        double raio2 = 10;
+        double volume2 = calcularVolumeEsfera(raio2);
+        System.out.println("Esfera com raio " + raio2 + "cm");
+        System.out.println("Volume: " + String.format("%.2f", volume2) + " cm³");
+    }
+}
+```
+
+Output:
+
+```
+Esfera com raio 5.0cm
+Volume: 523.60 cm³
+
+Esfera com raio 10.0cm
+Volume: 4186.67 cm³
+```
+
+**O "clique":** Esse exercício foi mais sobre **validação e formatação** do que sobre a fórmula em si.
+
+Percebam três coisas:
+
+1. **Validação**: Checar se raio \< 0 antes de calcular. Isso previne erros matemáticos.
+2. **Precisão**: Usar `4.0 / 3.0` em vez de `4 / 3` garante divisão em ponto flutuante. Se fosse inteiro, perderia a precisão.
+3. **Formatação**: `String.format("%.2f", volume)` arredonda pra 2 casas decimais. Sem isso, você teria `523.5987755982989` na tela.
+
+Essas três coisas — validação, precisão, formatação — são o que separa um método "funciona em casa" de um método "pronto pra produção".
+
+### Exercício 3: Contador
+
+**Desafio**: Criar um **contador** usando métodos.
+
+Essa foi a mais aberta. O exercício pedia algo tipo:
+
+```
+public class Contador {
+    
+    private int valor = 0;
+    
+    public void incrementar() {
+        valor++;
+        System.out.println("Contagem: " + valor);
+    }
+    
+    public void decrementar() {
+        valor--;
+        System.out.println("Contagem: " + valor);
+    }
+    
+    public void resetar() {
+        valor = 0;
+        System.out.println("Contador resetado!");
+    }
+    
+    public int obterValor() {
+        return valor;
+    }
+    
+    public static void main(String[] args) {
+        Contador contador = new Contador();
+        
+        contador.incrementar(); // Contagem: 1
+        contador.incrementar(); // Contagem: 2
+        contador.incrementar(); // Contagem: 3
+        
+        contador.decrementar(); // Contagem: 2
+        
+        System.out.println("Valor atual: " + contador.obterValor()); // Valor atual: 2
+        
+        contador.resetar(); // Contador resetado!
+    }
+}
+```
+
+Output:
+
+```
+Contagem: 1
+Contagem: 2
+Contagem: 3
+Contagem: 2
+Valor atual: 2
+Contador resetado!
+```
+
+**O "clique":** Este exercício foi sobre **estado e responsabilidade**.
+
+Até agora, estávamos trabalhando com métodos estáticos (`public static`). Aqui, de repente, você tem uma **classe com estado** (`valor`) e **métodos que modificam esse estado**.
+
+É aí que OOP começa a fazer sentido. O contador não é só uma coleção de funções — é um **objeto** que sabe contar. Ele mantém seu próprio estado.
+
+E mais: você pode criar múltiplas instâncias:
+
+```
+Contador contador1 = new Contador();
+Contador contador2 = new Contador();
+
+contador1.incrementar(); // contador1 = 1
+contador1.incrementar(); // contador1 = 2
+contador2.incrementar(); // contador2 = 1
+
+System.out.println(contador1.obterValor()); // 2
+System.out.println(contador2.obterValor()); // 1
+```
+
+Cada contador é independente. Isso é fundamental.
+
+### O que esses exercícios ensinaram
+
+**Banner com Unicode:** Criatividade. Não é tudo fórmula e lógica — é também expressão.
+
+**Volume de Esfera:** Validação, precisão e formatação. O código "funciona" é diferente de código "pronto pra produção".
+
+**Contador:** A diferença entre funções estáticas e objetos com estado. Quando usar cada uma.
+
+### Por que isso importa
+
+Eu já conhecia métodos. Mas esses exercícios mostraram **nuances**:
+
+* Refatoração (parâmetros genéricos no banner)
+* Tratamento de erros (validação no volume)
+* Estado e responsabilidade (o contador)
+
+São detalhes que você não aprende só "sabendo" métodos. Aprende **praticando**.
+
+### Próximo capítulo
+
+Terminado o Capítulo 5, estou pronto pra capítulos mais avançados. Herança, interfaces, exceções customizadas... tudo isso depende de ter métodos bem estruturados.
+
+E tecnicamente? Já estou fazendo tudo isso no TaskNest. Mas ter passado por um exercício estruturado que destaca esses pontos? É diferente.

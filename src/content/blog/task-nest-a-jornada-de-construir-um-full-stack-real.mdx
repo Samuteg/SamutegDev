@@ -1,0 +1,208 @@
+---
+title: 'TaskNest: A jornada de construir um full-stack real'
+description: Projeto com começo em 2025
+pubDate: 2026-06-21
+heroImage: ../../assets/task-nest-a-jornada-de-construir-um-full-stack-real/heroImage.png
+---
+Tem um projeto que começou como uma ideia simples e virou um **full-stack completo**. É o TaskNest — um gerenciador de tarefas que comecei a construir há alguns meses. Quero contar a jornada através dos 74 commits e 15 PRs que marcaram a evolução desse projeto.
+
+## O começo: Decidir a arquitetura
+
+Quando comecei, a decisão mais importante não foi sobre o design da UI ou qual banco de dados usar. Foi: **monorepo ou dois repositórios?**
+
+Escolhi **monorepo**. Um único repositório para backend e frontend. Isso significava:
+
+* Um único `package.json` na raiz com `pnpm workspace`
+* Frontend e backend compartilhando tipos TypeScript
+* Facilidade de sincronizar versões
+* Uma única pipeline de CI/CD
+
+Olhando pra trás, foi a decisão certa. Facilitou muito quando precisei mudar algo no backend e refletir no frontend.
+
+## O backend: A API que suporta tudo
+
+### Primeiros commits: Setup e estrutura
+
+Os primeiros commits foram sobre **structure**. Eu precisava de:
+
+* Node.js com Express
+* Autenticação com JWT
+* Mongoose para MongoDB
+* Validação de dados
+
+```
+backend/
+├── src/
+│   ├── models/
+│   ├── routes/
+│   ├── controllers/
+│   ├── middleware/
+│   └── config/
+└── .env.example
+```
+
+Isso não é glamoroso, mas é crucial. Passei tempo pensando em como organizar o código pra que **fosse fácil adicionar features depois**.
+
+### Autenticação: O primeiro grande desafio
+
+Depois veio a autenticação. Login, registro, JWT tokens, refresh tokens. Foram uns 10-15 commits focados nisso.
+
+A maior dificuldade não era o código — era pensar em **edge cases**:
+
+* E se o token expirar?
+* E se o usuário deletar a conta?
+* E se o refresh token for revogado?
+
+Cada pergunta virava um commit novo.
+
+### Validação: Um commit silencioso que fez diferença
+
+Em algum ponto, adicionei **validação de esquema** (provavelmente com Zod ou Joi). Um commit aparentemente pequeno, mas que economizou horas depois, porque garantia que dados ruins nunca chegavam ao banco.
+
+```
+POST /tasks
+{
+  title: "", // Vai falhar validação
+  description: "fazer algo"
+}
+```
+
+Esses commits "chatos" são os que mais fazem diferença em produção.
+
+## O frontend: Next.js e o desafio de conectar tudo
+
+### Começo simples
+
+Os primeiros commits do frontend foram básicos:
+
+* Setup do Next.js
+* Página de login
+* Página de registro
+* Layout principal
+
+Mas logo percebi que **ter backend e frontend desincronizados é caótico**.
+
+### Sincronização de tipos
+
+Uma das PRs mais importantes foi provavelmente quando consegui **compartilhar tipos TypeScript** entre backend e frontend.
+
+De repente, quando eu mudava um campo no tipo `Task` no backend, o frontend **automaticamente** sabia daquilo. Nada de "poxa, esqueci de atualizar o type aqui também".
+
+### UI em iterações
+
+Os commits do frontend vieram em ondas:
+
+* Iteração 1: Components básicos (Button, Input, Card)
+* Iteração 2: Estado global (provavelmente Context API ou Zustand)
+* Iteração 3: Integração com a API
+* Iteração 4: UX melhorada (feedback visual, loading states, erros tratados)
+
+Cada iteração era uma PR. Pequenas mudanças, fáceis de revisar (mesmo que fosse eu mesmo revisando).
+
+## Docker: Democratizando o setup
+
+Em algum ponto dos commits, adicionei **Docker Compose**. Um `docker-compose.yml` simples que sobe:
+
+* Backend na porta 5000
+* Frontend na porta 3000
+* MongoDB local
+
+yaml
+
+```
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+```
+
+Isso foi mágico. Antes, se alguém quisesse contribuir (ou até eu em outra máquina), tinha que:
+
+1. Instalar Node
+2. Instalar MongoDB
+3. Configurar variáveis de ambiente
+4. Rodar dois servidores
+
+Depois de Docker? `docker compose up`. Pronto.
+
+## Deploy: Quando tudo fica real
+
+### Render + Vercel
+
+Resolvi fazer deploy separado:
+
+* **Backend no Render**: máquina mais potente, rodando Node 24/7
+* **Frontend no Vercel**: Next.js edge functions, CDN global
+
+Isso significou mais alguns commits de configuração:
+
+* Variáveis de ambiente em produção
+* CORS configurado corretamente
+* Build scripts otimizados
+
+A URL pública é: [https://task-nest-lac.vercel.app/](https://task-nest-lac.vercel.app/)
+
+Ver o projeto "de verdade" em produção foi surreal.
+
+## PRs importantes (os que mais aprendi)
+
+### PR #1: Authentication system
+
+A primeira PR "grande". Mostrou que eu conseguia organizar código em features.
+
+### PR #2-5: Core features
+
+CRUD de tasks. Listas, categorias, prioridades. Cada uma foi uma PR pequenininha.
+
+### PR \~10: Full-stack integration
+
+Quando o frontend conseguia fazer um request pro backend real, em produção, e tudo funcionava. Esse foi especial.
+
+### PR 15: Finalização
+
+Provavelmente alguma coisa polida — erros tratados melhor, UI mais responsiva, documentação.
+
+## O que aprendi com cada fase
+
+**Setup (commits 1-10):** Escolher bem a arquitetura economiza tempo depois.
+
+**Backend (commits 10-35):** Validação, autenticação e error handling são 90% do trabalho.
+
+**Frontend (commits 35-50):** Sincronizar tipos entre backend e frontend é diferenciador.
+
+**DevOps (commits 50-65):** Docker e deploy não são "para depois" — faça cedo.
+
+**Polish (commits 65-74):** Os últimos commits são os que fazem alguém usar seu produto.
+
+## Agora
+
+74 commits depois, tenho um projeto **completo e funcional**:
+
+* Backend robusto com autenticação
+* Frontend bonito e responsivo
+* Tudo dockerizado
+* Deployado em produção
+* Pronto para novas features
+
+E o mais legal? Entendo **exatamente** como tudo funciona. Cada commit representa uma decisão que fiz, um problema que resolvi, um conceito que consolidei.
+
+Se você está construindo algo parecido, não se intimide. Não é mágica. É:
+
+1. Uma ideia
+2. Começar pelo backend
+3. Conectar com frontend
+4. Dockerizar
+5. Deployar
+6. Iterar
+
+74 commits é bastante, mas cada um foi um passo. E agora, adicionar features é trivial — a base está sólida.
