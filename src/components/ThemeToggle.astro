@@ -1,80 +1,125 @@
-<button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema" title="Alternar tema">
-	<!-- Sun Icon -->
-	<svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-		<circle cx="12" cy="12" r="4"></circle>
-		<path d="M12 2v2"></path>
-		<path d="M12 20v2"></path>
-		<path d="m4.93 4.93 1.41 1.41"></path>
-		<path d="m17.66 17.66 1.41 1.41"></path>
-		<path d="M2 12h2"></path>
-		<path d="M20 12h2"></path>
-		<path d="m6.34 17.66-1.41 1.41"></path>
-		<path d="m19.07 4.93-1.41 1.41"></path>
-	</svg>
-	<!-- Moon Icon -->
-	<svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-		<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-	</svg>
+<button
+    id="theme-toggle"
+    class="theme-toggle"
+    aria-label="Alternar tema"
+    title="Alternar tema"
+>
+    <!-- Sun Icon -->
+    <svg
+        class="sun-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    >
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2"></path>
+        <path d="M12 20v2"></path>
+        <path d="m4.93 4.93 1.41 1.41"></path>
+        <path d="m17.66 17.66 1.41 1.41"></path>
+        <path d="M2 12h2"></path>
+        <path d="M20 12h2"></path>
+        <path d="m6.34 17.66-1.41 1.41"></path>
+        <path d="m19.07 4.93-1.41 1.41"></path>
+    </svg>
+    <!-- Moon Icon -->
+    <svg
+        class="moon-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    >
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+    </svg>
 </button>
 
 <style>
-	.theme-toggle {
-		background: transparent;
-		border: none;
-		padding: 0.5rem;
-		border-radius: var(--border-radius-sm);
-		cursor: pointer;
-		color: var(--text-muted);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all var(--transition-fast);
-		outline: none;
-	}
+    .theme-toggle {
+        background: transparent;
+        border: none;
+        padding: 0.5rem;
+        border-radius: var(--border-radius-sm);
+        cursor: pointer;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all var(--transition-fast);
+        outline: none;
+    }
 
-	.theme-toggle:hover {
-		background: var(--bg-subtle);
-		color: var(--text-color);
-	}
+    .theme-toggle:hover {
+        background: var(--bg-subtle);
+        color: var(--text-color);
+    }
 
-	.sun-icon {
-		display: block;
-	}
-	.moon-icon {
-		display: none;
-	}
+    .sun-icon {
+        display: block;
+    }
+    .moon-icon {
+        display: none;
+    }
 
-	:global(html[data-theme='dark']) .sun-icon {
-		display: none;
-	}
-	:global(html[data-theme='dark']) .moon-icon {
-		display: block;
-	}
+    :global(html[data-theme="dark"]) .sun-icon {
+        display: none;
+    }
+    :global(html[data-theme="dark"]) .moon-icon {
+        display: block;
+    }
 </style>
 
 <script>
-	const setupThemeToggle = () => {
-		const handleToggleClick = () => {
-			const element = document.documentElement;
-			const isDark = element.getAttribute('data-theme') === 'dark';
-			const newTheme = isDark ? 'light' : 'dark';
-			
-			element.setAttribute('data-theme', newTheme);
-			localStorage.setItem('theme', newTheme);
-		};
+    // Initialize theme on first load (before any navigation)
+    function initTheme() {
+        const theme =
+            localStorage.getItem("theme") ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+    }
 
-		const themeToggleBtn = document.getElementById('theme-toggle');
-		if (themeToggleBtn) {
-			themeToggleBtn.removeEventListener('click', handleToggleClick);
-			themeToggleBtn.addEventListener('click', handleToggleClick);
-		}
-	};
+    // Run immediately (inline script in BaseHead already does this, but this ensures toggle UI is correct)
+    initTheme();
 
-	setupThemeToggle();
+    const setupThemeToggle = () => {
+        const handleToggleClick = () => {
+            const element = document.documentElement;
+            const isDark = element.getAttribute("data-theme") === "dark";
+            const newTheme = isDark ? "light" : "dark";
 
-	document.addEventListener('astro:after-swap', () => {
-		const isDark = localStorage.getItem('theme') === 'dark';
-		document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-		setupThemeToggle();
-	});
+            element.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+        };
+
+        const themeToggleBtn = document.getElementById("theme-toggle");
+        if (themeToggleBtn) {
+            themeToggleBtn.removeEventListener("click", handleToggleClick);
+            themeToggleBtn.addEventListener("click", handleToggleClick);
+        }
+    };
+
+    setupThemeToggle();
+
+    // Re-attach after Astro navigation (View Transitions)
+    document.addEventListener("astro:after-swap", () => {
+        const theme =
+            localStorage.getItem("theme") ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+        setupThemeToggle();
+    });
 </script>
