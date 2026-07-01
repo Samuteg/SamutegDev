@@ -2,13 +2,11 @@
 /**
  * ScrollProgress: A reading progress bar fixed at the top of the viewport.
  * Smoothly fills with an animated gradient as the user scrolls down.
- */
----
-
+ ---
 <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
-<!-- Scroll progress script loaded externally for CSP compliance -->
-<script src="/scripts/scroll-progress.js"></script>
+<!-- Scroll progress script (inline to satisfy Astro 7) -->
+<script is:inline src="/scripts/scroll-progress.js"></script>
 
 <style>
     .scroll-progress {

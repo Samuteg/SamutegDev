@@ -35,8 +35,8 @@ const { title, description, image = FallbackImage } = Astro.props;
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Theme initialization script (external to satisfy CSP) -->
-<script src="/scripts/theme-init.js"></script>
+<!-- Theme initialization script (inline to satisfy Astro 7) -->
+<script is:inline src="/scripts/theme-init.js"></script>
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />

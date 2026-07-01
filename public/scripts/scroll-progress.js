@@ -4,15 +4,15 @@
 
 (function () {
   function setupScrollProgress() {
-    const progressBar = document.getElementById("scroll-progress");
+    var progressBar = document.getElementById("scroll-progress");
     if (!progressBar) return;
 
-    const updateProgress = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const docHeight =
+    var updateProgress = function () {
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+      var docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
-      const progress = Math.min((scrollTop / docHeight) * 100, 100);
-      progressBar.style.width = `${progress}%`;
+      var progress = Math.min((scrollTop / docHeight) * 100, 100);
+      progressBar.style.width = progress + "%";
     };
 
     window.addEventListener("scroll", updateProgress, { passive: true });

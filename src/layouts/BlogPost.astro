@@ -234,7 +234,7 @@ const isAboutPage = Astro.url.pathname.includes("/about") || title === "Sobre";
 
         <Footer />
 
-        <!-- Reading time script - externalized for CSP -->
-        <script src="/scripts/reading-time.js"></script>
+        <!-- Reading time script (inline to satisfy Astro 7) -->
+        <script is:inline src="/scripts/reading-time.js"></script>
     </body>
 </html>
