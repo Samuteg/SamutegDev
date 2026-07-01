@@ -7,26 +7,18 @@
 
 <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
-<script>
-	const setupScrollProgress = () => {
-		const progressBar = document.getElementById('scroll-progress');
-		if (!progressBar) return;
+<!-- Scroll progress script loaded externally for CSP compliance -->
+<script src="/scripts/scroll-progress.js"></script>
 
-		const updateProgress = () => {
-			const scrollTop = window.scrollY;
-			const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-			if (docHeight <= 0) {
-				progressBar.style.width = '0%';
-				return;
-			}
-			const progress = Math.min((scrollTop / docHeight) * 100, 100);
-			progressBar.style.width = `${progress}%`;
-		};
-
-		window.addEventListener('scroll', updateProgress, { passive: true });
-		updateProgress();
-	};
-
-	setupScrollProgress();
-	document.addEventListener('astro:after-swap', setupScrollProgress);
-</script>
+<style>
+    .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent-color), #6366f1);
+        z-index: 100;
+        transition: width 0.1s linear;
+    }
+</style>
