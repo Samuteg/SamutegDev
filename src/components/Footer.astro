@@ -1,91 +1,99 @@
 ---
-import { AUTHOR, SOCIAL_LINKS } from '../consts';
+import { AUTHOR, SOCIAL_LINKS } from "../consts";
 
 const today = new Date();
 ---
 
 <footer>
-	<div class="footer-content">
-		<div class="footer-links">
-			<a href="/">Início</a>
-			<a href="/blog">Blog</a>
-			<a href="/about">Sobre</a>
-			<a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">GitHub</a>
-			<a href="/rss.xml">RSS</a>
-		</div>
-		
-		<div class="footer-bottom">
-			<p>&copy; {today.getFullYear()} {AUTHOR}.</p>
-			<p class="built-with">
-				Construído com <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a>
-			</p>
-		</div>
-	</div>
+    <div class="footer-content">
+        <div class="footer-links">
+            <a href="/">Início</a>
+            <a href="/blog">Blog</a>
+            <a href="/about">Sobre</a>
+            <a
+                href={SOCIAL_LINKS.github}
+                target="_blank"
+                rel="noopener noreferrer">GitHub</a
+            >
+            <a href="/rss.xml">RSS</a>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; {today.getFullYear()} {AUTHOR}.</p>
+            <p class="built-with">
+                Construído com <a
+                    href="https://astro.build"
+                    target="_blank"
+                    rel="noopener noreferrer">Astro</a
+                >
+            </p>
+        </div>
+    </div>
 </footer>
 
 <style>
-	footer {
-		margin-top: auto;
-		border-top: 1px solid var(--card-border);
-		padding: 3rem 1.5rem;
-		background-color: transparent;
-	}
+    footer {
+        margin-top: auto;
+        border-top: 1px solid var(--card-border);
+        padding: 3rem 1.5rem;
+        background-color: transparent;
+    }
 
-	.footer-content {
-		max-width: 840px;
-		margin: 0 auto;
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-	}
+    .footer-content {
+        max-width: 840px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
 
-	.footer-links {
-		display: flex;
-		gap: 1.5rem;
-		flex-wrap: wrap;
-	}
+    .footer-links {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
 
-	.footer-links a {
-		font-size: 0.85rem;
-		font-weight: 500;
-		color: var(--text-muted);
-		transition: color var(--transition-fast);
-	}
+    .footer-links a {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        transition: color var(--transition-fast);
+    }
 
-	.footer-links a:hover {
-		color: var(--text-color);
-	}
+    .footer-links a:hover {
+        color: var(--text-color);
+    }
 
-	.footer-bottom {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		flex-wrap: wrap;
-		gap: 1rem;
-	}
+    .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
 
-	.footer-bottom p {
-		margin: 0;
-		font-size: 0.8rem;
-		color: var(--text-muted);
-	}
+    .footer-bottom p {
+        margin: 0;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
 
-	.built-with a {
-		color: var(--text-color);
-		font-weight: 500;
-	}
+    .built-with a {
+        color: var(--text-color);
+        font-weight: 500;
+    }
 
-	@media (max-width: 680px) {
-		footer {
-			padding: 2rem 1rem;
-		}
-		.footer-links {
-			gap: 1rem;
-		}
-		.footer-bottom {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: 0.5rem;
-		}
-	}
+    @media (max-width: 680px) {
+        footer {
+            padding: 2rem 1rem;
+        }
+        .footer-links {
+            gap: 1rem;
+        }
+        .footer-bottom {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+    }
 </style>

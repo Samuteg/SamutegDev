@@ -1,39 +1,39 @@
-import { config, fields, collection } from '@keystatic/core';
+import { config, fields, collection } from "@keystatic/core";
 
 export default config({
   storage: {
-    kind: 'local',
+    kind: "local",
   },
   collections: {
     blog: collection({
-      label: 'Blog Posts',
-      slugField: 'title',
-      path: 'src/content/blog/*',
-      format: { contentField: 'content' },
+      label: "Blog Posts",
+      slugField: "title",
+      path: "src/content/blog/*",
+      format: { contentField: "content" },
       schema: {
-        title: fields.slug({ name: { label: 'Título' } }),
-        description: fields.text({ label: 'Descrição', multiline: true }),
+        title: fields.slug({ name: { label: "Título" } }),
+        description: fields.text({ label: "Descrição", multiline: true }),
         pubDate: fields.date({
-          label: 'Data de Publicação',
-          defaultValue: { kind: 'today' },
+          label: "Data de Publicação",
+          defaultValue: { kind: "today" },
         }),
         updatedDate: fields.date({
-          label: 'Data de Atualização (opcional)',
+          label: "Data de Atualização (opcional)",
         }),
         heroImage: fields.image({
-          label: 'Imagem de Capa (opcional)',
-          directory: 'src/assets',
-          publicPath: '../../assets/',
+          label: "Imagem de Capa (opcional)",
+          directory: "src/assets",
+          publicPath: "../../assets/",
         }),
         content: fields.mdx({
-          label: 'Conteúdo',
+          label: "Conteúdo",
           options: {
             divider: true,
-            links: true,
+            link: true,
             code: true,
             image: {
-              directory: 'src/assets',
-              publicPath: '../../assets/',
+              directory: "src/assets",
+              publicPath: "../../assets/",
             },
           },
         }),

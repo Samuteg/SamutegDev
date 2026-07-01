@@ -1,189 +1,223 @@
 ---
-import { Image } from 'astro:assets';
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import NoiseBackground from '../components/NoiseBackground.astro';
-import { SITE_TITLE } from '../consts';
+import { Image } from "astro:assets";
+import AboutHeroImage from "../assets/blog-placeholder-about.jpg";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import NoiseBackground from "../components/NoiseBackground.astro";
+import { SITE_TITLE } from "../consts";
 ---
 
 <!doctype html>
 <html lang="pt-BR">
-	<head>
-		<BaseHead title={`Sobre | ${SITE_TITLE}`} description="Conheça quem está por trás do SamutegDev." />
-		<style>
-			main {
-				width: 100%;
-				max-width: 840px;
-				margin: 0 auto;
-				padding: 4rem 1.5rem 6rem 1.5rem;
-			}
+    <head>
+        <BaseHead
+            title={`Sobre | ${SITE_TITLE}`}
+            description="Conheça quem está por trás do SamutegDev."
+        />
+        <style>
+            main {
+                width: 100%;
+                max-width: 840px;
+                margin: 0 auto;
+                padding: 4rem 1.5rem 6rem 1.5rem;
+            }
 
-			.about-container {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 4rem;
-				align-items: flex-start;
-			}
+            .about-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 4rem;
+                align-items: flex-start;
+            }
 
-			.about-image {
-				position: relative;
-				border-radius: var(--border-radius-md);
-				overflow: hidden;
-				border: 1px solid var(--card-border);
-				aspect-ratio: 3/4;
-				background: var(--bg-subtle);
-			}
+            .about-image {
+                position: relative;
+                border-radius: var(--border-radius-md);
+                overflow: hidden;
+                border: 1px solid var(--card-border);
+                aspect-ratio: 3/4;
+                background: var(--bg-subtle);
+            }
 
-			.about-image img {
-				width: 100%;
-				height: 100%;
-				object-fit: cover;
-				filter: grayscale(100%) contrast(1.1);
-				transition: filter var(--transition-normal);
-			}
+            .about-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                filter: grayscale(100%) contrast(1.1);
+                transition: filter var(--transition-normal);
+            }
 
-			.about-image:hover img {
-				filter: grayscale(0%) contrast(1);
-			}
+            .about-image:hover img {
+                filter: grayscale(0%) contrast(1);
+            }
 
-			.about-content h1 {
-				font-size: 3rem;
-				font-weight: 800;
-				letter-spacing: -0.05em;
-				margin-bottom: 2rem;
-				line-height: 1.1;
-			}
+            .about-content h1 {
+                font-size: 3rem;
+                font-weight: 800;
+                letter-spacing: -0.05em;
+                margin-bottom: 2rem;
+                line-height: 1.1;
+            }
 
-			.about-content p {
-				font-size: 1.05rem;
-				color: var(--text-muted);
-				line-height: 1.7;
-				margin-bottom: 1.5rem;
-			}
+            .about-content p {
+                font-size: 1.05rem;
+                color: var(--text-muted);
+                line-height: 1.7;
+                margin-bottom: 1.5rem;
+            }
 
-			.about-content strong {
-				color: var(--text-color);
-				font-weight: 600;
-			}
+            .about-content strong {
+                color: var(--text-color);
+                font-weight: 600;
+            }
 
-			.about-content a {
-				color: var(--text-color);
-				text-decoration: underline;
-				text-decoration-color: var(--card-border);
-				text-underline-offset: 4px;
-			}
+            .about-content a {
+                color: var(--text-color);
+                text-decoration: underline;
+                text-decoration-color: var(--card-border);
+                text-underline-offset: 4px;
+            }
 
-			.about-content a:hover {
-				text-decoration-color: var(--text-color);
-			}
+            .about-content a:hover {
+                text-decoration-color: var(--text-color);
+            }
 
-			.connect-section {
-				margin-top: 3rem;
-				padding-top: 2rem;
-				border-top: 1px solid var(--card-border);
-			}
+            .connect-section {
+                margin-top: 3rem;
+                padding-top: 2rem;
+                border-top: 1px solid var(--card-border);
+            }
 
-			.connect-section h2 {
-				font-size: 1.25rem;
-				font-weight: 600;
-				margin-bottom: 1rem;
-			}
+            .connect-section h2 {
+                font-size: 1.25rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
 
-			.social-links {
-				display: flex;
-				gap: 1rem;
-			}
+            .social-links {
+                display: flex;
+                gap: 1rem;
+            }
 
-			.social-links a {
-				display: inline-flex;
-				align-items: center;
-				gap: 0.5rem;
-				padding: 0.5rem 1rem;
-				border: 1px solid var(--card-border);
-				border-radius: var(--border-radius-sm);
-				text-decoration: none;
-				font-size: 0.9rem;
-				font-weight: 500;
-				transition: all var(--transition-fast);
-			}
+            .social-links a {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.5rem 1rem;
+                border: 1px solid var(--card-border);
+                border-radius: var(--border-radius-sm);
+                text-decoration: none;
+                font-size: 0.9rem;
+                font-weight: 500;
+                transition: all var(--transition-fast);
+            }
 
-			.social-links a:hover {
-				background: var(--bg-subtle);
-				border-color: var(--text-color);
-			}
+            .social-links a:hover {
+                background: var(--bg-subtle);
+                border-color: var(--text-color);
+            }
 
-			@media (max-width: 768px) {
-				main {
-					padding: 3rem 1.5rem;
-				}
-				.about-container {
-					grid-template-columns: 1fr;
-					gap: 2.5rem;
-				}
-				.about-image {
-					aspect-ratio: 16/9;
-					order: -1;
-				}
-				.about-content h1 {
-					font-size: 2.5rem;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<NoiseBackground />
-		<main>
-			<div class="about-container">
-				<div class="about-content fade-in-up">
-					<h1>Sobre mim</h1>
-					
-					<p>
-						Olá! Sou o criador do <strong>SamutegDev</strong>, um espaço dedicado a compartilhar
-						experiências, tutoriais e reflexões sobre desenvolvimento de software.
-					</p>
+            @media (max-width: 768px) {
+                main {
+                    padding: 3rem 1.5rem;
+                }
+                .about-container {
+                    grid-template-columns: 1fr;
+                    gap: 2.5rem;
+                }
+                .about-image {
+                    aspect-ratio: 16/9;
+                    order: -1;
+                }
+                .about-content h1 {
+                    font-size: 2.5rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <Header />
+        <NoiseBackground />
+        <main>
+            <div class="about-container">
+                <div class="about-content fade-in-up">
+                    <h1>Sobre mim</h1>
 
-					<p>
-						Este blog nasceu com o objetivo de documentar aprendizados do dia a dia — desde escolhas de
-						ferramentas e arquitetura até pequenos truques que economizam tempo na rotina de quem programa.
-						A ideia é registrar o que funciona na prática, com conteúdo direto e útil.
-					</p>
+                    <p>
+                        Olá! Sou o criador do <strong>SamutegDev</strong>, um
+                        espaço dedicado a compartilhar experiências, tutoriais e
+                        reflexões sobre desenvolvimento de software.
+                    </p>
 
-					<p>
-						Aqui você encontra artigos sobre desenvolvimento web, automação, produtividade e as tecnologias
-						que uso nos meus projetos. O foco é qualidade sobre quantidade: cada publicação traz algo
-						concreto que você pode aplicar.
-					</p>
+                    <p>
+                        Este blog nasceu com o objetivo de documentar
+                        aprendizados do dia a dia — desde escolhas de
+                        ferramentas e arquitetura até pequenos truques que
+                        economizam tempo na rotina de quem programa. A ideia é
+                        registrar o que funciona na prática, com conteúdo direto
+                        e útil.
+                    </p>
 
-					<div class="connect-section fade-in-up delay-2">
-						<h2>Acompanhe</h2>
-						<div class="social-links">
-							<a href="/blog">
-								Ler Artigos
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<line x1="5" y1="12" x2="19" y2="12"></line>
-									<polyline points="12 5 19 12 12 19"></polyline>
-								</svg>
-							</a>
-							<a href="/rss.xml">
-								Feed RSS
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M4 11a9 9 0 0 1 9 9"></path>
-									<path d="M4 4a16 16 0 0 1 16 16"></path>
-									<circle cx="5" cy="19" r="1"></circle>
-								</svg>
-							</a>
-						</div>
-					</div>
-				</div>
+                    <p>
+                        Aqui você encontra artigos sobre desenvolvimento web,
+                        automação, produtividade e as tecnologias que uso nos
+                        meus projetos. O foco é qualidade sobre quantidade: cada
+                        publicação traz algo concreto que você pode aplicar.
+                    </p>
 
-				<div class="about-image fade-in-up delay-1">
-					<Image width={800} height={1000} src={AboutHeroImage} alt="Foto de perfil" />
-				</div>
-			</div>
-		</main>
-		<Footer />
-	</body>
+                    <div class="connect-section fade-in-up delay-2">
+                        <h2>Acompanhe</h2>
+                        <div class="social-links">
+                            <a href="/blog">
+                                Ler Artigos
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"
+                                    ></polyline>
+                                </svg>
+                            </a>
+                            <a href="/rss.xml">
+                                Feed RSS
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="M4 11a9 9 0 0 1 9 9"></path>
+                                    <path d="M4 4a16 16 0 0 1 16 16"></path>
+                                    <circle cx="5" cy="19" r="1"></circle>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-image fade-in-up delay-1">
+                    <Image
+                        width={800}
+                        height={1000}
+                        src={AboutHeroImage}
+                        alt="Foto de perfil"
+                    />
+                </div>
+            </div>
+        </main>
+        <Footer />
+    </body>
 </html>
