@@ -16,4 +16,14 @@ export default defineConfig({
   integrations: [mdx(), sitemap(), ...(dev ? [keystatic()] : [])],
   // Fonts are loaded via @import in global.css (Inter + JetBrains Mono from Google Fonts)
   // No local font configuration needed
+  vite: {
+    // Allow Google Fonts in CSP
+    build: {
+      rollupOptions: {
+        output: {
+          // This doesn't directly set CSP headers, but we can add a plugin
+        },
+      },
+    },
+  },
 });
