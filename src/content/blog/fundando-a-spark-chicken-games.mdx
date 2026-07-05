@@ -1,0 +1,182 @@
+---
+title: >-
+  Construindo uma Plataforma de Jogos Web: Os Desafios Reais de Criar o Seu
+  Próprio Poki/Friv
+description: minha colaboraçao ao um projeto real
+pubDate: 2026-07-05
+heroImage: ../../assets/fundando-a-spark-chicken-games/heroImage.jpg
+---
+## Construindo uma Plataforma de Jogos Web: Os Desafios Reais de Criar o Seu Próprio Poki/Friv
+
+Já parou para pensar na infraestrutura por trás de plataformas como Poki ou Friv? Aqueles sites que parecem simples à primeira vista, mas que na verdade rodam dezenas de milhares de jogos simultâneos para usuários espalhados pelo mundo? Pois bem, decidi mergulhar nessa aventura de criar minha própria plataforma de jogos web, e deixa eu te contar: foi **bem mais complicado** do que imaginei.
+
+Neste post, vou compartilhar minha jornada técnica, as decisões arquiteturais que tomei e, principalmente, os perrengues que enfrentei. Spoiler: não foi fácil.
+
+### A Escolha da Stack: Por Que Go, Docker e Next.js?
+
+Quando comecei a planejar essa plataforma, tinha alguns requisitos claros:
+
+* **Backend robusto e performático**: precisava lidar com múltiplas requisições simultâneas, gerenciar usuários, scores, saves de progresso...
+* **Frontend moderno e responsivo**: um dashboard que funcionasse bem em mobile e desktop
+* **Infraestrutura containerizada**: para facilitar deploy em diferentes ambientes
+* **Desenvolvimento rápido**: não queria gastar meses apenas na arquitetura
+
+Isso me levou a escolher:
+
+**Go** para o backend - A linguagem é incrivelmente rápida, trata concorrência de forma elegante com goroutines e consegue fazer muito com pouco em termos de recursos. Além disso, compila para um binário único, o que é perfeito para Docker.
+
+**Next.js** para o frontend - Oferece Server-Side Rendering, Static Generation, API routes integradas... é praticamente um canivete suíço do React. Perfeito para criar uma experiência de usuário fluida.
+
+**Docker** como orquestração - Containerizar tudo facilita muito o deployment, escalabilidade e reprodução de ambientes.
+
+Tudo isso soava perfeito na teoria. Na prática? Bem...
+
+### Ato I: A Ilusão da Simplicidade
+
+Comecei pensando que seria tranquilo. Afinal, muitos tutoriais online fazem parecer que é só juntar algumas tecnologias e pronto. Criei um API simples em Go:
+
+go
+
+```
+func GetGames(w http.ResponseWriter, r *http.Request) {
+    // Busca todos os jogos do banco
+    games := getAllGames()
+    json.NewEncoder(w).Encode(games)
+}
+```
+
+"Pronto!", pensei. "Agora é só consumir isso no Next.js e tá feito".
+
+Spoiler: não estava.
+
+### Os Desafios Reais que Ninguém Menciona
+
+#### 1. **Gerenciamento de Estado Complexo**
+
+Quando você tem milhares de usuários jogando simultaneamente, gerenciar estado se torna um pesadelo. Cada jogador tem:
+
+* Progresso no jogo
+* Pontuação
+* Conquistas desbloqueadas
+* Tempo de sessão
+* Leaderboards em tempo real
+
+Implementar um sistema de cache eficiente em Go foi meu primeiro grande desafio. Redis? Memcached? Quanto de RAM preciso? Como garantir consistência?
+
+go
+
+```
+// Sincronizar score em tempo real é mais complicado do que parece
+func UpdatePlayerScore(playerID string, score int) error {
+    // Atualizar em cache
+    cache.SetScore(playerID, score)
+    // Atualizar no banco de dados
+    db.SaveScore(playerID, score)
+    // Notificar outros jogadores para leaderboard?
+    // Broadcast via WebSocket?
+    return nil
+}
+```
+
+Cada decision aqui afeta performance, custos e latência.
+
+#### 2. **O Caos das Dependências no Docker**
+
+Containerizar uma aplicação Go + Next.js com banco de dados, Redis e mais alguns serviços não é tão simples quanto `docker-compose up`. Problemas que enfrentei:
+
+* **Timing de inicialização**: o banco de dados estava pronto antes do backend, que estava pronto antes do frontend tentar se conectar. Race conditions em toda parte.
+* **Network entre containers**: comunicação interna entre serviços tinha latência inesperada
+* **Volumes de dados**: garantir que os dados persistiam corretamente entre reinicializações
+* **Logs espalhados**: debugar quando 5 containers diferentes estão rodando é uma loucura
+
+Um simples `docker-compose.yml` virou um arquivo de 200 linhas com health checks, depends\_on, restart policies...
+
+#### 3. **A Maldição do CORS e WebSockets**
+
+Comunicação real-time é essencial para uma plataforma de jogos. Leaderboards atualizando, notificações de conquistas, salas multiplayer... Mas conectar Next.js (rodando em uma porta) ao backend Go (rodando em outra) trouxe:
+
+* Problemas de CORS (clássico)
+* WebSocket handshake falhando intermitentemente
+* Conexões persistentes consumindo recursos inesperadamente
+* Perda de mensagens sob alta carga
+
+Implementar reconexão automática no cliente, tratamento de desconexões graceful no servidor... tudo isso que não aparecia nos tutoriais.
+
+#### 4. **Performance: A Ilusão da Simplicidade**
+
+Go é rápido, mas escrever código Go **lento** é surpreendentemente fácil. Cometi erros clássicos:
+
+* Consultas N+1 ao banco de dados
+* Não reusar conexões
+* Goroutines sendo criadas sem limite
+* Sem índices no banco de dados
+
+Um endpoint que deveria retornar em 50ms estava levando 2 segundos. Quando você tem 10 mil usuários simultâneos, isso vira um gargalo crítico.
+
+#### 5. **O Quebra-Cabeça do Armazenamento de Jogos**
+
+Cada jogo HTML5 tem seus próprios requisitos. Alguns usam LocalStorage, outros querem dados salvos no servidor. Alguns são enormes (50MB+), outros minúsculos. Gerenciar tudo isso:
+
+* Validação de uploads
+* Antivírus para arquivos
+* Servir os arquivos com performance
+* CDN para distribuição global
+* Versionamento de jogos
+
+Hosting local não escalava. Movi para S3-like storage, o que abriu uma caixa de Pandora de novos problemas.
+
+#### 6. **Segurança é um Luxo Que Parece Opcional**
+
+Mas não é. Precisava:
+
+* Autenticação robusta (JWT tokens, refresh tokens, sessions)
+* Proteção contra XSS no frontend Next.js
+* Validação de entrada no backend Go
+* Rate limiting para evitar abuse
+* HTTPS everywhere
+* Sanitização de dados
+
+Cada uma dessas camadas adiciona complexidade. Um usuário malicioso conseguiu descobrir IDs de usuários sequenciais e acessar dados alheios. Ouch.
+
+#### 7. **O Pesadelo do Deploy**
+
+Quando finalmente tudo funcionava localmente, vinha o deploy. Problemas:
+
+* Variáveis de ambiente diferentes entre dev/staging/prod
+* Banco de dados em produção com dados reais, sem espaço para erros
+* Rollback de versões
+* Downtime zero? Desejável, mas complicado
+* Monitoramento e logs centralizados
+
+Docker ajudava, mas não era a solução mágica que imaginei.
+
+### As Pequenas Vitórias
+
+Não foi tudo ruim. Algumas coisas funcionaram lindamente:
+
+* **Go + Docker**: Compilar para um binário único e containerizar foi super clean
+* **Next.js para frontend**: Incremental Static Regeneration salvou minha vida para páginas de jogos
+* **Database migrations com versioning**: Mantive sanidade no schema do banco
+* **Monitoramento**: Prometheus + Grafana revelaram problemas antes de explodir em produção
+
+### Lições Aprendidas
+
+Se você quer construir algo parecido, aqui estão meus conselhos:
+
+1. **Comece pequeno**: não tente escalar para 10 mil usuários no dia 1
+2. **Invista em observabilidade cedo**: logs, métricas e tracing salvam vidas
+3. **Teste carga localmente**: não descubra problemas de performance em produção
+4. **CORS é seu amigo até ser seu inimigo**: entenda bem
+5. **Docker é ótimo, mas não é mágica**: entenda o que tá acontecendo dentro dos containers
+6. **Segurança desde o começo**: adicionar depois é exponencialmente mais difícil
+7. **Documentação == sanidade**: você vai esquecer por que fez certas coisas
+
+### Conclusão
+
+Construir uma plataforma de jogos web é árduo. Muito árduo. Não é só "juntar algumas tecnologias modernas". Há centenas de decisões arquiteturais, trade-offs de performance vs complexidade, desafios de infraestrutura que ninguém prepara você.
+
+Mas sabe o quê? É também **extremamente gratificante**. Ver usuários jogando naquilo que você criou, subindo o leaderboard, desbloqueando conquistas... vale cada problema que enfrentei.
+
+Se você está pensando em fazer algo parecido, vai ser difícil. Mas é possível. Muito possível.
+
+Boa sorte. Você vai precisar.
