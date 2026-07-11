@@ -1,0 +1,446 @@
+---
+title: 'Deploy em Produção: A Batalha Vercel vs Railway (E Por Que Tudo Deu Errado)'
+description: >-
+  Pensava que o desenvolvimento árduo tinha acabado. Que após meses de código,
+  debug e design, era só apertar um botão e pronto: produto no ar. Spoiler: eu
+  era otimista demais.
+pubDate: 2026-07-11
+heroImage: >-
+  ../../assets/deploy-em-producao-a-batalha-vercel-vs-railway-e-por-que-tudo-deu-errado/heroImage.jpg
+---
+Escolhi Vercel para o frontend (Next.js) e Railway para o backend (Docker com Go). Parecia perfeito na teoria. Na prática? Foi uma montanha russa de frustrações, trade-offs dolorosos e descobertas que todo dev deveria fazer (da forma difícil, obviamente).
+
+Deixa eu contar os perrengues.
+
+### A Escolha: Por Que Vercel e Railway?
+
+Tinha opções:
+
+* **AWS**: Poderoso demais, caro demais, complexo demais para um MVP
+* **Heroku**: Morreu (meio que), caro agora
+* **Digital Ocean**: Bom, mas ia precisar gerenciar infraestrutura
+
+Escolhi:
+
+* **Vercel** para frontend: Edge functions, serverless functions, otimização automática para Next.js, deploy com git push
+* **Railway** para backend: Suporta Docker nativamente, preço justo, dashboard intuitivo, scaling automático
+
+Tudo fazia sentido. Até o dia em que tentei fazer deploy.
+
+### Parte 1: Railway + Docker + Backend em Go
+
+Começou bem. Criei um `Dockerfile` simples:
+
+dockerfile
+
+```
+FROM golang:1.21-alpine AS builder
+WORKDIR /app
+COPY . .
+RUN go build -o main .
+
+FROM alpine:latest
+WORKDIR /root/
+COPY --from=builder /app/main .
+EXPOSE 8080
+CMD ["./main"]
+```
+
+Conectei meu repo ao Railway, apontei para a branch `main`, e... funcionou na primeira!
+
+Aí veio o problema.
+
+#### Cold Starts e Timeouts
+
+O backend ficou up por horas, rodando perfeitamente. Depois? Caiu em um "sleep mode" se não tiver requisições por um tempo.
+
+Quando um usuário tenta acessar o site após horas de inatividade:
+
+```
+1. Requisição chega ao frontend (Vercel)
+2. Frontend tenta conectar ao backend (Railway)
+3. Espera... espera... espera...
+4. TIMEOUT: 30 segundos de espera
+5. Usuário vê erro
+```
+
+Railway não deixa você ter uma instância sempre ligada no plano gratuito. Você paga por uso. Uso zero? Instância dorme.
+
+**Solução**: upgradar o plano. Mais 10 dólares por mês pra garantir que a aplicação não hiberna.
+
+#### O Problema do Banco de Dados
+
+Aqui é onde as coisas ficaram realmente feias.
+
+Inicialmente tentei **Neon** (PostgreSQL serverless). Parecia perfeito:
+
+* Escalável
+* Sem gerenciamento
+* Backup automático
+* Integração easy com Railway
+
+Criei a conexão, rodei as migrations... e daí vinha a diversão.
+
+Neon tem um "autosuspend" feature. Seu banco dorme após inatividade. Quando sua aplicação tenta conectar: **outro cold start de 2-3 segundos**.
+
+Pior que isso: as conexões pooling não funcionavam direito. Go mantém connection pools, mas Neon tem limites agressivos. Resultado?
+
+```
+[ERROR] too many connections
+[ERROR] connection timeout
+[ERROR] failed to acquire connection from pool
+```
+
+Um pequeno pico de tráfego e as conexões explodiam.
+
+Tentei:
+
+1. Reduzir pool size: Requests falhavam por "sem conexão disponível"
+2. Aumentar pool size: Neon recusava a conexão
+3. Usar PgBouncer: Mais uma camada de complexidade
+4. Rezar: Não funcionou
+
+Depois de uma semana de sofrimento, migrei para **PostgreSQL direto no Railway** (banco + backend no mesmo serviço).
+
+Sim, é menos elegante arquiteturalmente. Mas funciona. **Funciona mesmo**.
+
+#### Variáveis de Ambiente e Secrets
+
+Railway permite variáveis de ambiente facilmente. Mas:
+
+* Não posso cometer `.env` no repo (óbvio)
+* Preciso replicar todas as variáveis entre dev/staging/prod
+* Um typo em uma variável e a aplicação quebra silenciosamente
+* Mudar uma variável? Redeploy automático (bom e ruim)
+
+Perdi 2 horas debugando por quê o JWT secret era diferente entre dev e prod. Adivinha? Um espaço extra na variável.
+
+### Parte 2: Vercel + Next.js + Frontend (O Pesadelo)
+
+Vercel é feito para Next.js. Deveria ser trivial. Uploadei o repo, apontei pra branch `main`, cliquei deploy, e...
+
+#### Build Duração Infinita
+
+Primeira build levou **18 minutos**.
+
+Eighteen. Minutes.
+
+Por quê? Porque Vercel faz:
+
+1. `npm install` (compila tudo)
+2. `next build` (otimiza o projeto inteiro)
+3. `next export` (gera static files)
+4. Upload para CDN
+
+Meu projeto tem 500+ páginas de jogos. Next tentava gerar static pages pra todas.
+
+**Pior**: cada build custa minutos de espera. Fiz um ajuste de CSS? 18 minutos esperando.
+
+#### ISR (Incremental Static Regeneration) vs SSR
+
+Tentei usar ISR pra otimizar:
+
+javascript
+
+```
+export async function getStaticProps() {
+  const games = await fetchAllGames();
+  return {
+    props: { games },
+    revalidate: 3600 // Regenerate a cada 1 hora
+  };
+}
+```
+
+Soa bom. Na prática:
+
+* Primeira requisição após 1 hora: **lento** (tá regenerando)
+* Usuários vendo página desatualizada
+* Às vezes regeneração falhava silenciosamente
+
+Mudei pra **Server-Side Rendering**:
+
+javascript
+
+```
+export async function getServerSideProps() {
+  const games = await fetchAllGames();
+  return { props: { games } };
+}
+```
+
+Agora cada página é gerada sob demanda. Mais lento? Talvez. Mas sempre atualizado.
+
+#### Serverless Function Timeouts
+
+Next.js API routes em Vercel são serverless functions. Têm **limite de 10 segundos de execução** (no plano Pro).
+
+Uma das minhas rotas de API faz:
+
+1. Busca 500+ scores do banco
+2. Ordena e filtra
+3. Calcula ranking
+4. Retorna
+
+Isso leva **12 segundos**.
+
+Na primeira vez que testei em produção? **ERROR 504: TIMEOUT**.
+
+Tive que otimizar a query no banco, adicionar cache com Redis, e quebrar a lógica em chunks menores.
+
+#### Image Optimization com Next.js Image Component
+
+Vercel oferece otimização automática de imagens via `next/image`. Parecia bom até...
+
+javascript
+
+```
+<Image 
+  src={gameImage} 
+  alt={gameName}
+  width={300}
+  height={200}
+/>
+```
+
+Cada jogo tem uma imagem. 500 jogos = 500 imagens sendo otimizadas sob demanda. Vercel faz cache, mas:
+
+* Primeira requisição por uma imagem? Espera a otimização
+* Mudar o tamanho? Espera de novo
+* Exceder banda de imagens? Começa a cobrar extra
+
+Agora preciso pre-otimizar as imagens e fazer upload pra um CDN separado (Cloudinary).
+
+#### Variáveis de Ambiente na Vercel
+
+Vercel é chato com variáveis de ambiente:
+
+* Variáveis públicas (expostas no client): Devem começar com `NEXT_PUBLIC_`
+* Variáveis privadas: Só no servidor
+* Você precisa redeployar pra mudanças entrarem em efeito
+
+Errei uma vez e commitei uma API key pública. Vercel não me avisou. Descobri quando alguém estava usando meu quota.
+
+#### Build Failures Aleatórios
+
+Às vezes a build falha "do nada":
+
+```
+ERROR in ./pages/games/[id].js
+Module not found: Can't resolve '@/components/GameCard'
+```
+
+Mesma build que funcionou ontem. Hoje falhou. Por quê?
+
+* Cache da build estava corrompido
+* Dependência tinha versão flutuante
+* Um arquivo foi deletado acidentalmente
+
+Vercel oferece "Clear Build Cache" (você clica num botão pra limpar o cache e rebuilda tudo). Mais 18 minutos de espera.
+
+### Integração Entre Vercel e Railway (O Pior Parte)
+
+Frontend em Vercel, backend em Railway. Eles **não se conhecem por padrão**.
+
+#### CORS Again, and Again, and Again
+
+Vercel expõe seu site em `https://seu-site.vercel.app`. Railway expõe o backend em `https://seu-api.railway.app`.
+
+CORS headers configurados no Go:
+
+go
+
+```
+w.Header().Set("Access-Control-Allow-Origin", "https://seu-site.vercel.app")
+w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+```
+
+Tudo certo? Não. Porque:
+
+* Vercel gera domains automáticas para preview deployments (cada PR tem sua própria URL)
+* Não posso colocar todas as URLs no CORS (segurança)
+* Então qualquer pessoa faz git push, Vercel cria preview, preview não consegue acessar API
+
+Solução: wildcard CORS? Perigoso. Whitelist dinâmica? Complexo demais.
+
+Acabei usando um pattern:
+
+go
+
+```
+allowedOrigins := map[string]bool{
+  "https://seu-site.vercel.app": true,
+  "https://*.vercel.app": true, // Preview deployments
+}
+```
+
+#### Latência Entre Serviços
+
+Frontend pede dados do backend. Ambos em diferentes regiões:
+
+```
+Vercel (US-East) -> Railway Backend (qualquer lugar)
+Latência: 80-150ms só pra roundtrip
+```
+
+Peguei 20ms do lado local. Em produção? Os 80ms extras quebram a percepção de "instantâneo".
+
+Agora preciso:
+
+* Cachear mais agressivamente
+* Fazer requisições em paralelo
+* Otimizar cada query
+
+#### Secrets e Integração
+
+Preciso que o frontend saiba a URL do backend. Vai como variável de ambiente:
+
+```
+NEXT_PUBLIC_API_URL=https://seu-api.railway.app
+```
+
+Se o backend muda de URL (migração, redeploy para outro serviço), **todo o frontend quebra**.
+
+Nenhuma solução elegante pra isso. Só esperança de que a URL não mude.
+
+### Os Bugs Que Só Aparecem em Produção
+
+Aqui estão os "divertidos":
+
+#### 1. Diferença de Node.js Versions
+
+Vercel usa Node 18. Localmente uso Node 20.
+
+```
+// Funciona local (Node 20)
+const result = await someAsyncFunction();
+
+// Erro em produção (Node 18)
+Error: Unexpected token
+```
+
+Package.json não especificava versão. Vercel usou default. Agora especifico:
+
+json
+
+```
+{
+  "engines": {
+    "node": "20.x"
+  }
+}
+```
+
+#### 2. Timezone Issues
+
+Computador local: São Paulo (UTC-3). Servidores Vercel/Railway: UTC.
+
+Scores com timestamp diferente de quando o usuário achou que postou. Leaderboard estava "errada" pra usuários em diferentes timezones.
+
+Tive que forçar tudo pra UTC e converter no client:
+
+javascript
+
+```
+// Backend sempre retorna UTC
+const timestamp = new Date().toISOString();
+
+// Frontend converte pro timezone do usuário
+const localTime = new Date(timestamp).toLocaleString();
+```
+
+#### 3. Database Migrations em Produção
+
+Vercel/Railway não correm migrations automaticamente. Precisava de um hook pra rodar antes de cada deploy.
+
+Esqueci uma vez. Código esperava uma coluna que não existia. Boom.
+
+Agora uso migrations automáticas no startup do backend:
+
+go
+
+```
+func init() {
+  runMigrations()
+}
+```
+
+Arriscado? Sim. Mas funciona.
+
+### Custos: A Realidade Dolorosa
+
+Preços não eram o que esperava:
+
+**Vercel**:
+
+* Pro (necessário): $20/mês
+* Pra ficar com instância sempre ativa? Compute > $40-100/mês
+
+**Railway**:
+
+* Plano pago: $5-50/mês dependendo uso
+* Meu backend + banco? \~$30/mês
+
+**Cloudinary** (pra imagens):
+
+* Gratuito até 100GB (achei que seria suficiente)
+* Uso real: 50GB/mês. Upgrade: $40/mês
+
+**Total**: \~$100/mês pra rodar isso. Parecia barato até virar realidade.
+
+### O Checklist Final Que Me Salvou
+
+Antes de cada deploy:
+
+```
+□ Rodar testes localmente
+□ Verificar variáveis de ambiente
+□ Checar CORS headers
+□ Rodar migrations no banco
+□ Testar em staging (branch de teste)
+□ Verificar logs de erro
+□ Testar em múltiplos browsers
+□ Fazer deploy
+□ Monitorar os primeiros 30 minutos
+□ Ter um plano de rollback
+```
+
+Pular qualquer um desses = stress desnecessário.
+
+### Lições Aprendidas (da forma difícil)
+
+1. **Staging é essencial**: Não deploy direto em prod. Teste tudo primeiro.
+2. **Cold starts são reais**: Se não puder pagar pra evitar, arquitete para lidar com eles.
+3. **Banco serverless pode não escalar**: Neon foi ótimo até não ser. PostgreSQL normal no Railway? Chato mas funciona.
+4. **Build times importam**: 18 minutos cada mudança é killer. Otimize o projeto.
+5. **Timeouts de serverless são um problema**: 10 segundos é pouco pra lógica complexa.
+6. **Monitoring é crítico**: Logs locais não revelam problemas de produção.
+7. **Documentar tudo**: Que variável vai aonde, qual setup no banco, tudo.
+8. **Ter fallback pra tudo**: Se o backend cair? Frontend mostra cache. Se CDN falhar? Serve local.
+
+### Status Atual
+
+**Vercel + Next.js**: Estável, mas preciso otimizar mais pra reduzir build time
+
+**Railway + Go + PostgreSQL**: Sólido. Cold starts ainda são um problema ocasional, mas funciona
+
+**Integração**: Tá funcionando. CORS resolvido, latência aceitável, dados sincronizados
+
+Pronto pra lançamento? Quase. Alguns ajustes finais, mais monitoramento, e tá feito.
+
+### Conclusão
+
+Deploy é onde a teoria encontra a realidade. Vercel e Railway são bons, mas não são mágica. Cada um tem trade-offs:
+
+* Vercel é ótimo pra frontend, mas serverless tem limites
+* Railway é flexível, mas você gerencia mais infraestrutura
+* Integrar os dois requer atenção aos detalhes
+
+Se fosse fazer tudo de novo? Provavelmente a mesma escolha. Mas com muito mais conhecimento do que eu sabia 3 semanas atrás.
+
+Agora a gente fala do que acontece quando você **realmente** coloca isso pro mundo.
+
+---
+
+*Fez deploy em Vercel + Railway também? Quer saber como você tá sofrendo junto comigo? Comente aí.*

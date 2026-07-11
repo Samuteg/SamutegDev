@@ -1,6 +1,7 @@
 // @ts-check
 
 import mdx from "@astrojs/mdx";
+import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
 import keystatic from "@keystatic/astro";
@@ -13,7 +14,7 @@ export default defineConfig({
   build: {
     // sourcemap is not a valid option here in newer Astro versions
   },
-  integrations: [mdx(), sitemap(), ...(dev ? [keystatic()] : [])],
+  integrations: [react(), mdx(), sitemap(), ...(dev ? [keystatic()] : [])],
   // Fonts are loaded via @import in global.css (Inter + JetBrains Mono from Google Fonts)
   // No local font configuration needed
 });
