@@ -1,0 +1,26 @@
+# ── Dependencies ──
+node_modules/
+
+# ── Build output (rebuilt inside Docker) ──
+dist/
+.astro/
+
+# ── IDE / OS ──
+.vscode/
+.idea/
+.DS_Store
+
+# ── Git ──
+.git/
+.gitignore
+
+# ── Docker (avoid recursive copy) ──
+Dockerfile
+.dockerignore
+
+# ── Environment ──
+.env
+.env.*
+
+# ── Docs / misc ──
+README.md

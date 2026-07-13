@@ -109,7 +109,7 @@ import { SITE_TITLE } from "../consts";
                 text-decoration: none;
                 font-size: 0.9rem;
                 font-weight: 500;
-                transition: all var(--transition-fast);
+                transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
             }
 
             .social-links a:hover {
@@ -208,14 +208,16 @@ import { SITE_TITLE } from "../consts";
                     </div>
                 </div>
 
-                <div class="about-image fade-in-up delay-1">
-                    <Image
-                        width={800}
-                        height={1000}
-                        src={AboutHeroImage}
-                        alt="Foto de perfil"
-                    />
-                </div>
+                				<div class="about-image fade-in-up delay-1">
+                					<Image
+                						width={800}
+                						height={1000}
+                						src={AboutHeroImage}
+                						alt="Foto de perfil"
+                						loading="lazy"
+                						decoding="async"
+                					/>
+                				</div>
             </div>
         </main>
         <Footer />

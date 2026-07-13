@@ -2,22 +2,22 @@
 /**
  * NoiseBackground: A subtle SVG noise texture overlay to give
  * the application a premium, physical feel.
+ * Applied via CSS pseudo-element to avoid expensive z-index compositing.
  */
 ---
-
-<div class="noise-overlay" aria-hidden="true"></div>
 
 <style>
 	.noise-overlay {
 		position: fixed;
 		inset: 0;
-		z-index: 9999;
+		z-index: 1;
 		pointer-events: none;
 		background-image:
 			radial-gradient(circle at 30% 20%, rgba(0,0,0,0.04) 0%, transparent 25%),
 			radial-gradient(circle at 70% 80%, rgba(0,0,0,0.02) 0%, transparent 30%);
 		opacity: 0.05;
 		mix-blend-mode: overlay;
+		will-change: opacity;
 	}
 
 	:global(html[data-theme='dark']) .noise-overlay {

@@ -51,12 +51,17 @@ import { SOCIAL_LINKS } from "../consts";
         position: sticky;
         top: 0;
         z-index: 50;
-        background: var(--bg-subtle);
+        background: var(--header-bg);
         border-bottom: 1px solid var(--header-border);
         transition:
             background var(--transition-fast),
             border-color var(--transition-fast);
-        backdrop-filter: blur(8px);
+    }
+
+    @supports (backdrop-filter: blur(1px)) {
+        header {
+            backdrop-filter: blur(8px);
+        }
     }
 
     nav {
@@ -87,7 +92,7 @@ import { SOCIAL_LINKS } from "../consts";
         justify-content: center;
         padding: 0.5rem;
         border-radius: var(--border-radius-sm);
-        transition: all var(--transition-fast);
+        transition: color var(--transition-fast), background var(--transition-fast);
         background: transparent;
     }
 
@@ -116,7 +121,7 @@ import { SOCIAL_LINKS } from "../consts";
         width: 16px;
         height: 1.5px;
         background: var(--text-color);
-        transition: all var(--transition-fast);
+        transition: transform var(--transition-fast);
         transform-origin: center;
     }
 

@@ -3,7 +3,23 @@
   Focus: teal accent, Inter/JetBrains Mono fonts, glassmorphism, micro-interactions
 */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+/* ── Local Fonts (variable woff2, font-display: swap) ── */
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("../assets/fonts/inter/inter-latin.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 100 800;
+    font-display: swap;
+    src: url("../assets/fonts/jetbrains-mono/jetbrains-mono-latin.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 :root {
     /* ── Fonts ── */
@@ -95,7 +111,6 @@ html[data-theme="dark"] {
 }
 
 html {
-    scroll-behavior: smooth;
     scrollbar-color: var(--card-border) transparent;
     scrollbar-width: thin;
 }
@@ -108,7 +123,6 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     font-size: 16px;
-    overflow-x: hidden;
     transition:
         background-color var(--transition-normal),
         color var(--transition-normal);
@@ -125,6 +139,7 @@ main {
     margin: 0 auto;
     padding: 3rem 1.5rem;
     min-height: calc(100vh - 65px - 150px);
+    overflow-x: hidden;
 }
 
 /* ───────── Typography ───────── */
@@ -184,7 +199,7 @@ a:hover {
     font-weight: 500;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast);
     gap: 0.5rem;
     border: 1px solid transparent;
 }
@@ -218,7 +233,7 @@ a:hover {
     border: 1px solid var(--card-border);
     border-radius: var(--border-radius-md);
     padding: 1.5rem;
-    transition: all var(--transition-fast);
+    transition: border-color var(--transition-fast), background-color var(--transition-fast);
     position: relative;
 }
 
@@ -318,3 +333,30 @@ hr {
 }
 
 /* ───────── Fade-in Animations ───────── */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    opacity: 0;
+    animation: fadeInUp 0.6s cubic-bezier(0, 0, 0.2, 1) forwards;
+    will-change: opacity, transform;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+
+/* ───────── Smooth anchor scrolling ───────── */
+a[href^="#"] {
+    scroll-behavior: smooth;
+}
