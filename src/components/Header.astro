@@ -171,25 +171,4 @@ import { SOCIAL_LINKS } from "../consts";
     }
 </style>
 
-<script>
-    const setupHamburger = () => {
-        const btn = document.getElementById("hamburger-btn");
-        const links = document.getElementById("nav-links");
-        if (!btn || !links) return;
-        const toggle = () => {
-            const expanded = btn.getAttribute("aria-expanded") === "true";
-            btn.setAttribute("aria-expanded", String(!expanded));
-            links.classList.toggle("open");
-        };
-        btn.removeEventListener("click", toggle);
-        btn.addEventListener("click", toggle);
-        links.querySelectorAll("a").forEach((a) => {
-            a.addEventListener("click", () => {
-                btn.setAttribute("aria-expanded", "false");
-                links.classList.remove("open");
-            });
-        });
-    };
-    setupHamburger();
-    document.addEventListener("astro:after-swap", setupHamburger);
-</script>
+<script src="/scripts/header.js"></script>

@@ -5,7 +5,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' https://vercel.live 'sha256-+aBAXgorbovto96V8cRccsiqtyMpN7QR7oWtqiQRuTQ=' 'sha256-HfmA2wZt3eXoGBB1jNmTcdHp6tBkg4xHvcagGqxNRag=' 'sha256-yS0RRcab29duWHz8XlnliEJg29oVvGyEcxOSrA89OLU=' 'sha256-5Ig6YxqIEvklXD8+R67sGUq2eGEVBiB06/Kl3mVliJg=' 'sha256-ZswfTY7H35rbv8WC7NXBoiC7WNu86vSzCDChNWwZZDM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://vercel.live wss://ws-us3.pusher.com; frame-src https://vercel.live; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' https://vercel.live; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://vercel.live wss://ws-us3.pusher.com; frame-src https://vercel.live; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
         },
         {
           "key": "X-Frame-Options",

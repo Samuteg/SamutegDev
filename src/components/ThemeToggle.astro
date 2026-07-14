@@ -52,29 +52,4 @@
 	}
 </style>
 
-<script>
-	const setupThemeToggle = () => {
-		const handleToggleClick = () => {
-			const element = document.documentElement;
-			const isDark = element.getAttribute('data-theme') === 'dark';
-			const newTheme = isDark ? 'light' : 'dark';
-			
-			element.setAttribute('data-theme', newTheme);
-			localStorage.setItem('theme', newTheme);
-		};
-
-		const themeToggleBtn = document.getElementById('theme-toggle');
-		if (themeToggleBtn) {
-			themeToggleBtn.removeEventListener('click', handleToggleClick);
-			themeToggleBtn.addEventListener('click', handleToggleClick);
-		}
-	};
-
-	setupThemeToggle();
-
-	document.addEventListener('astro:after-swap', () => {
-		const isDark = localStorage.getItem('theme') === 'dark';
-		document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-		setupThemeToggle();
-	});
-</script>
+<script src="/scripts/theme-toggle.js"></script>
