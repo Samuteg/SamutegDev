@@ -1,0 +1,54 @@
+---
+title: Docker nos meus projetos atuais
+description: Comecei a usar Docker em praticamente todos os meus projetos atuais.
+pubDate: 2026-07-13
+heroImage: ../../assets/docker-nos-meus-projetos-atuais/heroImage.jpg
+---
+Nos últimos meses, comecei a usar Docker em praticamente todos os meus projetos atuais. O que antes era uma parte “extra” do fluxo de desenvolvimento virou uma base importante para deixar tudo mais organizado, previsível e fácil de subir em qualquer ambiente.
+
+A ideia de empacotar aplicação, dependências e configuração em um único lugar mudou bastante a forma como eu organizo meus estudos e projetos pessoais. Agora, em vez de depender da minha máquina estar configurada de um jeito específico, eu consigo rodar tudo de forma padronizada com poucos comandos.
+
+## Por que comecei a usar Docker
+
+Uma das maiores vantagens que percebi foi a consistência. Muitas vezes um projeto funciona na minha máquina, mas quebra em outra por causa de versão de banco, runtime, variável de ambiente ou diferença de sistema. Com Docker, isso diminui bastante porque o ambiente fica muito mais controlado.
+
+Outro ponto importante é a praticidade. Em projetos com banco de dados, API, frontend e outros serviços, o `docker-compose` ajuda muito a levantar tudo de forma rápida. Isso economiza tempo e evita aquele processo chato de instalar e configurar cada dependência manualmente.
+
+## Como estou aplicando nos projetos
+
+Hoje eu tento pensar em Docker desde o início do projeto. Se for uma API em Java, um backend em Node, um banco PostgreSQL ou até um projeto experimental, eu já considero criar a imagem e o arquivo de composição logo no começo.
+
+Na prática, isso me ajuda a:
+
+* Padronizar o ambiente de desenvolvimento.
+* Facilitar testes locais.
+* Deixar o projeto mais fácil de compartilhar.
+* Reduzir problemas de dependência entre máquinas diferentes.
+* Preparar melhor a aplicação para deploy.
+
+Para mim, isso também virou um treino importante de organização. Ao montar o Dockerfile e o `docker-compose.yml`, eu penso melhor em separação de serviços, portas, volumes, variáveis de ambiente e estrutura do projeto.
+
+## O que eu aprendi usando Docker
+
+O maior aprendizado foi entender que Docker não é só uma ferramenta para “rodar container”. Ele muda a forma como a aplicação é pensada. Em vez de tratar o projeto como algo preso à minha máquina, eu começo a enxergá-lo como algo portável e reproduzível.
+
+Também aprendi que nem sempre é preciso complicar. Em muitos casos, um Dockerfile bem feito e um compose simples já resolvem quase tudo. O importante é ter clareza sobre o que precisa ser isolado e o que pode continuar fora do container durante o desenvolvimento.
+
+## O meu fluxo atual
+
+Hoje meu fluxo costuma ser mais ou menos assim:
+
+1. Crio a aplicação.
+2. Defino as dependências principais.
+3. Escrevo o Dockerfile.
+4. Configuro o `docker-compose` se houver mais de um serviço.
+5. Testo a aplicação dentro do container.
+6. Ajusto volumes, portas e variáveis até ficar confortável para desenvolvimento.
+
+Esse processo me ajuda a enxergar problemas mais cedo e evita retrabalho depois. Além disso, quando preciso revisar um projeto antigo, fica muito mais fácil lembrar como subir tudo novamente.
+
+## Conclusão
+
+Docker entrou de vez na minha rotina de desenvolvimento. Em vez de ser uma tecnologia que eu “quero aprender mais tarde”, ele já faz parte dos meus projetos atuais e da forma como eu construo software.
+
+Para mim, usar Docker não é só uma questão de organização técnica. É também uma forma de aprender boas práticas, ganhar independência do ambiente local e deixar meus projetos mais profissionais desde o começo.
