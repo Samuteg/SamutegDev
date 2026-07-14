@@ -32,7 +32,7 @@ const { title, description, image = FallbackImage } = Astro.props;
 <meta name="generator" content={Astro.generator} />
 
 <!-- Theme Load Script (External, synchronous to avoid flicker) -->
-	<script src="/scripts/theme.js"></script>
+	<script is:inline src="/scripts/theme.js"></script>
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
