@@ -1,0 +1,46 @@
+---
+title: Da migração do Arch Linux para o Void Linux
+description: |
+  a migração trouxe alguns desafios.
+pubDate: 2026-07-17
+heroImage: ../../assets/da-migracao-do-arch-linux-para-o-void-linux/heroImage.jpg
+---
+A mudança foi motivada principalmente pela curiosidade de testar um sistema mais enxuto, diferente na estrutura e no gerenciamento de serviços, mas ainda muito interessante para quem gosta de controlar cada detalhe do ambiente.
+
+No começo, a migração trouxe alguns desafios. Tive problemas com `rfkill`, além de dificuldades para fazer a interface gráfica funcionar corretamente. Foi uma fase de ajustes, testes e bastante aprendizado, mas no fim consegui resolver tudo e deixar o sistema do jeito que eu queria.
+
+## O que me motivou
+
+Uma das coisas que mais me atraiu no Void foi a proposta do sistema. Ele tem uma filosofia mais simples e direta, sem depender do systemd, o que muda bastante a forma de administrar serviços e inicialização. Para quem gosta de entender o funcionamento interno do sistema, isso é muito interessante.
+
+Além disso, eu queria um ambiente mais alinhado com a forma como eu uso o computador no dia a dia: leve, rápido e configurável. O Void acabou combinando bem com essa ideia, principalmente depois que consegui deixar tudo funcionando de forma estável.
+
+## Os problemas no início
+
+A migração não foi totalmente tranquila. Um dos primeiros obstáculos foi o `rfkill`, que acabou bloqueando a interface sem fio em alguns momentos. Esse tipo de problema pode ser chato porque parece algo simples, mas atrapalha bastante quando você está tentando deixar o sistema funcionando.
+
+Também tive dificuldades com a interface gráfica. No começo, o ambiente não subia da forma esperada, então precisei revisar serviços, dependências e configuração da sessão. Foi nessa parte que percebi como, no Void, entender a base do sistema faz muita diferença.
+
+## Como resolvi
+
+Depois de testar e ajustar várias coisas, consegui resolver os problemas. No caso do `rfkill`, foi preciso verificar o bloqueio da interface e garantir que o sistema estivesse iniciando corretamente os componentes relacionados à rede.
+
+Na parte gráfica, fui ajustando o ambiente até conseguir uma configuração estável. Hoje estou usando **LXQt**, que me pareceu uma ótima escolha para o Void. Ele é leve, prático e combina bem com a proposta de um sistema mais direto e sem excesso de componentes.
+
+## O que mudou com o LXQt
+
+Com o LXQt, minha experiência ficou bem mais fluida. O ambiente é simples, rápido e não pesa no sistema. Para um setup em que eu quero produtividade e controle, isso faz bastante sentido.
+
+Também gostei da facilidade de personalização. Como eu gosto de ajustar o sistema ao meu gosto, o LXQt me deu liberdade suficiente sem complicar demais a configuração. No fim, consegui um ambiente estável e funcional, que atende bem ao meu uso atual.
+
+## O que aprendi com a migração
+
+Essa mudança me ensinou bastante sobre paciência, diagnóstico e adaptação. Migrar de uma distribuição para outra não é só instalar o sistema e seguir em frente — muitas vezes é preciso entender como os serviços funcionam, como a rede sobe e como a sessão gráfica é iniciada.
+
+Também reforçou para mim a importância de conhecer bem o próprio ambiente Linux. Quanto mais você entende o sistema, mais fácil fica resolver problemas e construir uma configuração realmente confortável para o seu uso.
+
+## Conclusão
+
+No fim, a migração do Arch Linux para o Void Linux valeu a pena. Passei por alguns problemas no começo, especialmente com `rfkill` e a interface gráfica, mas tudo foi resolvido e hoje estou usando o LXQt com uma configuração que me atende bem.
+
+Foi uma experiência que misturou desafio e aprendizado, e justamente por isso ficou ainda mais interessante. O Void me mostrou um jeito diferente de usar Linux, mais simples em alguns aspectos, mas também mais exigente em outros — e isso faz parte da graça.
