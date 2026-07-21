@@ -1,0 +1,99 @@
+---
+title: 'Atualizações da minha plataforma de jogos: layout, analytics e acessibilidade'
+description: >-
+  Nos últimos dias fiz uma série de atualizações importantes na minha plataforma
+  de jogos
+pubDate: 2026-07-21
+heroImage: >-
+  ../../assets/atualizacoes-da-minha-plataforma-de-jogos-layout-analytics-e-acessibilidade/heroImage.jpeg
+---
+O foco foi corrigir problemas de layout, substituir dados mockados por dados reais do backend, melhorar bastante a acessibilidade e iniciar a migração das categorias do JSON local para o backend em Go com PostgreSQL.
+
+## Correções no admin e no layout
+
+Uma parte grande do trabalho foi focada no painel administrativo. O layout estava quebrado em alguns pontos, com Header e Footer sobrepondo o conteúdo do admin. Isso foi resolvido ajustando o `ConditionalLayout` para não renderizar Header/Footer dentro das rotas administrativas.
+
+Outro problema era o uso incorreto de `unwrapAndTransform` no `getReviews()`, que foi trocado por `extractList`, deixando o tratamento de dados mais consistente. Também corrigi a estrutura do admin layout, trocando um `<main>` aninhado por `<div>`, o que evita problemas de semântica e acessibilidade.
+
+No dashboard, os cards e gráficos estavam mostrando dados fictícios. O sparkline de “Jogadas” usava `Math.random()`, o card de “Jogadores” exibía apenas “—” e o gráfico de “Jogadas por Dia” mostrava uploads em vez de plays reais. Tudo isso foi ajustado para consumir dados reais vindos do backend.
+
+## Analytics: novos endpoints e dados reais
+
+Para dar suporte a esses painéis, adicionei três novos endpoints de analytics no `api.ts`:
+
+* `platform`
+* `games`
+* `last-played`
+
+Esses endpoints alimentam os gráficos e indicadores do admin, substituindo definitivamente os dados mockados que eu usava antes. Agora o dashboard reflete o que realmente está acontecendo na plataforma.
+
+## Acessibilidade: modais, sidebar, DataTable e mais
+
+Uma parte importante dessa atualização foi focada em acessibilidade (a11y). Diversos componentes foram revisados:
+
+* **Modais** agora têm:
+  * `role="dialog"`
+  * `aria-modal="true"`
+  * `aria-labelledby`
+  * fechamento com a tecla Escape
+* **Sidebar** ganhou:
+  * `aria-expanded`
+  * `aria-controls`
+  * `aria-current="page"` no item ativo
+* **Botões de ícone** passaram a usar `aria-label` para descrever sua ação, e botões com emojis receberam `aria-pressed` para indicar estado.
+* **DataTable** foi ajustado para usar:
+  * `aria-sort` nas colunas ordenáveis
+  * `aria-label` no campo de busca e na paginação
+* **Banner de erro** agora usa `role="alert"`, melhorando a experiência de quem usa leitores de tela.
+
+Essas mudanças tornam a plataforma mais inclusiva e preparada para diferentes formas de navegação.
+
+## Limpeza de código e remoção de coisas mortas
+
+Além das correções e melhorias, fiz uma limpeza no código:
+
+* Removi as funções duplicadas `slugify` e `formatSize`, que agora são importadas de `utils.ts`.
+* Deletei o hook `useAdminAccess`, que estava morto e não era mais usado em nenhum lugar.
+
+Isso deixa o código mais limpo, evita duplicação e facilita a manutenção.
+
+## 12 páginas de footer e estrutura de conteúdo
+
+Em paralelo, implementei 12 páginas de footer (excluindo api, sdk e status), usando componentes compartilhados como `PageHero`, `ContentSection` e `ContactForm`. As páginas criadas foram:
+
+* **Company**:
+  * `/about`
+  * `/careers`
+  * `/press`
+  * `/blog`
+  * `/contact`
+* **Support**:
+  * `/help`
+  * `/terms`
+  * `/privacy`
+  * `/cookies`
+  * `/guidelines`
+* **Developers**:
+  * `/docs`
+  * `/submit`
+
+O blog agora suporta posts em markdown, usando `gray-matter` + `react-markdown`. A página de contato usa Formspree com validação via zod. Todas essas páginas seguem o tema “cyber”, com animações via `framer-motion` e metadados de SEO configurados.
+
+Também ajustei as mensagens de resposta para que sejam sempre formatadas corretamente, evitando textos quebrados ou sem formatação.
+
+## Migração das categorias para backend Go + PostgreSQL
+
+Outra mudança importante foi a migração das categorias do JSON local para o backend em Go com PostgreSQL:
+
+* Criei a **migration 026**, adicionando a coluna `color` na tabela `categories`.
+* Atualizei o **backend Go**:
+  * model, handler e repo agora possuem o campo `color`.
+* No **frontend**, atualizei `api.ts` para fazer o CRUD de categorias via backend Go:
+  * `getAdminCategories`
+  * `createAdminCategory`
+  * `updateAdminCategory`
+  * `deleteAdminCategory`
+* O componente `CategoriesClient` foi migrado para usar `api.ts` em vez de `fetch("/api/categories")`.
+* Removi a API route local `/api/categories` e o arquivo `category-storage.ts`, que não são mais necessários.
+
+Isso centraliza a gestão de categorias no backend, deixa os dados persistentes e abre caminho para mais integrações e melhorias.
