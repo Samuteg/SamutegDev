@@ -60,7 +60,8 @@ import { SOCIAL_LINKS } from "../consts";
 
     @supports (backdrop-filter: blur(1px)) {
         header {
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(var(--header-blur));
+            -webkit-backdrop-filter: blur(var(--header-blur));
         }
     }
 
@@ -150,7 +151,9 @@ import { SOCIAL_LINKS } from "../consts";
             top: 65px;
             left: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--header-blur));
+            -webkit-backdrop-filter: blur(var(--header-blur));
             flex-direction: column;
             padding: 1rem 1.5rem;
             border-bottom: 1px solid var(--header-border);

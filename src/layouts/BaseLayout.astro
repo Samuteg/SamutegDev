@@ -1,0 +1,38 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import NoiseBackground from "../components/NoiseBackground.astro";
+import ScrollProgress from "../components/ScrollProgress.astro";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+    title: string;
+    description: string;
+    image?: ImageMetadata;
+    /** Hide the scroll progress bar (e.g. on short pages). */
+    hideScrollProgress?: boolean;
+    /** Path to a CSS file to import in <head>. */
+    stylesheet?: string;
+}
+
+const { title, description, image, hideScrollProgress = false, stylesheet } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+    <head>
+        <BaseHead title={title} description={description} image={image} />
+        {stylesheet && <link rel="stylesheet" href={stylesheet} />}
+        <slot name="head" />
+    </head>
+    <body>
+        <Header />
+        <NoiseBackground />
+        {!hideScrollProgress && <ScrollProgress />}
+        <main>
+            <slot />
+        </main>
+        <Footer />
+    </body>
+</html>

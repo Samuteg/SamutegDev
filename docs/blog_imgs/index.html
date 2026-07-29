@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Home | Aether Personal Blog</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(19, 19, 24, 0.6);
+        }
+        body {
+            background-color: #0a0a0f;
+            color: #e4e1e9;
+            scroll-behavior: smooth;
+        }
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 20px rgba(206, 189, 255, 0.05);
+            border-color: rgba(206, 189, 255, 0.2);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::selection {
+            background: #cebdff;
+            color: #381385;
+        }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e0e0ff",
+                        "surface-tint": "#cebdff",
+                        "tertiary-container": "#f170b4",
+                        "tertiary-fixed-dim": "#ffafd3",
+                        "surface-variant": "#35343a",
+                        "on-surface-variant": "#cac4d4",
+                        "surface-dim": "#131318",
+                        "surface-container-lowest": "#0e0e13",
+                        "on-surface": "#e4e1e9",
+                        "on-background": "#e4e1e9",
+                        "surface": "#131318",
+                        "tertiary-fixed": "#ffd8e7",
+                        "outline": "#948e9d",
+                        "surface-container-high": "#2a292f",
+                        "surface-container-low": "#1b1b20",
+                        "on-tertiary-fixed-variant": "#85145a",
+                        "on-secondary-fixed": "#000767",
+                        "primary": "#cebdff",
+                        "on-primary-fixed-variant": "#4f319c",
+                        "on-secondary-fixed-variant": "#2f3aa3",
+                        "error": "#ffb4ab",
+                        "surface-container": "#1f1f25",
+                        "outline-variant": "#494552",
+                        "surface-bright": "#39383e",
+                        "secondary-fixed-dim": "#bdc2ff",
+                        "on-primary": "#381385",
+                        "on-secondary-container": "#a8afff",
+                        "error-container": "#93000a",
+                        "on-secondary": "#131e8c",
+                        "inverse-surface": "#e4e1e9",
+                        "tertiary": "#ffafd3",
+                        "on-tertiary-container": "#6a0045",
+                        "on-primary-container": "#3c1989",
+                        "on-error-container": "#ffdad6",
+                        "inverse-on-surface": "#303036",
+                        "inverse-primary": "#674bb5",
+                        "on-primary-fixed": "#21005e",
+                        "on-tertiary": "#620040",
+                        "on-tertiary-fixed": "#3d0026",
+                        "primary-fixed-dim": "#cebdff",
+                        "primary-container": "#a78bfa",
+                        "background": "#131318",
+                        "on-error": "#690005",
+                        "primary-fixed": "#e8ddff",
+                        "secondary": "#bdc2ff",
+                        "surface-container-highest": "#35343a",
+                        "secondary-container": "#2f3aa3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "8rem",
+                        "margin-desktop": "2.5rem",
+                        "stack-gap": "1.5rem",
+                        "gutter": "2rem",
+                        "margin-mobile": "1rem",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Manrope"],
+                        "label-caps": ["JetBrains Mono"],
+                        "display-lg": ["Manrope"],
+                        "headline-sm": ["Manrope"],
+                        "display-lg-mobile": ["Manrope"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.7", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "800"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+    <!-- Top Navigation Bar -->
+    <header class="fixed top-0 w-full bg-surface/50 dark:bg-surface/50 backdrop-blur-xl border-b border-white/5 z-50">
+        <nav class="flex justify-between items-center h-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+            <div class="font-headline-sm text-headline-sm font-bold text-on-surface">Aether</div>
+            <div class="hidden md:flex items-center space-x-8 font-body-md text-body-md">
+                <a class="text-primary font-bold border-b-2 border-primary pb-1 active:scale-95 transition-transform" href="#">Home</a>
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors active:scale-95 transition-transform" href="#">Posts</a>
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors active:scale-95 transition-transform" href="#">About</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:block relative">
+                    <input class="bg-transparent border border-outline-variant rounded-full py-1.5 px-4 text-sm focus:ring-1 focus:ring-primary focus:border-primary font-label-caps" placeholder="Search..." type="text"/>
+                </div>
+                <button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-caps hover:bg-primary-container transition-all duration-300 active:scale-95">Subscribe</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="pt-32 pb-section-gap max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <!-- Hero Section -->
+        <section class="mb-section-gap">
+            <div class="text-center mb-16">
+                <p class="font-label-caps text-label-caps text-primary mb-4">WELCOME TO AETHER</p>
+                <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-8">
+                    Exploring the <span class="text-primary">digital frontier</span> through code and creativity.
+                </h1>
+                <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                    A personal blog about technology, design, and the quiet moments of the digital age. Dive into essays that explore the intersection of emerging tech and human experience.
+                </p>
+            </div>
+        </section>
+
+        <!-- Featured Post -->
+        <section class="mb-section-gap">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="font-headline-md text-headline-md">Featured</h2>
+                <div class="w-16 h-1 bg-primary rounded-full"></div>
+            </div>
+            <a href="#" class="block glass-card rounded-3xl overflow-hidden glow-hover transition-all duration-500 group">
+                <div class="grid grid-cols-1 lg:grid-cols-2">
+                    <div class="aspect-video lg:aspect-auto">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop" alt="Featured post image"/>
+                    </div>
+                    <div class="p-8 md:p-12 flex flex-col justify-center">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="font-label-caps text-label-caps text-primary">TECHNOLOGY</span>
+                            <span class="font-label-caps text-label-caps text-on-surface-variant">•</span>
+                            <span class="font-label-caps text-label-caps text-on-surface-variant">12 min read</span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md mb-4 group-hover:text-primary transition-colors">The Architecture of Silence: Building for the Post-Social Web</h3>
+                        <p class="font-body-md text-on-surface-variant mb-6 line-clamp-3">
+                            In an era of endless notifications and algorithmic feeds, there's a growing movement toward digital spaces that prioritize depth over engagement. This essay explores the principles behind building tools that respect human attention.
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary text-xl">person</span>
+                            </div>
+                            <div>
+                                <p class="font-label-caps text-on-surface">Alex Chen</p>
+                                <p class="font-label-caps text-on-surface-variant text-xs">Jan 15, 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </section>
+
+        <!-- Recent Posts Grid -->
+        <section class="mb-section-gap">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="font-headline-md text-headline-md">Recent Posts</h2>
+                <a href="#" class="font-label-caps text-label-caps text-primary hover:text-primary-container transition-colors">VIEW ALL →</a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Post Card 1 -->
+                <a href="#" class="glass-card rounded-3xl overflow-hidden glow-hover transition-all duration-500 group">
+                    <div class="aspect-video overflow-hidden">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&h=400&fit=crop" alt="Post image"/>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="font-label-caps text-label-caps text-tertiary">DESIGN</span>
+                            <span class="font-label-caps text-label-caps text-on-surface-variant">8 min read</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm mb-3 group-hover:text-primary transition-colors line-clamp-2">Minimalism as Methodology: Beyond Aesthetic Reduction</h3>
+                        <p class="font-body-md text-on-surface-variant text-sm line-clamp-2">
+                            True minimalism isn't about removing elements—it's about distilling purpose. A deep dive into functional minimalism in interface design.
+                        </p>
+                    </div>
+                </a>
+
+                <!-- Post Card 2 -->
+                <a href="#" class="glass-card rounded-3xl overflow-hidden glow-hover transition-all duration-500 group">
+                    <div class="aspect-video overflow-hidden">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&h=400&fit=crop" alt="Post image"/>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="font-label-caps text-label-caps text-secondary">CODE</span>
+                            <span class="font-label-caps text-label-caps text-on-surface-variant">15 min read</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm mb-3 group-hover:text-primary transition-colors line-clamp-2">Creative Coding: Generative Art with TypeScript</h3>
+                        <p class="font-body-md text-on-surface-variant text-sm line-clamp-2">
+                            Exploring the intersection of algorithmic beauty and programmatic expression through creative coding experiments.
+                        </p>
+                    </div>
+                </a>
+
+                <!-- Post Card 3 -->
+                <a href="#" class="glass-card rounded-3xl overflow-hidden glow-hover transition-all duration-500 group">
+                    <div class="aspect-video overflow-hidden">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop" alt="Post image"/>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="font-label-caps text-label-caps text-primary">ESSAY</span>
+                            <span class="font-label-caps text-label-caps text-on-surface-variant">10 min read</span>
+                        </div>
+                        <h3 class="font-headline-sm text-headline-sm mb-3 group-hover:text-primary transition-colors line-clamp-2">Digital Zen: Finding Calm in Algorithmic Chaos</h3>
+                        <p class="font-body-md text-on-surface-variant text-sm line-clamp-2">
+                            How mindful technology design can help us reclaim our attention and find peace in an always-connected world.
+                        </p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="mb-section-gap">
+            <div class="glass-card rounded-3xl p-8 md:p-12 text-center glow-hover">
+                <span class="material-symbols-outlined text-primary text-5xl mb-6">mail</span>
+                <h2 class="font-headline-md text-headline-md mb-4">Stay in the loop</h2>
+                <p class="font-body-lg text-on-surface-variant max-w-xl mx-auto mb-8">
+                    Get notified when I publish new essays and explorations. No spam, unsubscribe anytime.
+                </p>
+                <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onsubmit="event.preventDefault()">
+                    <input class="flex-1 bg-surface border border-outline-variant rounded-xl py-3 px-4 font-label-caps focus:ring-1 focus:ring-primary focus:border-primary" placeholder="your@email.com" type="email"/>
+                    <button class="bg-primary text-on-primary px-8 py-3 rounded-xl font-label-caps hover:bg-primary-container transition-all active:scale-95">SUBSCRIBE</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-surface dark:bg-surface border-t border-white/5 w-full py-section-gap">
+        <div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto space-y-8 md:space-y-0">
+            <div class="flex flex-col items-center md:items-start gap-4">
+                <div class="font-headline-sm text-headline-sm text-on-surface">Aether</div>
+                <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80">© 2024 Aether Personal Blog. Built for the modern web.</p>
+            </div>
+            <div class="flex gap-8 font-label-caps text-label-caps">
+                <a class="text-on-surface-variant hover:text-tertiary transition-colors opacity-80 hover:opacity-100" href="#">RSS Feed</a>
+                <a class="text-on-surface-variant hover:text-tertiary transition-colors opacity-80 hover:opacity-100" href="#">Newsletter</a>
+                <a class="text-on-surface-variant hover:text-tertiary transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+            </div>
+            <div class="flex gap-4">
+                <a class="w-10 h-10 glass-card rounded-full flex items-center justify-center hover:text-primary transition-all" href="#">
+                    <span class="material-symbols-outlined text-[20px]">share</span>
+                </a>
+                <a class="w-10 h-10 glass-card rounded-full flex items-center justify-center hover:text-primary transition-all" href="#">
+                    <span class="material-symbols-outlined text-[20px]">terminal</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple intersection observer for reveal animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

@@ -1,19 +1,18 @@
-// Comment Form Enhancements
+// Contact Form Enhancements (About page)
 // - Honeypot validation
 // - AJAX submit (Formspree supports JSON)
 // - Success/Error UI feedback
 
 (() => {
-    const form = document.getElementById("comment-form");
-    const statusEl = document.getElementById("comment-status");
-    const submitBtn = document.getElementById("comment-submit");
-    const gotchaField = document.getElementById("comment-gotcha");
+    const form = document.getElementById("contact-form");
+    const statusEl = document.getElementById("contact-status");
+    const submitBtn = form?.querySelector(".contact-submit");
 
-    if (!form || !statusEl || !submitBtn || !gotchaField) return;
+    if (!form || !statusEl || !submitBtn) return;
 
     function showStatus(message, type = "success") {
         statusEl.textContent = message;
-        statusEl.className = "comment-status visible " + type;
+        statusEl.className = "form-status visible " + type;
         if (type === "success") {
             setTimeout(() => {
                 statusEl.classList.remove("visible");
@@ -21,27 +20,29 @@
         }
     }
 
-    function setFieldError(field, hasError) {
-        field.setAttribute("aria-invalid", String(hasError));
-        field.style.borderColor = hasError ? "#dc2626" : "";
-    }
-
     function validateForm() {
         let valid = true;
         form.querySelectorAll("[required]").forEach((field) => {
             if (!field.value.trim()) {
-                setFieldError(field, true);
+                field.setAttribute("aria-invalid", "true");
+                field.style.borderColor = "#dc2626";
                 valid = false;
             } else {
-                setFieldError(field, false);
+                field.setAttribute("aria-invalid", "false");
+                field.style.borderColor = "";
             }
         });
-        if (gotchaField.checked) return false;
+        // Honeypot
+        const gotcha = form.querySelector('[name="_gotcha"]');
+        if (gotcha && gotcha.checked) return false;
         return valid;
     }
 
     form.querySelectorAll("input, textarea").forEach((field) => {
-        field.addEventListener("input", () => setFieldError(field, false));
+        field.addEventListener("input", () => {
+            field.setAttribute("aria-invalid", "false");
+            field.style.borderColor = "";
+        });
     });
 
     form.addEventListener("submit", async (e) => {
@@ -64,7 +65,7 @@
             });
 
             if (response.ok) {
-                showStatus("🎉 Comentário enviado com sucesso! Obrigado por participar.");
+                showStatus("Mensagem enviada com sucesso! Obrigado pelo contato.");
                 form.reset();
                 setTimeout(() => {
                     const nextInput = form.querySelector('[name="_next"]');

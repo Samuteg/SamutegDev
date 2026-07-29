@@ -14,14 +14,26 @@ import { SITE_TITLE } from "../consts";
     }
 
     .logo-text {
+        font-family: var(--font-display);
         font-size: 1.1rem;
         font-weight: 700;
         letter-spacing: -0.02em;
         color: var(--text-color);
+        background: linear-gradient(135deg, var(--text-color), var(--text-color));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
         transition: opacity var(--transition-fast);
     }
 
     .logo-link:hover .logo-text {
-        opacity: 0.7;
+        background: linear-gradient(
+            135deg,
+            var(--accent-color),
+            var(--accent-secondary)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        opacity: 1;
     }
 </style>
