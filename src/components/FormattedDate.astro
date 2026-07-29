@@ -1,17 +1,24 @@
 ---
 interface Props {
 	date: Date;
+	compact?: boolean;
 }
 
-const { date } = Astro.props;
+const { date, compact = false } = Astro.props;
 ---
 
 <time datetime={date.toISOString()}>
 	{
-		date.toLocaleDateString('pt-BR', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-		})
+		compact
+			? date.toLocaleDateString('pt-BR', {
+					year: 'numeric',
+					month: '2-digit',
+					day: '2-digit',
+				})
+			: date.toLocaleDateString('pt-BR', {
+					year: 'numeric',
+					month: 'long',
+					day: 'numeric',
+				})
 	}
 </time>
