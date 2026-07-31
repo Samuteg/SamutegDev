@@ -1,0 +1,35 @@
+---
+title: Atualizações do sistema de wallet e créditos
+description: >-
+  Recentemente finalizei uma camada completa de wallet e créditos na minha
+  plataforma.
+pubDate: 2026-07-31
+heroImage: ../../assets/atualizacoes-do-sistema-de-wallet-e-creditos/heroImage.jpeg
+---
+Agora o sistema está mais maduro, com criação automática de carteira, ajustes administrativos, proteção contra erros de concorrência e, mais recentemente, a adição do pagamento.
+
+## O que foi implementado
+
+A base do sistema de créditos foi concluída com a criação da wallet para cada usuário no momento do cadastro. Isso eliminou a necessidade de qualquer inicialização manual e deixou o fluxo muito mais automático.
+
+Também adicionei uma página administrativa para gerenciar créditos, com listagem de wallets e ajuste de saldo. Essa área passou por refinamentos para aceitar valores negativos corretamente e para usar os componentes de interface padrão da aplicação, deixando tudo mais consistente.
+
+Agora, além do sistema de créditos, também adicionei o **pagamento**, fechando uma parte importante do fluxo da plataforma. Isso amplia bastante as possibilidades de uso do sistema e conecta melhor a wallet com as próximas funcionalidades.
+
+## Correções importantes
+
+Durante o desenvolvimento, corrigi um problema em que o valor negativo do ajuste estava sendo perdido. O campo estava removendo o sinal de menos, o que podia atrapalhar operações de débito. Ajustei isso para que o saldo possa ser manipulado corretamente tanto para adicionar quanto para remover créditos.
+
+Também revisei a extração da API de wallet e removi uma busca de pacote desnecessária, deixando o código mais limpo e eficiente.
+
+## Segurança e concorrência
+
+Outro ponto importante foi a correção de uma condição de corrida no processo de gasto de créditos. Em sistemas de saldo, esse tipo de bug pode causar inconsistência séria, então essa revisão foi essencial para tornar a operação mais segura.
+
+Com isso, o fluxo ficou mais confiável e preparado para lidar melhor com múltiplas ações acontecendo ao mesmo tempo.
+
+## Resultado final
+
+No geral, a wallet da plataforma ficou muito mais completa. Agora existe criação automática de carteira, administração de créditos, ajuste de saldo, correções de segurança e também o pagamento, que foi adicionado agora por último.
+
+Foi uma evolução importante porque transforma a wallet em uma parte realmente funcional da plataforma, e não apenas em uma estrutura básica.
