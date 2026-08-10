@@ -1,0 +1,57 @@
+---
+title: Da mudança do Void Linux para o NixOS
+description: >-
+  Depois de algum tempo usando o Void Linux, decidi mudar novamente de
+  distribuição e começar uma nova experiência com o NixOS.
+pubDate: 2026-08-10
+heroImage: ../../assets/da-mudanca-do-void-linux-para-o-nix-os/heroImage.webp
+---
+A mudança representa uma nova etapa na forma como estou aprendendo e configurando meu ambiente Linux, principalmente por causa da maneira diferente como o NixOS organiza o sistema.
+
+O Void Linux me proporcionou bastante aprendizado sobre administração, serviços e configuração manual. Porém, comecei a me interessar pelo modelo declarativo do NixOS, em que grande parte do sistema pode ser definida por arquivos de configuração.
+
+## Por que escolhi o NixOS
+
+O principal motivo da mudança foi conhecer melhor o ecossistema Nix e experimentar uma abordagem mais reprodutível para configurar o sistema. Em vez de depender apenas de configurações feitas diretamente no ambiente, a ideia é declarar os pacotes, serviços e preferências em um arquivo.
+
+Isso permite reconstruir uma instalação com muito mais facilidade. Caso seja necessário reinstalar o sistema ou configurar outra máquina, grande parte do ambiente pode ser recuperada a partir da configuração, sem precisar repetir todo o processo manualmente.
+
+## A diferença em relação ao Void Linux
+
+A mudança do Void Linux para o NixOS exige uma adaptação significativa. No Void, eu estava acostumado a instalar pacotes e configurar serviços de forma mais tradicional, usando o XBPS e o runit.
+
+No NixOS, a lógica é diferente. A configuração do sistema passa a ter um papel central, e muitas alterações são feitas declarando o estado desejado em arquivos `.nix`. Depois disso, o sistema aplica essas configurações por meio de uma nova geração.
+
+Essa abordagem muda bastante o fluxo de trabalho, mas também ajuda a entender melhor tudo o que está instalado e configurado no computador.
+
+## Minha experiência inicial
+
+No começo, precisei me acostumar com a linguagem Nix e com a estrutura dos arquivos de configuração. Mesmo tarefas que pareciam simples no Void passaram a exigir uma forma diferente de pensar.
+
+Também encontrei alguns desafios durante a configuração do ambiente, principalmente por estar aprendendo uma distribuição com conceitos diferentes dos sistemas que eu já havia utilizado. Apesar disso, a possibilidade de versionar minhas configurações e voltar para uma geração anterior tornou os testes mais tranquilos.
+
+## Um ambiente mais reproduzível
+
+Uma das características que mais me chamou atenção foi a possibilidade de tratar a configuração do sistema como código. Posso modificar o arquivo, testar uma nova configuração e, caso algo não funcione como esperado, retornar ao estado anterior.
+
+Isso combina bastante com meu interesse por programação, Git e automação. Em vez de manter todas as configurações apenas na memória ou espalhadas por comandos manuais, posso documentar e versionar melhor o meu ambiente.
+
+## O que estou aprendendo
+
+A migração está sendo uma oportunidade para aprender mais sobre:
+
+* A linguagem de configuração do Nix.
+* Gerenciamento declarativo de pacotes.
+* Serviços e módulos do NixOS.
+* Gerações e rollback do sistema.
+* Ambientes reproduzíveis.
+* Organização de configurações usando Git.
+* Automação e manutenção de sistemas Linux.
+
+Esse processo também está me ajudando a perceber que cada distribuição apresenta uma filosofia diferente. O Void Linux me ensinou bastante sobre simplicidade e controle manual, enquanto o NixOS está me mostrando uma forma mais declarativa e organizada de administrar o sistema.
+
+## Conclusão
+
+A mudança do Void Linux para o NixOS marca uma nova fase nos meus estudos de Linux e administração de sistemas. Ainda estou me adaptando ao funcionamento do NixOS, mas já consigo perceber o potencial de ter um ambiente configurável, versionável e fácil de reproduzir.
+
+Mais do que trocar de distribuição, essa mudança representa uma nova maneira de pensar sobre o sistema operacional. Estou deixando parte da configuração manual para explorar um modelo baseado em declarações, automação e possibilidade de rollback.
