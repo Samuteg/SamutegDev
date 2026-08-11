@@ -3,13 +3,48 @@ import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import BaseLayout from "./BaseLayout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
+import { SITE_URL, AUTHOR_URL, AUTHOR, SITE_TITLE } from "../consts";
 
 type Props = CollectionEntry<"blog">["data"] & { id?: string };
 
 const { id, title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const heroURL = heroImage ? new URL(heroImage.src, Astro.site).href : undefined;
+
+const blogPostingJSON = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: title,
+    description,
+    datePublished: pubDate.toISOString(),
+    ...(updatedDate && { dateModified: updatedDate.toISOString() }),
+    ...(heroURL && { image: heroURL }),
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonicalURL },
+    url: canonicalURL,
+    inLanguage: "pt-BR",
+    author: { "@type": "Person", name: AUTHOR, url: AUTHOR_URL },
+    publisher: {
+        "@type": "Person",
+        name: AUTHOR,
+        url: SITE_URL,
+    },
+    isPartOf: {
+        "@type": "Blog",
+        name: SITE_TITLE,
+        url: SITE_URL,
+    },
+});
 ---
 
-<BaseLayout title={title} description={description} image={heroImage}>
+<BaseLayout
+    title={title}
+    description={description}
+    image={heroImage}
+    ogType="article"
+    publishedTime={pubDate}
+    modifiedTime={updatedDate}
+>
+    <script is:inline type="application/ld+json" set:html={blogPostingJSON} slot="head" />
     <div class="post-container">
         <div class="back-link-wrapper fade-in-up">
             <a href="/blog" class="back-link btn-pill btn-pill-ghost">

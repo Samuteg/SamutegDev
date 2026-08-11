@@ -1,0 +1,14 @@
+{
+    "name": "SamutegDev",
+    "short_name": "SamutegDev",
+    "description": "Blog pessoal sobre desenvolvimento de software, ferramentas e aprendizados do dia a dia.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#1a1625",
+    "theme_color": "#7c3aed",
+    "icons": [
+        { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+        { "src": "/favicon.ico", "sizes": "48x48", "type": "image/x-icon", "purpose": "any" }
+    ]
+}

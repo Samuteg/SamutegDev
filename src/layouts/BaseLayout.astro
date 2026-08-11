@@ -14,15 +14,37 @@ interface Props {
     hideScrollProgress?: boolean;
     /** Path to a CSS file to import in <head>. */
     stylesheet?: string;
+    /** OG type. Defaults to "website". */
+    ogType?: "website" | "article";
+    /** ISO publish date. */
+    publishedTime?: Date;
+    /** ISO modified date. */
+    modifiedTime?: Date;
 }
 
-const { title, description, image, hideScrollProgress = false, stylesheet } = Astro.props;
+const {
+    title,
+    description,
+    image,
+    hideScrollProgress = false,
+    stylesheet,
+    ogType,
+    publishedTime,
+    modifiedTime,
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="pt-BR" data-theme="dark">
     <head>
-        <BaseHead title={title} description={description} image={image} />
+        <BaseHead
+            title={title}
+            description={description}
+            image={image}
+            ogType={ogType}
+            publishedTime={publishedTime}
+            modifiedTime={modifiedTime}
+        />
         {stylesheet && <link rel="stylesheet" href={stylesheet} />}
         <slot name="head" />
     </head>

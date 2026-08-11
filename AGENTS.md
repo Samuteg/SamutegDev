@@ -13,6 +13,15 @@ Personal blog built with Astro 7 (SSG), content in **Portuguese (Brazilian)**.
 
 No lint, format, or test scripts exist. There is no test framework configured.
 
+## CI
+
+`.github/workflows/ci.yml` runs on push/PR to `main`:
+
+1. `pnpm audit --audit-level=high` — fails on any high or critical advisory.
+2. `pnpm check` + `pnpm build` — typecheck and production build.
+
+Transitive vulnerabilities that `pnpm update` alone cannot resolve are pinned via `pnpm-workspace.yaml` `overrides`.
+
 ## Requirements
 
 - Node >=22.12.0
