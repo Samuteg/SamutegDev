@@ -1,16 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
     <defs>
-        <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#7c3aed" />
-            <stop offset="100%" stop-color="#0d9488" />
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#7c3aed"/>
+            <stop offset="100%" stop-color="#0d9488"/>
         </linearGradient>
     </defs>
-    <rect width="128" height="128" rx="32" fill="url(#bg)"/>
-    <text x="64" y="80" 
-          font-family="system-ui, -apple-system, sans-serif" 
-          font-size="60" 
-          font-weight="900" 
-          fill="#ffffff" 
-          text-anchor="middle" 
-          letter-spacing="-2">S</text>
+    <rect width="128" height="128" rx="24" fill="url(#g)"/>
+    <path stroke="white" stroke-width="18" fill="none"
+          stroke-linecap="round" stroke-linejoin="round"
+          d="M 52 38 L 26 64 L 52 90"/>
+    <path stroke="white" stroke-width="18" fill="none"
+          stroke-linecap="round" stroke-linejoin="round"
+          d="M 76 38 L 102 64 L 76 90"/>
+    <path stroke="white" stroke-width="14" fill="none"
+          stroke-linecap="round" stroke-linejoin="round"
+          d="M 78 30 L 56 98"/>
 </svg>

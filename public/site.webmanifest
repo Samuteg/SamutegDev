@@ -1,6 +1,6 @@
 {
     "name": "SamutegDev",
-    "short_name": "SamutegDev",
+    "short_name": "SD",
     "description": "Blog pessoal sobre desenvolvimento de software, ferramentas e aprendizados do dia a dia.",
     "start_url": "/",
     "scope": "/",
@@ -8,7 +8,10 @@
     "background_color": "#1a1625",
     "theme_color": "#7c3aed",
     "icons": [
-        { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-        { "src": "/favicon.ico", "sizes": "48x48", "type": "image/x-icon", "purpose": "any" }
+        { "src": "/favicon-16.png", "sizes": "16x16", "type": "image/png", "purpose": "any" },
+        { "src": "/icon-32.png", "sizes": "32x32", "type": "image/png", "purpose": "any" },
+        { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+        { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+        { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
     ]
 }
