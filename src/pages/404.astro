@@ -1,0 +1,128 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_TITLE } from "../consts";
+---
+
+<BaseLayout
+    title={`Página não encontrada | ${SITE_TITLE}`}
+    description="Ops! A página que você procura não existe ou foi movida."
+    hideScrollProgress={true}
+>
+    <section class="not-found fade-in-up">
+        <div class="orbs" aria-hidden="true">
+            <div class="orb orb-primary"></div>
+            <div class="orb orb-tertiary"></div>
+        </div>
+
+        <div class="not-found-card glass-card glow-hover">
+            <p class="label-caps not-found-label">Erro 404</p>
+            <h1 class="display-lg not-found-title">
+                Página <span class="text-accent">não encontrada</span>
+            </h1>
+            <p class="not-found-code" aria-hidden="true">404</p>
+            <p class="body-lg not-found-desc">
+                Parece que você se perdeu na fronteira digital. A página que
+                você procura não existe ou foi movida para outro endereço.
+            </p>
+            <div class="not-found-ctas">
+                <a href="/" class="btn-pill btn-pill-primary">Voltar ao início</a>
+                <a href="/blog" class="btn-pill btn-pill-ghost">Ver artigos</a>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .not-found {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+        .orbs {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .orbs .orb {
+            width: 16rem;
+            height: 16rem;
+        }
+        .orb-primary {
+            top: 10%;
+            left: 50%;
+            transform: translateX(-90%);
+        }
+        .orb-tertiary {
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(10%);
+        }
+        .not-found-card {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 2.5rem;
+            border-radius: var(--border-radius-xl);
+            max-width: 36rem;
+            width: 100%;
+        }
+        .not-found-label {
+            color: var(--accent-color);
+            margin: 0 0 1rem 0;
+        }
+        .not-found-title {
+            margin: 0 0 1rem 0;
+        }
+        .text-accent {
+            color: var(--accent-color);
+        }
+        .not-found-code {
+            font-family: var(--font-mono);
+            font-size: clamp(4rem, 12vw, 7rem);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            margin: 0 0 1rem 0;
+            background: linear-gradient(
+                135deg,
+                var(--accent-color),
+                var(--accent-secondary),
+                var(--accent-tertiary)
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+        .not-found-desc {
+            color: var(--text-muted);
+            margin: 0 0 2rem 0;
+            max-width: 28rem;
+        }
+        .not-found-ctas {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .not-found-card {
+                padding: 2rem 1.5rem;
+            }
+            .not-found-ctas {
+                flex-direction: column;
+                width: 100%;
+            }
+            .not-found-ctas a {
+                width: 100%;
+            }
+        }
+    </style>
+</BaseLayout>
