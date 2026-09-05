@@ -1,0 +1,52 @@
+---
+title: Do NixOS para o MX Linux com Fluxbox
+description: >-
+  Depois de migrar do Void Linux para o NixOS, imaginei que teria um sistema
+  mais organizado.
+pubDate: 2026-09-04
+heroImage: ../../assets/do-nix-os-para-o-mx-linux-com-fluxbox/heroImage.jpg
+---
+Depois de migrar do Void Linux para o NixOS, imaginei que teria um sistema mais organizado, reproduzível e fácil de manter. A ideia era interessante: declarar tudo em arquivos `.nix`, versionar minha configuração e poder reconstruir o ambiente a qualquer momento. Só que, na prática, acabei passando horas ajustando configurações, lidando com erros de sintaxe e enfrentando um processo lento para cada mudança.
+
+No fim, percebi que estava gastando mais tempo configurando o sistema do que realmente usando o computador para desenvolver, estudar e criar. Por isso, tomei a decisão de migrar para o **MX Linux com Fluxbox**, uma combinação que me oferece leveza, simplicidade e praticidade no dia a dia.
+
+## O problema com o NixOS no meu uso
+
+O NixOS tem uma proposta excelente, especialmente para quem busca ambientes reproduzíveis e declarativos. Porém, para o meu caso, a curva de aprendizado acabou se tornando um obstáculo. Cada alteração exigia:
+
+* Editar arquivos `.nix` com sintaxe específica.
+* Executar comandos para aplicar a nova geração.
+* Lidar com erros de configuração que nem sempre eram claros.
+* Esperar o sistema reconstruir pacotes e serviços.
+
+Tarefas que antes eram simples, como instalar um pacote ou ajustar um serviço, passaram a demandar muito mais tempo e atenção. Comecei a perceber que estava passando horas estudando a linguagem Nix e resolvendo problemas de configuração, em vez de focar no que realmente importa para mim: programação, projetos pessoais e aprendizado prático.
+
+## A escolha pelo MX Linux com Fluxbox
+
+Depois de testar várias distribuições ao longo do tempo, decidi voltar para algo mais direto e funcional. O **MX Linux** se destacou por ser leve, estável e baseado no Debian, o que facilita bastante a instalação de pacotes e a manutenção do sistema.
+
+Já o **Fluxbox** foi escolhido por ser um gerenciador de janelas extremamente leve e configurável. Ele consome poucos recursos, permite personalização através de arquivos de texto simples e não exige processos complexos para cada alteração. Com ele, consigo ter um ambiente gráfico funcional sem o peso de desktops completos como KDE ou GNOME.
+
+## O que ganhei com a mudança
+
+A migração para o MX Linux com Fluxbox trouxe de volta a praticidade que eu estava perdendo. Agora:
+
+* **Instalar pacotes** é simples, usando `apt` ou ferramentas gráficas do MX.
+* **Configurar o ambiente** envolve editar arquivos de texto no meu editor preferido, sem sintaxes complexas.
+* **Cada alteração** é aplicada rapidamente, sem precisar reconstruir o sistema inteiro.
+* **O sistema consome menos recursos**, deixando mais memória e CPU para minhas aplicações de desenvolvimento.
+* **Tenho mais tempo** para focar em programação, projetos e aprendizado.
+
+Além disso, o MX Linux já vem com ferramentas úteis que facilitam a administração do sistema, sem precisar de configurações manuais extensas. O Fluxbox, por sua vez, me permite personalizar o ambiente do jeito que eu quero, mas de forma muito mais direta do que no NixOS.
+
+## O que aprendi com essa experiência
+
+Essa jornada entre Void Linux, NixOS e agora MX Linux me ensinou bastante sobre prioridades. É fácil se perder em configurações e otimizações, especialmente quando a proposta de uma distribuição parece muito atraente. No entanto, o mais importante é que o sistema funcione bem para o meu uso diário e não se torne um obstáculo.
+
+O NixOS sem dúvida tem seu valor, especialmente em cenários onde a reprodutibilidade e o controle total são essenciais. Porém, para o meu caso atual — um estudante focado em desenvolvimento backend, projetos pessoais e aprendizado prático —, o MX Linux com Fluxbox se mostrou a escolha mais equilibrada.
+
+## Conclusão
+
+A mudança do NixOS para o MX Linux com Fluxbox foi uma decisão baseada em praticidade e foco. Percebi que estava gastando horas configurando arquivos `.nix` e enfrentando processos longos para cada alteração, quando poderia estar usando esse tempo para programar, estudar e criar.
+
+Agora, com um sistema leve, estável e fácil de manter, consigo voltar minha atenção para o que realmente importa: meus projetos de programação, aprendizado de Linux e desenvolvimento de software. Às vezes, a melhor configuração é aquela que não te impede de fazer o que você precisa.
