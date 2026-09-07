@@ -1,0 +1,90 @@
+---
+title: 'Ponteiros em Go: o que são e como usar'
+description: >-
+  Ponteiros em Go são uma das características mais importantes da linguagem para
+  quem quer entender melhor como o gerenciamento de memória funciona
+pubDate: 2026-09-06
+heroImage: ../../assets/ponteiros-em-go-o-que-sao-e-como-usar/heroImage.jpg
+---
+## O que é um ponteiro
+
+Um ponteiro é uma variável que armazena o endereço de memória de outra variável. Em vez de guardar o valor em si, o ponteiro guarda onde esse valor está localizado na memória.
+
+Em Go, você declara um ponteiro usando o símbolo `*` antes do tipo. Por exemplo:
+
+**`var`**`  x int = 10  `**`var`**` p *int = &x`
+
+Aqui, `x` é uma variável comum, e `p` é um ponteiro para `int` que guarda o endereço de `x`. O operador `&` é usado para obter o endereço de uma variável.
+
+## Operadores básicos
+
+Go trabalha com dois operadores principais quando o assunto é ponteiro:
+
+* `&` (address-of): obtém o endereço de uma variável.
+* `*` (dereference): acessa o valor apontado por um ponteiro.
+
+Exemplo:
+
+`x := 10 p := &x  fmt.Println(p)   `*`// endereço de memória, ex: 0xc000014090`*`  fmt.Println(*p)   `*`// valor apontado, ex: 10`*`   *p = 20 fmt.Println(x)    `*`// 20, porque modificamos o valor através do ponteiro`*
+
+## Por que usar ponteiros
+
+Ponteiros são úteis em várias situações:
+
+* **Modificar valores em funções**: ao passar um ponteiro para uma função, você pode alterar o valor original da variável.
+* **Evitar cópias grandes**: passar um ponteiro é mais eficiente do que copiar estruturas grandes.
+* **Trabalhar com estruturas dinâmicas**: listas, árvores e grafos frequentemente usam ponteiros.
+* **Representar valores nulos**: um ponteiro pode ser `nil`, indicando ausência de valor.
+
+Exemplo de modificação via função:
+
+**`func`**`  incrementa(p *int) {     *p++ }   `**`func`**`  main() {     x := 5     incrementa(&x)     fmt.Println(x)  `*`// 6`*` }`
+
+## Ponteiros e structs
+
+Ponteiros são muito usados com structs, especialmente para evitar cópias e permitir modificações:
+
+**`type`**`  Pessoa  `**`struct`**`  {     Nome string     Idade int }   `**`func`**`  envelhecer(p *Pessoa) {     p.Idade++ }   `**`func`**`  main() {     p := Pessoa{Nome: "João", Idade: 20}     envelhecer(&p)     fmt.Println(p.Idade)  `*`// 21`*` }`
+
+Também é comum criar structs diretamente com ponteiros:
+
+`p := &Pessoa{Nome: "Maria", Idade: 25}`
+
+## Ponteiros podem ser nil
+
+Um ponteiro em Go pode ter o valor `nil`, indicando que não aponta para nenhum endereço válido:
+
+**`var`**`  p *int fmt.Println(p)  `*`// nil`*`  `**`if`**` p == nil {     fmt.Println("Ponteiro não inicializado") }`
+
+Isso é útil para representar valores opcionais ou indicar ausência de dado.
+
+## Diferenças em relação a outras linguagens
+
+Se você vem de linguagens como C ou C++, vai notar que ponteiros em Go são mais restritos:
+
+* Não há aritmética de ponteiros (não dá para fazer `p++` para avançar na memória).
+* Não há ponteiros para ponteiros de forma tão livre quanto em C.
+* O gerenciamento de memória é feito com garbage collector, não manualmente.
+
+Essas restrições tornam Go mais seguro e fácil de usar, mesmo trabalhando com endereços de memória.
+
+## Quando usar (e quando não usar)
+
+Nem sempre você precisa de ponteiros. Em muitos casos, passar valores por cópia é suficiente e mais simples. Use ponteiros quando:
+
+* Precisar modificar o valor original dentro de funções.
+* Estiver trabalhando com structs grandes e quiser evitar cópias.
+* Precisar representar ausência de valor com `nil`.
+* Estiver construindo estruturas de dados como listas ou árvores.
+
+Evite ponteiros quando:
+
+* O valor for pequeno (como `int`, `bool`).
+* Não houver necessidade de modificar o original.
+* O código ficar mais complexo sem benefício claro.
+
+## Conclusão
+
+Ponteiros em Go são uma ferramenta poderosa para quem quer escrever código mais eficiente e entender melhor como a linguagem trabalha com memória. Eles permitem modificar valores por referência, evitar cópias desnecessárias e construir estruturas mais sofisticadas, mas exigem cuidado para não complicar o código sem necessidade.
+
+Dominar ponteiros é um passo importante para evoluir em Go, especialmente quando você começa a trabalhar com structs, concorrência e sistemas mais complexos.
