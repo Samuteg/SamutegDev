@@ -15,7 +15,7 @@ Resolvi todos os 4 exercícios principais e quero compartilhar minha solução e
 
 A gente sabe que Math.random() gera um número entre 0 (incluído) e 1 (excluído). Para transformar isso em um dado de 6 lados:
 
-```
+```java
 public class SimuladorDados {
     public static void main(String[] args) {
         int dado = (int)(Math.random() * 6) + 1;
@@ -43,7 +43,7 @@ A fórmula é simples: perímetro = π × diâmetro. Depois: distância = perím
 
 E para arredondar **para cima**, usamos Math.ceil():
 
-```
+```java
 import java.util.Scanner;
 
 public class DistanciaRoda {
@@ -67,7 +67,7 @@ public class DistanciaRoda {
 
 **Exemplo de execução:**
 
-```
+```text
 Digite o diâmetro da roda (em metros): 0.5
 Digite o número de voltas: 10
 Distância percorrida: 16.0 metros
@@ -81,7 +81,7 @@ Distância percorrida: 16.0 metros
 
 Deduz-se que é um cubo, então: volume = lado³
 
-```
+```java
 import java.util.Scanner;
 
 public class CaixaDAgua {
@@ -100,7 +100,7 @@ public class CaixaDAgua {
 
 **Exemplo de execução:**
 
-```
+```text
 Digite o lado da caixa d'água (em metros): 2
 Volume da caixa d'água: 8.0 metros cúbicos
 ```
@@ -113,7 +113,7 @@ Volume da caixa d'água: 8.0 metros cúbicos
 
 Existem várias formas. A mais didática (usando os métodos do Capítulo 4):
 
-```
+```java
 import java.util.Scanner;
 
 public class InverterString {
@@ -135,7 +135,7 @@ public class InverterString {
 
 **Exemplo de execução:**
 
-```
+```text
 Digite uma palavra: Java
 Palavra invertida: avaJ
 ```

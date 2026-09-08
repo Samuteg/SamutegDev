@@ -35,9 +35,7 @@ Agora consigo escrever posts com uma interface bonita, mas o conteúdo continua 
 
 Posso definir que todo post *precisa* ter: título, slug, data, tags. Keystatic garante isso. Não há mais typos em frontmatter que quebram o build.
 
-typescript
-
-```
+```typescript
 // Exemplo de schema no Keystatic
 export const BlogSchema = collection({
   label: 'Posts do Blog',
@@ -86,17 +84,13 @@ Mas se você:
 
 Se quiser tentar, comece assim:
 
-bash
-
-```
+```bash
 pnpm install keystatic
 ```
 
 E configure no seu `keystatic.config.ts`:
 
-typescript
-
-```
+```typescript
 import { config } from '@keystatic/core';
 import { blogCollection } from './content/blog';
 

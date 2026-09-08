@@ -462,13 +462,20 @@ pre {
     margin: 2rem 0;
 }
 
+/* Shiki / astro-code blocks — keep dark bg but preserve token colors */
+pre.astro-code {
+    background-color: #050505 !important;
+}
+
 pre code {
-    all: unset;
     display: block;
     font-family: var(--font-mono);
     font-size: 0.85rem;
     line-height: 1.6;
     color: #e2e8f0;
+    background: transparent;
+    border: none;
+    padding: 0;
 }
 
 blockquote {

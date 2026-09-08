@@ -30,7 +30,7 @@ Os primeiros commits foram sobre **structure**. Eu precisava de:
 * Mongoose para MongoDB
 * Validação de dados
 
-```
+```text
 backend/
 ├── src/
 │   ├── models/
@@ -59,7 +59,7 @@ Cada pergunta virava um commit novo.
 
 Em algum ponto, adicionei **validação de esquema** (provavelmente com Zod ou Joi). Um commit aparentemente pequeno, mas que economizou horas depois, porque garantia que dados ruins nunca chegavam ao banco.
 
-```
+```json
 POST /tasks
 {
   title: "", // Vai falhar validação
@@ -107,9 +107,7 @@ Em algum ponto dos commits, adicionei **Docker Compose**. Um `docker-compose.yml
 * Frontend na porta 3000
 * MongoDB local
 
-yaml
-
-```
+```yaml
 version: '3.8'
 services:
   backend:

@@ -12,7 +12,10 @@ Um ponteiro é uma variável que armazena o endereço de memória de outra vari�
 
 Em Go, você declara um ponteiro usando o símbolo `*` antes do tipo. Por exemplo:
 
-**`var`**`  x int = 10  `**`var`**` p *int = &x`
+```go
+var x int = 10
+var p *int = &x
+```
 
 Aqui, `x` é uma variável comum, e `p` é um ponteiro para `int` que guarda o endereço de `x`. O operador `&` é usado para obter o endereço de uma variável.
 
@@ -25,7 +28,14 @@ Go trabalha com dois operadores principais quando o assunto é ponteiro:
 
 Exemplo:
 
-`x := 10 p := &x  fmt.Println(p)   `*`// endereço de memória, ex: 0xc000014090`*`  fmt.Println(*p)   `*`// valor apontado, ex: 10`*`   *p = 20 fmt.Println(x)    `*`// 20, porque modificamos o valor através do ponteiro`*
+```go
+x := 10
+p := &x
+fmt.Println(p)  // endereço de memória, ex: 0xc000014090
+fmt.Println(*p) // valor apontado, ex: 10
+*p = 20
+fmt.Println(x) // 20, porque modificamos o valor através do ponteiro
+```
 
 ## Por que usar ponteiros
 
@@ -38,23 +48,57 @@ Ponteiros são úteis em várias situações:
 
 Exemplo de modificação via função:
 
-**`func`**`  incrementa(p *int) {     *p++ }   `**`func`**`  main() {     x := 5     incrementa(&x)     fmt.Println(x)  `*`// 6`*` }`
+```go
+func incrementa(p *int) {
+    *p++
+}
+
+func main() {
+    x := 5
+    incrementa(&x)
+    fmt.Println(x) // 6
+}
+```
 
 ## Ponteiros e structs
 
 Ponteiros são muito usados com structs, especialmente para evitar cópias e permitir modificações:
 
-**`type`**`  Pessoa  `**`struct`**`  {     Nome string     Idade int }   `**`func`**`  envelhecer(p *Pessoa) {     p.Idade++ }   `**`func`**`  main() {     p := Pessoa{Nome: "João", Idade: 20}     envelhecer(&p)     fmt.Println(p.Idade)  `*`// 21`*` }`
+```go
+type Pessoa struct {
+    Nome  string
+    Idade int
+}
+
+func envelhecer(p *Pessoa) {
+    p.Idade++
+}
+
+func main() {
+    p := Pessoa{Nome: "João", Idade: 20}
+    envelhecer(&p)
+    fmt.Println(p.Idade) // 21
+}
+```
 
 Também é comum criar structs diretamente com ponteiros:
 
-`p := &Pessoa{Nome: "Maria", Idade: 25}`
+```go
+p := &Pessoa{Nome: "Maria", Idade: 25}
+```
 
 ## Ponteiros podem ser nil
 
 Um ponteiro em Go pode ter o valor `nil`, indicando que não aponta para nenhum endereço válido:
 
-**`var`**`  p *int fmt.Println(p)  `*`// nil`*`  `**`if`**` p == nil {     fmt.Println("Ponteiro não inicializado") }`
+```go
+var p *int
+fmt.Println(p) // nil
+
+if p == nil {
+    fmt.Println("Ponteiro não inicializado")
+}
+```
 
 Isso é útil para representar valores opcionais ou indicar ausência de dado.
 

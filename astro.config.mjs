@@ -14,7 +14,21 @@ export default defineConfig({
   build: {
     // sourcemap is not a valid option here in newer Astro versions
   },
-  integrations: [react(), mdx(), sitemap(), ...(dev ? [keystatic()] : [])],
-  // Fonts are loaded via @import in global.css (Inter + JetBrains Mono from Google Fonts)
-  // No local font configuration needed
+  markdown: {
+    shikiConfig: {
+      theme: "github-dark",
+      wrap: false,
+    },
+  },
+  integrations: [
+    react(),
+    mdx({
+      shikiConfig: {
+        theme: "github-dark",
+        wrap: false,
+      },
+    }),
+    sitemap(),
+    ...(dev ? [keystatic()] : []),
+  ],
 });

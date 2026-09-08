@@ -31,9 +31,7 @@ Tudo fazia sentido. Até o dia em que tentei fazer deploy.
 
 Começou bem. Criei um `Dockerfile` simples:
 
-dockerfile
-
-```
+```dockerfile
 FROM golang:1.21-alpine AS builder
 WORKDIR /app
 COPY . .
@@ -56,7 +54,7 @@ O backend ficou up por horas, rodando perfeitamente. Depois? Caiu em um "sleep m
 
 Quando um usuário tenta acessar o site após horas de inatividade:
 
-```
+```text
 1. Requisição chega ao frontend (Vercel)
 2. Frontend tenta conectar ao backend (Railway)
 3. Espera... espera... espera...
@@ -85,7 +83,7 @@ Neon tem um "autosuspend" feature. Seu banco dorme após inatividade. Quando sua
 
 Pior que isso: as conexões pooling não funcionavam direito. Go mantém connection pools, mas Neon tem limites agressivos. Resultado?
 
-```
+```text
 [ERROR] too many connections
 [ERROR] connection timeout
 [ERROR] failed to acquire connection from pool
@@ -140,9 +138,7 @@ Meu projeto tem 500+ páginas de jogos. Next tentava gerar static pages pra toda
 
 Tentei usar ISR pra otimizar:
 
-javascript
-
-```
+```javascript
 export async function getStaticProps() {
   const games = await fetchAllGames();
   return {
@@ -160,9 +156,7 @@ Soa bom. Na prática:
 
 Mudei pra **Server-Side Rendering**:
 
-javascript
-
-```
+```javascript
 export async function getServerSideProps() {
   const games = await fetchAllGames();
   return { props: { games } };
@@ -192,9 +186,7 @@ Tive que otimizar a query no banco, adicionar cache com Redis, e quebrar a lógi
 
 Vercel oferece otimização automática de imagens via `next/image`. Parecia bom até...
 
-javascript
-
-```
+```javascript
 <Image 
   src={gameImage} 
   alt={gameName}
@@ -225,7 +217,7 @@ Errei uma vez e commitei uma API key pública. Vercel não me avisou. Descobri q
 
 Às vezes a build falha "do nada":
 
-```
+```text
 ERROR in ./pages/games/[id].js
 Module not found: Can't resolve '@/components/GameCard'
 ```
@@ -248,9 +240,7 @@ Vercel expõe seu site em `https://seu-site.vercel.app`. Railway expõe o backen
 
 CORS headers configurados no Go:
 
-go
-
-```
+```go
 w.Header().Set("Access-Control-Allow-Origin", "https://seu-site.vercel.app")
 w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
 w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -266,9 +256,7 @@ Solução: wildcard CORS? Perigoso. Whitelist dinâmica? Complexo demais.
 
 Acabei usando um pattern:
 
-go
-
-```
+```go
 allowedOrigins := map[string]bool{
   "https://seu-site.vercel.app": true,
   "https://*.vercel.app": true, // Preview deployments
@@ -279,7 +267,7 @@ allowedOrigins := map[string]bool{
 
 Frontend pede dados do backend. Ambos em diferentes regiões:
 
-```
+```text
 Vercel (US-East) -> Railway Backend (qualquer lugar)
 Latência: 80-150ms só pra roundtrip
 ```
@@ -296,7 +284,7 @@ Agora preciso:
 
 Preciso que o frontend saiba a URL do backend. Vai como variável de ambiente:
 
-```
+```bash
 NEXT_PUBLIC_API_URL=https://seu-api.railway.app
 ```
 
@@ -312,7 +300,7 @@ Aqui estão os "divertidos":
 
 Vercel usa Node 18. Localmente uso Node 20.
 
-```
+```text
 // Funciona local (Node 20)
 const result = await someAsyncFunction();
 
@@ -322,9 +310,7 @@ Error: Unexpected token
 
 Package.json não especificava versão. Vercel usou default. Agora especifico:
 
-json
-
-```
+```json
 {
   "engines": {
     "node": "20.x"
@@ -340,9 +326,7 @@ Scores com timestamp diferente de quando o usuário achou que postou. Leaderboar
 
 Tive que forçar tudo pra UTC e converter no client:
 
-javascript
-
-```
+```javascript
 // Backend sempre retorna UTC
 const timestamp = new Date().toISOString();
 
@@ -358,9 +342,7 @@ Esqueci uma vez. Código esperava uma coluna que não existia. Boom.
 
 Agora uso migrations automáticas no startup do backend:
 
-go
-
-```
+```go
 func init() {
   runMigrations()
 }
@@ -393,7 +375,7 @@ Preços não eram o que esperava:
 
 Antes de cada deploy:
 
-```
+```text
 □ Rodar testes localmente
 □ Verificar variáveis de ambiente
 □ Checar CORS headers
