@@ -1,0 +1,148 @@
+---
+title: 'Slices em Go: o guia completo'
+description: Slices são uma das estruturas de dados mais usadas em Go
+pubDate: 2026-09-08
+heroImage: ../../assets/slices-em-go-o-guia-completo/heroImage.jpg
+---
+Se você está aprendendo Go, entender slices é essencial, porque eles aparecem em praticamente todo código real na linguagem.
+
+## O que é um slice
+
+Um slice é uma visão dinâmica sobre um array. Ele não armazena os dados diretamente, mas sim uma referência a uma região contígua de memória, junto com informações sobre tamanho e capacidade.
+
+A sintaxe básica é:
+
+```
+var s []int
+```
+
+Isso declara um slice de inteiros. Diferente de um array, você não precisa especificar o tamanho no momento da declaração.
+
+## Criando slices
+
+Existem várias formas de criar slices em Go:
+
+```
+// Slice vazio
+s1 := []int{} // Slice com valores iniciais
+s2 := []int{1, 2, 3, 4, 5} // Usando make (tamanho e capacidade) 
+s3 := make([]int, 5) // tamanho 5, capacidade 5
+s4 := make([]int, 3, 10) // tamanho 3, capacidade 10 // A partir de um array
+arr := [5]int{1, 2, 3, 4, 5} s5 := arr[1:4] // slice do índice 1 ao 3
+```
+
+A função `make` é muito usada quando você sabe o tamanho inicial, mas quer que o slice possa crescer depois.
+
+## Tamanho e capacidade
+
+Todo slice tem duas propriedades importantes:
+
+* **Len (tamanho)**: número de elementos no slice.
+* **Cap (capacidade)**: número total de elementos que o slice pode conter sem precisar realocar memória.
+
+```
+s := make([]int, 3, 10) fmt.Println(len(s)) // 3 
+fmt.Println(cap(s)) // 10`
+```
+
+Entender a diferença entre tamanho e capacidade é importante para escrever código eficiente, especialmente quando o slice vai crescer muito.
+
+## Adicionando elementos
+
+Para adicionar elementos a um slice, usamos a função `append`:
+
+```
+s := []int{1, 2, 3} s = append(s, 4) s = append(s, 5, 6, 7)  
+fmt.Println(s)
+```
+
+O `append` pode adicionar um ou vários elementos de uma vez. Se a capacidade for insuficiente, o Go automaticamente aloca um novo array maior e copia os elementos.
+
+## Fatiamendo (slicing)
+
+Uma das operações mais comuns com slices é criar novos slices a partir de um existente, usando a sintaxe de fatiamento:
+
+```
+s := []int{0, 1, 2, 3, 4, 5}  s1 := s[1:4] // [1 2 3]
+s2 := s[:3]// [0 1 2]
+s3 := s[3:]// [3 4 5]
+s4 := s[:]// cópia superficial de todo o slice
+```
+
+A sintaxe é `[inicio:fim]`, onde `inicio` é inclusivo e `fim` é exclusivo.
+
+## Iterando sobre slices
+
+Para percorrer um slice, usamos o `for` com `range`:
+
+```
+s := []string{"Go", "Rust", "Python"} for i, v :=range s {     fmt.Printf("Índice %d: %s\n", i, v) }
+```
+
+Se você só precisa do valor, pode ignorar o índice:
+
+```
+for _, v := range s {     fmt.Println(v) }
+```
+
+## Slices são referências
+
+Um ponto importante é que slices são referências para o array subjacente. Isso significa que modificar um slice pode afetar outro slice que compartilhe o mesmo array:
+
+```
+go
+
+s1 := []int{1, 2, 3, 4, 5} s2 := s1[1:4] // [2 3 4] 
+s2[0] = 99 fmt.Println(s1) // [1 99 3 4 5]
+
+```
+
+Isso é eficiente, mas exige cuidado para não causar efeitos colaterais inesperados.
+
+## Copiando slices
+
+Se você precisa de uma cópia independente, use a função `copy`:
+
+```
+go
+
+s1 := []int{1, 2, 3, 4, 5} 
+s2 := make([]int, len(s1)) copy(s2, s1)  s2[0] = 99 fmt.Println(s1) // [1 2 3 4 5]
+fmt.Println(s2) // [99 2 3 4 5]
+
+```
+
+A função `copy` retorna o número de elementos copiados.
+
+## Slices de slices (matrizes dinâmicas)
+
+Você pode criar slices de slices para representar matrizes ou tabelas:
+
+```
+matriz := [][]int{     {1, 2, 3},     {4, 5, 6},     {7, 8, 9}, }  fmt.Println(matriz[1][2]) // 6
+```
+
+Isso é muito usado para representar dados bidimensionais de forma flexível.
+
+## Boas práticas
+
+Algumas dicas para trabalhar bem com slices:
+
+* **Use `make` quando souber o tamanho**: isso evita realocações desnecessárias.
+* **Cuidado ao fatiar**: slices compartilham o array subjacente.
+* **Use `copy` para cópias reais**: não atribua slices se precisar de independência.
+* **Prefira `append`**: é seguro e lida com realocação automaticamente.
+* **Monitore a capacidade**: em código crítico, entender `len` e `cap` ajuda a otimizar.
+
+Exemplo de pré-alocação eficiente:
+
+```
+// Ruim: muitas realocações var s []int for i := 0; i < 1000; i++ {     s = append(s, i) }
+// Bom: aloca uma vez s := make([]int, 0, 1000) for i := 0; i < 1000; i++ {     s = append(s, i) }
+```
+
+## Conclusão
+
+Slices são uma das estruturas mais importantes em Go. Eles combinam flexibilidade, eficiência e simplicidade, mas exigem entendimento sobre como funcionam por baixo dos panos, especialmente em relação a capacidade, realocação e compartilhamento de memória.
+
+Dominar slices é fundamental para escrever código Go eficiente e evitar bugs sutis relacionados a referências e modificações inesperadas.
