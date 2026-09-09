@@ -24,14 +24,11 @@ Existem várias formas de criar slices em Go:
 
 ```go
 // Slice vazio
-s1 := []int{}
-// Slice com valores iniciais
-s2 := []int{1, 2, 3, 4, 5}
-// Usando make (tamanho e capacidade)
+s1 := []int{} // Slice com valores iniciais
+s2 := []int{1, 2, 3, 4, 5} // Usando make (tamanho e capacidade)
 s3 := make([]int, 5) // tamanho 5, capacidade 5
 s4 := make([]int, 3, 10) // tamanho 3, capacidade 10
-// A partir de um array
-arr := [5]int{1, 2, 3, 4, 5}
+arr := [5]int{1, 2, 3, 4, 5} // A partir de um array
 s5 := arr[1:4] // slice do índice 1 ao 3
 ```
 
