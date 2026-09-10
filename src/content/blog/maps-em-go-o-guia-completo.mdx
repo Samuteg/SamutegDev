@@ -1,0 +1,210 @@
+---
+title: 'Maps em Go: o guia completo'
+description: >-
+  Se você já usou dicionários em Python, HashMaps em Java ou objetos em
+  JavaScript, vai se sentir familiar com maps, mas há algumas particularidades
+  importantes em Go.
+pubDate: 2026-09-09
+heroImage: ../../assets/maps-em-go-o-guia-completo/heroImage.jpg
+---
+Maps em Go são estruturas de dados que armazenam pares de chave e valor, permitindo acesso rápido aos dados através de uma chave única. Eles são essenciais para organizar informações de forma eficiente e aparecem em praticamente todos os projetos reais em Go.
+
+## O que é um map
+
+Um map é uma coleção não ordenada de pares chave-valor, onde cada chave é única. Em Go, a sintaxe básica é:
+
+```go
+var m map [string]int
+```
+
+Isso declara um map onde as chaves são strings e os valores são inteiros. Porém, antes de usar, você precisa inicializá-lo.
+
+## Criando e inicializando maps
+
+Existem várias formas de criar maps em Go:
+
+```go
+// Usando make
+m1 := make(`**`map`**`[string]int) m1["nome"] = 25
+// Com valores iniciais
+m2 := map [string]int{     
+    "idade": 30,     
+    "anos":  5, 
+}
+// Map vazio
+m3 := map [string]int{} 
+// Map com tipos diferentes
+m4 := map [string]string{     
+    "nome":  "João",     
+    "email": "joao@email.com", 
+}
+```
+
+A função `make` é útil quando você vai adicionar elementos gradualmente. Já a sintaxe com valores iniciais é prática quando você já conhece os dados.
+
+## Adicionando e acessando elementos
+
+Para adicionar ou modificar elementos, use a sintaxe de indexação:
+
+```go
+m := make(map [string]int)// Adicionar
+m["idade"] = 25 
+m["anos"] = 10// Acessar
+fmt.Println(m["idade"])// 25
+m["idade"] = 26 // Modificar 
+fmt.Println(m["idade"])// 26
+```
+
+Se você acessar uma chave que não existe, o map retorna o valor zero do tipo:
+
+```go
+fmt.Println(m["inexistente"])// 0 (valor zero de int)
+```
+
+## Verificando se uma chave existe
+
+Uma particularidade importante dos maps em Go é que você pode verificar se uma chave existe usando um segundo valor de retorno:
+
+```go
+m := map [string]int{
+     "idade": 25, 
+}  
+valor, existe := m["idade"] fmt.Println(valor, existe)// 25 true 
+valor, existe = m["nome"] fmt.Println(valor, existe)// 0 false
+```
+
+Isso é muito útil para evitar confusão entre um valor zero legítimo e uma chave inexistente.
+
+## Removendo elementos
+
+Para remover uma chave do map, use a função `delete`:
+
+```go
+m := map [string]int{     "idade": 25,     "anos":  10, }  
+delete(m, "anos") 
+fmt.Println(m)// map[25]
+// Se a chave não existir, delete não faz nada
+delete(m, "inexistente")
+```
+
+O `delete` não retorna nada e não causa erro se a chave não existir.
+
+## Iterando sobre maps
+
+Para percorrer um map, use o `for` com `range`:
+
+```go
+m := map [string]int{
+     "idade": 25,     
+     "anos":  10,     
+     "pontos": 100, 
+}
+
+for chave, valor := range m {     
+ fmt.Printf("%s: %d\n", chave, valor) 
+}
+```
+
+Se você só precisa das chaves, pode ignorar o valor:
+
+```go
+for chave := range m {     fmt.Println(chave) }
+```
+
+**Importante**: maps em Go não mantêm ordem. A ordem de iteração é aleatória e pode mudar entre execuções.
+
+## Maps como referências
+
+Maps em Go são referências. Isso significa que quando você passa um map para uma função, está passando uma referência para o mesmo map:
+
+```go
+func modifica(m map [string]int) {
+     m["novo"] = 999 
+}
+func main() {     
+     m := map [string]int{"idade": 25}     
+     modifica(m)     
+     fmt.Println(m["novo"]) // 999 
+}
+```
+
+Isso é eficiente, mas exige cuidado para não causar efeitos colaterais inesperados.
+
+## Tipos de chaves e valores
+
+Maps em Go são flexíveis quanto aos tipos:
+
+```go
+// Chave string, valor int
+m1 := map [string]int{} // Chave int, valor string
+m2 := map [int]string{}// Chave string, valor slice
+m3 := map [string][]int{} // Chave string, valor struct type Pessoa struct {   Nome  string     Idade int } 
+m4 := map [string]Pessoa{}// Map de maps m5 := map [string]map [string]int{}
+```
+
+A única restrição é que **as chaves devem ser tipos comparáveis**. Tipos como slices, maps e functions não podem ser chaves porque não suportam comparação com `==`.
+
+## Verificando se um map é nil
+
+Um map não inicializado tem valor `nil`:
+
+```go
+var m map [string]int fmt.Println(m == nil)// true
+// Tentar usar um map nil causa panic
+// m["chave"] = 1  // panic!
+// Inicialize antes de usar m = make(map[string]int) m["chave"] = 1
+```
+
+Sempre inicialize um map antes de adicionar elementos.
+
+## Boas práticas
+
+Algumas dicas para trabalhar bem com maps:
+
+* **Sempre inicialize**: use `make` ou sintaxe literal antes de adicionar elementos.
+* **Verifique existência**: use o segundo valor de retorno para checar se uma chave existe.
+* **Cuidado com ordem**: maps não mantêm ordem de inserção.
+* **Evite chaves não comparáveis**: slices, maps e functions não podem ser chaves.
+* **Use tipos adequados**: escolha tipos de chave e valor que façam sentido para seu caso.
+
+Exemplo de verificação segura:
+
+```go
+if valor, existe := m["chave"]; existe {     
+ fmt.Println("Valor:", valor) 
+} else {     
+ fmt.Println("Chave não existe") 
+}
+
+```
+
+## Exemplo prático
+
+Um caso comum de uso é contar ocorrências:
+
+```go
+func contarPalavras(texto string) map[string]int {     
+ palavras := strings.Fields(texto)     
+ contagem := make(map [string]int)
+ for _, palavra := range palavras {
+   contagem[palavra]++     
+ }
+ return contagem 
+}
+
+func main() {     
+ texto := "go é bom go é rápido"     
+ resultado := contarPalavras(texto)
+ 
+ for palavra, qtd := range resultado {         
+   fmt.Printf("%s: %d\n", palavra, qtd)    
+ } 
+}
+
+```
+
+## Conclusão
+
+Maps são uma das estruturas mais úteis em Go. Eles oferecem acesso rápido a dados através de chaves, são flexíveis quanto aos tipos e fáceis de usar. Porém, exigem atenção em relação à inicialização, ordem não garantida e tipos de chaves comparáveis.
+
+Dominar maps é essencial para escrever código Go eficiente e organizar dados de forma clara e performática.
