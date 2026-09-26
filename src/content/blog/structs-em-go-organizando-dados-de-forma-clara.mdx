@@ -1,0 +1,352 @@
+---
+title: 'Structs em Go: organizando dados de forma clara'
+description: >-
+  Structs são uma das principais ferramentas de Go para representar entidades e
+  agrupar diferentes tipos de dados em uma única estrutura. Elas são muito
+  usadas em APIs, sistemas backend, bancos de dados e praticamente qualquer
+  projeto que precise modelar informações.
+pubDate: 2026-09-25
+heroImage: ../../assets/structs-em-go-organizando-dados-de-forma-clara/heroImage.jpg
+---
+Para quem já estudou classes em Java, uma `struct` pode parecer familiar. Porém, Go não utiliza classes da mesma forma: em vez disso, combina structs, funções e métodos para criar estruturas organizadas e reutilizáveis.
+
+## O que é uma struct
+
+Uma struct é um tipo composto formado por campos. Cada campo possui um nome e um tipo:
+
+```go
+type Usuario struct {     
+  Nome  string     
+  Email string     
+  Idade int 
+}
+```
+
+Nesse exemplo, `Usuario` possui três campos: `Nome`, `Email` e `Idade`.
+
+Depois de criar o tipo, podemos instanciá-lo:
+
+```go
+usuario := Usuario {
+     Nome:  "Samuel",     
+     Email: "samuel@example.com",     
+     Idade: 16, 
+}  
+
+fmt.Println(usuario.Nome)
+```
+
+Usar os nomes dos campos deixa a criação mais clara e reduz o risco de preencher os valores na ordem errada.
+
+## Criando structs
+
+Existem várias formas de criar uma struct:
+
+```go
+// Literal nomeado 
+u1 := Usuario{     
+  Nome:  "Ana",     
+  Email: "ana@example.com",     
+  Idade: 18, }  
+// Literal posicional 
+u2 := Usuario{"Carlos", "carlos@example.com", 20}  
+// Struct com valores padrão 
+var u3 Usuario
+```
+
+A forma nomeada costuma ser a mais recomendada, porque continua legível mesmo quando a struct possui muitos campos.
+
+Quando uma struct é criada sem valores, seus campos recebem os valores zero de seus tipos:
+
+```go
+var usuario Usuario  
+fmt.Println(usuario.Nome)  // ""
+fmt.Println(usuario.Idade) // 0
+```
+
+## Acessando e alterando campos
+
+Os campos são acessados usando o operador `.`:
+
+```go
+usuario := Usuario {     
+  Nome:  "João",     
+  Email: "joao@example.com",     
+  Idade: 21, 
+}  
+
+usuario.Idade = 22 
+usuario.Email = "novo@example.com"  
+fmt.Println(usuario)
+```
+
+Também é possível acessar os campos por meio de um ponteiro para a struct. Go permite usar a mesma notação:
+
+```go
+usuario := &Usuario{     
+  Nome:  "Maria",     
+  Email: "maria@example.com",     
+  Idade: 25, 
+}  
+
+usuario.Idade++ 
+fmt.Println(usuario.Idade)
+```
+
+O compilador faz automaticamente a desreferenciação nesse caso.
+
+## Structs e funções
+
+Structs podem ser passadas para funções como qualquer outro valor:
+
+```go
+func exibirUsuario(usuario Usuario) {     
+  fmt.Printf("%s - %s\n", usuario.Nome, usuario.Email) 
+}
+```
+
+Nesse caso, a struct é copiada. Se a estrutura for grande ou precisar ser modificada, é comum usar um ponteiro:
+
+```go
+
+func aumentarIdade(usuario *Usuario) {
+     usuario.Idade++ 
+}  
+func main() {     
+  usuario := Usuario{         
+    Nome:  "Lucas",         
+    Idade: 17,     
+  }      
+  aumentarIdade(&usuario)     
+  fmt.Println(usuario.Idade) 
+}
+
+```
+
+Usar um ponteiro permite alterar a struct original sem criar uma cópia completa.
+
+## Métodos em structs
+
+Go permite associar métodos a structs. Um método é uma função que possui um receptor:
+
+```go
+type Usuario struct {     
+  Nome  string
+  Idade int
+}
+
+func (u Usuario) Apresentar() string {
+  return fmt.Sprintf("Olá, meu nome é %s", u.Nome) 
+}
+```
+
+Uso:
+
+```go
+usuario := Usuario{
+     Nome:  "Samuel",
+     Idade: 16,
+}  
+
+fmt.Println(usuario.Apresentar())
+```
+
+Quando o método não precisa alterar a struct, um receptor por valor pode ser suficiente.
+
+Para modificar os dados originais, use um receptor ponteiro:
+
+```go
+func (u *Usuario) FazerAniversario() {
+     u.Idade++ 
+}
+```
+
+Agora:
+
+```go
+usuario.FazerAniversario() 
+fmt.Println(usuario.Idade)
+```
+
+## Structs anônimas
+
+Também é possível criar structs sem declarar um tipo com nome:
+
+```go
+produto := struct {
+     Nome  string
+     Preco float64
+ }{     
+     Nome:  "Teclado",     
+     Preco: 149.90,
+}
+```
+
+Structs anônimas são úteis para dados temporários, testes ou respostas específicas de uma função.
+
+## Structs aninhadas
+
+Uma struct pode conter outra struct como campo:
+
+```go
+type Endereco struct {
+     Rua    string
+     Cidade string 
+}  
+
+type Usuario struct {
+     Nome      string
+     Email     string
+     Endereco  Endereco
+}
+```
+
+Uso:
+
+```go
+usuario := Usuario{
+     Nome: "Pedro",
+     Endereco: Endereco{
+         Rua:    "Rua Principal",
+         Cidade: "São Paulo",
+     }, 
+}  
+fmt.Println(usuario.Endereco.Cidade)
+```
+
+Essa abordagem ajuda a organizar modelos maiores sem deixar todos os campos misturados.
+
+## Tags em structs
+
+Tags são metadados associados aos campos. Elas são muito usadas para converter structs para JSON, validar dados e mapear registros de banco de dados:
+
+```go
+type Usuario struct {
+     Nome  string json:"nome"
+     Email string json:"email"
+     Idade int    json:"idade" 
+}
+```
+
+Com isso, o JSON gerado pode usar nomes em minúsculo:
+
+```go
+usuario := Usuario{
+     Nome:  "Ana",
+     Email: "ana@example.com",
+     Idade: 18, 
+}  
+
+dados, err := json.Marshal(usuario) 
+
+if err != nil {
+     log.Fatal(err)
+}  
+
+fmt.Println(string(dados))
+```
+
+Resultado:
+
+```json
+{"nome":"Ana","email":"ana@example.com","idade":18}
+```
+
+Tags são especialmente importantes em APIs backend escritas em Go.
+
+## Exportação de campos
+
+Em Go, um campo ou tipo começa com letra maiúscula quando é exportado e pode ser acessado por outros pacotes:
+
+```go
+type Usuario struct {
+     Nome  string // Exportado
+     email string // Não exportado 
+}
+```
+
+type Usuario struct \{     Nome  string // Exportado     email string // Não exportado }
+
+O campo `Nome` pode ser acessado fora do pacote. Já `email` fica restrito ao pacote onde foi declarado.
+
+Essa regra também se aplica ao próprio nome da struct e aos métodos.
+
+## Structs e interfaces
+
+Structs podem implementar interfaces implicitamente. Não é necessário declarar algo como `implements`.
+
+```go
+type Imprimivel interface {
+     Imprimir() string
+}  
+
+type Produto struct {
+     Nome  string
+     Preco float64 
+}  
+
+func (p Produto) Imprimir() string {
+     return fmt.Sprintf("%s - R$ %.2f", p.Nome, p.Preco) 
+}
+```
+
+Como `Produto` possui o método exigido pela interface, ele pode ser usado como `Imprimivel`:
+
+```go
+func mostrar(item Imprimivel) {
+     fmt.Println(item.Imprimir()) 
+}  
+
+produto := Produto{
+     Nome:  "Mouse",
+    Preco: 89.90, 
+}
+  
+mostrar(produto)
+```
+
+## Comparação entre structs
+
+Uma struct pode ser comparada com `==` quando todos os seus campos também forem comparáveis:
+
+```go
+type Ponto struct {
+     X int
+     Y int 
+}  
+p1 := Ponto{X: 1, Y: 2} 
+p2 := Ponto{X: 1, Y: 2}  
+fmt.Println(p1 == p2) // true
+```
+
+Porém, structs que contêm slices, maps ou funções não podem ser comparadas diretamente com `==`.
+
+## Exemplo em uma API
+
+Structs são muito utilizadas para representar requisições e respostas HTTP:
+
+```go
+type CriarJogoRequest struct {
+     Nome        string `json:"nome"`
+     Descricao   string `json:"descricao"`
+     CategoriaID int    `json:"categoria_id"` 
+}  
+
+type JogoResponse struct {
+     ID        int    `json:"id"`
+     Nome      string `json:"nome"`
+     Publicado bool   `json:"publicado"` 
+}
+```
+
+
+
+Essa separação ajuda a evitar que o modelo do banco seja exposto diretamente pela API e deixa o código mais organizado.
+
+## Conclusão
+
+Structs são fundamentais em Go porque permitem representar dados de maneira simples, explícita e eficiente. Elas podem ser combinadas com métodos, ponteiros, interfaces, tags e outras structs para construir aplicações completas.
+
+No desenvolvimento backend, especialmente em APIs e sistemas que utilizam banco de dados, praticamente tudo pode ser modelado com structs: usuários, jogos, categorias, wallets, respostas, requisições e configurações.
+
+Entender bem esse recurso é um passo importante para escrever código Go mais organizado e avançar na construção de projetos maiores.
