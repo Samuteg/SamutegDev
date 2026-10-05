@@ -3,6 +3,8 @@ import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
+import { NewsletterSection } from "../components/NewsletterSection";
+import { Reveal } from "../components/Reveal";
 import { AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 
 const allPosts = (await getCollection("blog")).sort(
@@ -14,524 +16,121 @@ const recentGrid = recentPosts.slice(0, 3);
 ---
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-    <div class="home-container">
-        <!-- ── Hero Section (centered, modern with CTAs) ── -->
-        <section class="hero fade-in-up">
-            <div class="hero-glow" aria-hidden="true"></div>
-            <div class="hero-badge">
-                <span class="hero-status-dot" aria-hidden="true"></span>
-                <span class="label-caps">Engenharia & Desenvolvimento</span>
-            </div>
-            <h1 class="display-lg hero-title">
-                Explorando a <span class="gradient-text">fronteira digital</span> através de código e criatividade.
+    <div class="mx-auto w-full max-w-7xl px-4 lg:px-8 xl:px-16">
+        <section class="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-24 text-center md:py-32">
+            <div
+                class="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-48 w-[22rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-3xl"
+                style="background: radial-gradient(ellipse, color-mix(in srgb, var(--primary) 22%, transparent) 0%, transparent 70%)"
+                aria-hidden="true"
+            ></div>
+            <span class="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 font-mono text-xs uppercase tracking-widest text-primary shadow-sm">
+                <span class="h-[7px] w-[7px] rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+                Engenharia & Desenvolvimento
+            </span>
+            <h1 class="m-0 font-display text-4xl font-extrabold leading-[1.15] tracking-tight md:text-6xl">
+                Explorando a <span class="bg-gradient-to-br from-primary via-secondary-foreground to-tertiary bg-clip-text text-transparent">fronteira digital</span> através de código e criatividade.
             </h1>
-            <p class="body-lg hero-subtitle">{SITE_DESCRIPTION}</p>
-            <div class="hero-actions">
-                <a href="/blog" class="btn-pill btn-pill-primary hero-btn">
+            <p class="mb-9 mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">{SITE_DESCRIPTION}</p>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a href="/blog" class="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground no-underline shadow-sm transition-opacity hover:opacity-90">
                     Explorar artigos
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M5 12h14" />
                         <path d="m12 5 7 7-7 7" />
                     </svg>
                 </a>
-                <a href="/about" class="btn-pill btn-pill-secondary hero-btn">
+                <a href="/about" class="inline-flex items-center gap-2 rounded-full border border-input bg-background px-6 py-3 text-sm font-medium no-underline shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground">
                     Sobre mim
                 </a>
             </div>
         </section>
 
-        <!-- ── Featured Post ── -->
-        {
-            featured && (
-                <section class="featured-section fade-in-up delay-1">
-                    <div class="section-row">
-                        <h2 class="headline-md">Destaque</h2>
-                        <div class="section-rule" />
+        {featured && (
+            <Reveal client:load>
+            <section class="flex flex-col gap-8 py-10 md:py-14">
+                <div class="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+                    <div class="flex grow flex-col items-start justify-center gap-4">
+                        <span class="inline-flex h-7 items-center rounded-full border border-input px-3 py-1 text-sm font-normal">Destaque</span>
+                        <h2 class="m-0 text-3xl font-semibold sm:text-5xl">Em destaque</h2>
                     </div>
+                    <p class="max-w-xl text-base font-normal text-muted-foreground">
+                        O artigo mais recente — tutoriais, ensaios e explorações na interseção entre tecnologia e experiência humana.
+                    </p>
+                </div>
 
-                    <a href={`/blog/${featured.id}/`} class="featured-card glass-card glow-hover">
-                        <div class="featured-image">
-                            {featured.data.heroImage && (
+                <a href={`/blog/${featured.id}/`} class="group flex flex-col gap-5 no-underline sm:col-span-2 lg:grid lg:grid-cols-2 lg:gap-8">
+                    <div class="aspect-video w-full overflow-hidden rounded-xl border border-border bg-muted">
+                        {featured.data.heroImage && (
+                            <Image
+                                width={800}
+                                height={600}
+                                src={featured.data.heroImage}
+                                alt=""
+                                loading="eager"
+                                decoding="async"
+                                class="h-full w-full object-cover object-center transition-transform duration-500 ease-in-out group-hover:scale-105"
+                            />
+                        )}
+                    </div>
+                    <div class="flex flex-col justify-center gap-4">
+                        <div class="flex items-center gap-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                            <span class="text-primary">Artigo</span>
+                            <span class="opacity-50">•</span>
+                            <FormattedDate date={featured.data.pubDate} compact />
+                        </div>
+                        <h3 class="m-0 font-display text-2xl font-semibold leading-tight transition-colors group-hover:text-primary md:text-3xl">{featured.data.title}</h3>
+                        <p class="m-0 line-clamp-3 text-muted-foreground">{featured.data.description}</p>
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-secondary text-primary">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                </svg>
+                            </div>
+                            <p class="m-0 font-mono text-xs uppercase tracking-widest">{AUTHOR}</p>
+                        </div>
+                    </div>
+                </a>
+            </section>
+            </Reveal>
+        )}
+
+        <section class="flex flex-col gap-8 py-10 md:py-14">
+            <div class="flex items-center justify-between gap-4">
+                <h2 class="m-0 font-display text-2xl font-bold tracking-tight md:text-3xl">Artigos recentes</h2>
+                <a href="/blog" class="whitespace-nowrap font-mono text-xs uppercase tracking-widest text-primary no-underline transition-colors hover:opacity-80">Ver todos →</a>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {recentGrid.map((post) => (
+                    <a href={`/blog/${post.id}/`} class="group flex h-full flex-col gap-5 no-underline">
+                        <div class="aspect-video w-full overflow-hidden rounded-xl border border-border bg-muted">
+                            {post.data.heroImage && (
                                 <Image
-                                    width={800}
-                                    height={600}
-                                    src={featured.data.heroImage}
+                                    width={600}
+                                    height={400}
+                                    src={post.data.heroImage}
                                     alt=""
-                                    loading="eager"
+                                    loading="lazy"
                                     decoding="async"
-                                    class="featured-img"
+                                    class="h-full w-full object-cover object-center transition-transform duration-500 ease-in-out group-hover:scale-105"
                                 />
                             )}
                         </div>
-                        <div class="featured-content">
-                            <div class="post-meta-row">
-                                <span class="label-caps text-accent">Artigo</span>
-                                <span class="label-caps meta-dot">•</span>
-                                <span class="label-caps">
-                                    <FormattedDate date={featured.data.pubDate} compact />
-                                </span>
+                        <div class="flex flex-col gap-2">
+                            <div class="flex items-center gap-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                                <span class="text-tertiary">Artigo</span>
+                                <span class="opacity-50">•</span>
+                                <FormattedDate date={post.data.pubDate} compact />
                             </div>
-                            <h3 class="headline-md featured-title">{featured.data.title}</h3>
-                            <p class="featured-desc">{featured.data.description}</p>
-                            <div class="author-row">
-                                <div class="author-avatar">
-                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                                        <circle cx="12" cy="7" r="4" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="label-caps author-name">{AUTHOR}</p>
-                                </div>
-                            </div>
+                            <h3 class="m-0 line-clamp-2 font-display text-xl font-semibold leading-snug transition-colors group-hover:text-primary">{post.data.title}</h3>
+                            <p class="m-0 line-clamp-2 text-[0.95rem] text-muted-foreground">{post.data.description}</p>
                         </div>
                     </a>
-                </section>
-            )
-        }
-
-        <!-- ── Recent Posts Grid ── -->
-        <section class="recent-section fade-in-up delay-2">
-            <div class="section-row">
-                <h2 class="headline-md">Artigos recentes</h2>
-                <a href="/blog" class="label-caps view-all">Ver todos →</a>
-            </div>
-
-            <div class="posts-grid">
-                {
-                    recentGrid.map((post) => (
-                        <a href={`/blog/${post.id}/`} class="post-card glass-card glow-hover">
-                            <div class="post-card-image">
-                                {post.data.heroImage && (
-                                    <Image
-                                        width={600}
-                                        height={400}
-                                        src={post.data.heroImage}
-                                        alt=""
-                                        loading="lazy"
-                                        decoding="async"
-                                        class="post-card-img"
-                                    />
-                                )}
-                            </div>
-                            <div class="post-card-body">
-                                <div class="post-meta-row">
-                                    <span class="label-caps text-tertiary">Artigo</span>
-                                    <span class="label-caps meta-dot">•</span>
-                                    <span class="label-caps">
-                                        <FormattedDate date={post.data.pubDate} compact />
-                                    </span>
-                                </div>
-                                <h3 class="headline-sm post-card-title">{post.data.title}</h3>
-                                <p class="post-card-desc">{post.data.description}</p>
-                            </div>
-                        </a>
-                    ))
-                }
+                ))}
             </div>
         </section>
 
-        <!-- ── Newsletter Section ── -->
-        <section class="newsletter-section fade-in-up delay-3">
-            <div class="newsletter-card glass-card glow-hover">
-                <svg class="newsletter-icon" viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect width="20" height="16" x="2" y="4" rx="2" />
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                </svg>
-                <h2 class="headline-md">Fique por dentro</h2>
-                <p class="body-lg newsletter-desc">
-                    Receba uma notificação quando eu publicar novos artigos. Sem spam, cancele quando quiser.
-                </p>
-                <form
-                    class="newsletter-form"
-                    action="https://formspree.io/f/mgojzqob"
-                    method="POST"
-                >
-                    <input type="hidden" name="_subject" value="Nova inscrição na newsletter" />
-                    <input type="checkbox" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none !important; position:absolute; left:-9999px;" />
-                    <input
-                        type="email"
-                        name="email"
-                        class="newsletter-input"
-                        placeholder="seu@email.com"
-                        required
-                        aria-label="Email"
-                    />
-                    <button type="submit" class="btn-pill btn-pill-primary newsletter-submit">
-                        Inscrever
-                    </button>
-                </form>
-            </div>
-        </section>
+        <NewsletterSection client:load />
     </div>
-
-    <style>
-        .home-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            padding: 0 2.5rem;
-        }
-
-        /* ── Hero (centered modern) ── */
-        .hero {
-            position: relative;
-            text-align: center;
-            padding: 6rem 0 4rem 0;
-            margin-bottom: 7rem;
-            max-width: 52rem;
-            margin-left: auto;
-            margin-right: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .hero-glow {
-            position: absolute;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 22rem;
-            height: 12rem;
-            background: radial-gradient(
-                ellipse,
-                rgba(var(--accent-rgb), 0.22) 0%,
-                rgba(99, 102, 241, 0.12) 40%,
-                transparent 70%
-            );
-            filter: blur(48px);
-            pointer-events: none;
-            z-index: -1;
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.4rem 1rem;
-            border-radius: 9999px;
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(var(--glass-blur));
-            margin-bottom: 1.75rem;
-            color: var(--accent-color);
-            box-shadow: var(--shadow-sm);
-        }
-        .hero-status-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 9999px;
-            background: #22c55e;
-            box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
-            animation: pulse-dot 2s infinite ease-in-out;
-        }
-        @keyframes pulse-dot {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.3);
-                opacity: 0.6;
-            }
-        }
-        .hero-title {
-            margin: 0 0 1.5rem 0;
-            line-height: 1.15;
-            letter-spacing: -0.02em;
-        }
-        .gradient-text {
-            background: linear-gradient(
-                135deg,
-                var(--accent-color) 0%,
-                var(--accent-secondary) 50%,
-                var(--accent-tertiary) 100%
-            );
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .text-accent { color: var(--accent-color); }
-        .text-tertiary { color: var(--accent-tertiary); }
-        .hero-subtitle {
-            color: var(--text-muted);
-            margin: 0 0 2.25rem 0;
-            max-width: 38rem;
-            line-height: 1.6;
-        }
-        .hero-actions {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .hero-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            font-size: 0.95rem;
-            padding: 0.75rem 1.5rem;
-        }
-
-        /* ── Section rows ── */
-        .featured-section,
-        .recent-section {
-            margin-bottom: 8rem;
-        }
-        .section-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .section-row h2 {
-            margin: 0;
-        }
-        .section-rule {
-            flex: 1;
-            height: 4px;
-            background: var(--accent-color);
-            border-radius: 9999px;
-            max-width: 4rem;
-        }
-        .view-all {
-            color: var(--accent-color);
-            text-decoration: none;
-            transition: color var(--transition-fast);
-            white-space: nowrap;
-        }
-        .view-all:hover {
-            color: var(--accent-hover);
-        }
-
-        .post-meta-row {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        .meta-dot {
-            color: var(--text-muted);
-            opacity: 0.5;
-        }
-
-        /* ── Featured card ── */
-        .featured-card {
-            display: grid;
-            grid-template-columns: 1fr;
-            border-radius: var(--border-radius-xl);
-            overflow: hidden;
-            text-decoration: none;
-            color: inherit;
-        }
-        .featured-image {
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            background: var(--bg-subtle);
-        }
-        .featured-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border: none;
-            border-radius: 0;
-            transition: transform 0.7s ease;
-        }
-        .featured-card:hover .featured-img {
-            transform: scale(1.05);
-        }
-        .featured-content {
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .featured-title {
-            margin: 0 0 1rem 0;
-            transition: color var(--transition-fast);
-        }
-        .featured-card:hover .featured-title {
-            color: var(--accent-color);
-        }
-        .featured-desc {
-            color: var(--text-muted);
-            margin: 0 0 1.5rem 0;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .author-row {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        .author-avatar {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 9999px;
-            background: var(--accent-subtle);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-color);
-            flex-shrink: 0;
-        }
-        .author-name {
-            color: var(--text-color);
-            margin: 0;
-        }
-
-        /* ── Recent posts grid ── */
-        .posts-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-            align-items: stretch;
-        }
-        .post-card {
-            border-radius: var(--border-radius-xl);
-            overflow: hidden;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .post-card-image {
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            background: var(--bg-subtle);
-        }
-        .post-card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border: none;
-            border-radius: 0;
-            transition: transform 0.7s ease;
-        }
-        .post-card:hover .post-card-img {
-            transform: scale(1.05);
-        }
-        .post-card-body {
-            padding: 1.5rem;
-        }
-        .post-card-title {
-            margin: 0 0 0.75rem 0;
-            transition: color var(--transition-fast);
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .post-card:hover .post-card-title {
-            color: var(--accent-color);
-        }
-        .post-card-desc {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin: 0;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        /* ── Newsletter ── */
-        .newsletter-section {
-            margin-bottom: 4rem;
-        }
-        .newsletter-card {
-            border-radius: var(--border-radius-xl);
-            padding: 2rem;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .newsletter-icon {
-            color: var(--accent-color);
-            margin-bottom: 1.5rem;
-        }
-        .newsletter-card h2 {
-            margin: 0 0 1rem 0;
-        }
-        .newsletter-desc {
-            color: var(--text-muted);
-            max-width: 32rem;
-            margin: 0 0 2rem 0;
-        }
-        .newsletter-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            width: 100%;
-            max-width: 28rem;
-        }
-        .newsletter-input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border-radius: var(--border-radius-md);
-            background: var(--bg-subtle);
-            border: 1px solid var(--glass-border);
-            color: var(--text-color);
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
-            transition: border-color var(--transition-fast);
-        }
-        .newsletter-input:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-        .newsletter-submit {
-            white-space: nowrap;
-        }
-
-        /* ── Responsive ── */
-        @media (min-width: 768px) {
-            .posts-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .newsletter-form {
-                flex-direction: row;
-            }
-            .newsletter-card {
-                padding: 3rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .featured-card {
-                grid-template-columns: 1fr 1fr;
-            }
-            .featured-image {
-                aspect-ratio: auto;
-                min-height: 100%;
-            }
-            .featured-content {
-                padding: 3rem;
-            }
-            .posts-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 767px) {
-            .home-container {
-                padding: 0 1rem;
-            }
-            .hero {
-                padding: 3rem 0;
-                margin-bottom: 4rem;
-            }
-            .featured-section,
-            .recent-section {
-                margin-bottom: 4rem;
-            }
-        }
-    </style>
 </BaseLayout>

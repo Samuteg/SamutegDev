@@ -8,419 +8,174 @@ import { SITE_TITLE, SOCIAL_LINKS } from "../consts";
 <BaseLayout
     title={`Sobre | ${SITE_TITLE}`}
     description="Conheça quem está por trás do SamutegDev."
-    hideScrollProgress={true}
 >
-    <!-- ── Hero Section (7/5 grid) ── -->
-    <section class="about-hero">
-        <div class="hero-text fade-in-up">
-            <p class="label-caps hero-label">O Curador</p>
-            <h1 class="display-lg hero-title">
-                Documentando o aprendizado entre o
-                <span class="text-accent">código</span> e a prática.
-            </h1>
-            <p class="body-lg hero-subtitle">
-                Sou um desenvolvedor focado na experiência humana com a
-                tecnologia. Através do SamutegDev, exploro a convergência entre
-                ferramentas emergentes, estética minimalista e os pequenos
-                aprendizados do dia a dia.
-            </p>
-            <div class="hero-ctas">
-                <a href="#contato" class="btn-pill btn-pill-primary">Entrar em contato</a>
-                <a href="/blog" class="btn-pill btn-pill-ghost">Ler artigos</a>
-            </div>
-        </div>
-
-        <div class="hero-image-wrap fade-in-up delay-1">
-            <div class="orb orb-primary" style="top:-3rem;right:-3rem;width:16rem;height:16rem;"></div>
-            <div class="orb orb-tertiary" style="bottom:-2rem;left:-2rem;width:12rem;height:12rem;"></div>
-            <div class="hero-image glass-card">
-                <Image
-                    width={800}
-                    height={800}
-                    src={AboutHeroImage}
-                    alt="Foto de perfil"
-                    loading="lazy"
-                    decoding="async"
-                />
-            </div>
-        </div>
-    </section>
-
-    <!-- ── Values / Bento Grid ── -->
-    <section class="values-section">
-        <div class="values-header">
-            <h2 class="headline-md">Fundação &amp; Foco</h2>
-            <div class="section-divider section-divider--center"></div>
-        </div>
-
-        <div class="bento-grid">
-            <article class="glass-card glow-hover bento-card bento-card--wide">
-                <svg class="bento-icon text-accent" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/>
-                    <path d="M9 9v.01M9 12v.01M9 15v.01M9 18v.01"/>
-                </svg>
-                <h3 class="headline-sm">Filosofia</h3>
-                <p>
-                    Boa documentação não é sobre complexidade — é sobre
-                    clareza. Meu trabalho centra-se em eliminar o ruído para
-                    encontrar a essência de cada ferramenta ou conceito. Cada
-                    artigo aqui é um compromisso com essa intencionalidade.
+    <div class="mx-auto w-full max-w-7xl px-4 py-20 lg:px-8 md:py-32">
+        <section class="mb-32 grid grid-cols-1 items-center gap-8 md:grid-cols-[7fr_5fr]">
+            <div>
+                <p class="mb-4 font-mono text-xs uppercase tracking-widest text-primary">O Curador</p>
+                <h1 class="m-0 mb-8 font-display text-4xl font-extrabold leading-tight tracking-tight md:text-6xl">
+                    Documentando o aprendizado entre o{" "}
+                    <span class="text-primary">código</span> e a prática.
+                </h1>
+                <p class="mb-12 max-w-xl text-lg leading-relaxed text-muted-foreground">
+                    Sou um desenvolvedor focado na experiência humana com a
+                    tecnologia. Através do SamutegDev, exploro a convergência entre
+                    ferramentas emergentes, estética minimalista e os pequenos
+                    aprendizados do dia a dia.
                 </p>
-            </article>
-
-            <article class="glass-card glow-hover bento-card">
-                <svg class="bento-icon text-tertiary" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                </svg>
-                <h3 class="headline-sm">Performance</h3>
-                <p>
-                    Velocidade é uma funcionalidade. Otimo para uma web sem
-                    atrito.
-                </p>
-            </article>
-
-            <article class="glass-card glow-hover bento-card">
-                <svg class="bento-icon text-secondary" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>
-                    <circle cx="12" cy="12" r="3"/>
-                </svg>
-                <h3 class="headline-sm">Stack</h3>
-                <ul class="stack-list label-caps">
-                    <li><span class="bullet"></span>TypeScript &amp; React</li>
-                    <li><span class="bullet"></span>Astro &amp; Design Systems</li>
-                    <li><span class="bullet"></span>Linux &amp; Automação</li>
-                    <li><span class="bullet"></span>Creative Coding</li>
-                </ul>
-            </article>
-
-            <article class="glass-card glow-hover bento-card bento-card--wide">
-                <svg class="bento-icon text-accent" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
-                    <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
-                </svg>
-                <h3 class="headline-sm">Curiosidade Intelectual</h3>
-                <p>
-                    Além da tela, passo meu tempo explorando arte generativa,
-                    lendo ficção especulativa e estudando o impacto psicológico
-                    dos algoritmos na atenção moderna. Esses interesses alimentam
-                    os ensaios que você encontra na seção de artigos.
-                </p>
-            </article>
-        </div>
-    </section>
-
-    <!-- ── Contact Section ── -->
-    <section class="contact-section" id="contato">
-        <div class="contact-text">
-            <h2 class="headline-md">
-                Vamos construir algo <span class="text-tertiary">significativo</span>.
-            </h2>
-            <p class="body-lg">
-                Tem um projeto em mente, uma dúvida sobre algum artigo ou quer
-                apenas conversar sobre o futuro da web? Minha caixa de entrada
-                está sempre aberta.
-            </p>
-
-            <div class="contact-links">
-                <a href="mailto:hello@samuteg.dev" class="contact-link">
-                    <span class="contact-icon">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <rect width="20" height="16" x="2" y="4" rx="2"/>
-                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                        </svg>
-                    </span>
-                    <span class="label-caps">samuneveslopes@gmail.com</span>
-                </a>
-                <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" class="contact-link">
-                    <span class="contact-icon">
-                        <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true">
-                            <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                        </svg>
-                    </span>
-                    <span class="label-caps">@samuteg</span>
-                </a>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#contato" class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 font-mono text-xs uppercase tracking-widest text-primary-foreground no-underline transition-opacity hover:opacity-90">Entrar em contato</a>
+                    <a href="/blog" class="inline-flex items-center justify-center rounded-full border border-input bg-background px-6 py-3 font-mono text-xs uppercase tracking-widest no-underline transition-colors hover:bg-accent hover:text-accent-foreground">Ler artigos</a>
+                </div>
             </div>
-        </div>
 
-        <div class="glass-card contact-form-wrap">
-            <form
-                id="contact-form"
-                method="POST"
-                action="https://formspree.io/f/mgojzqob"
-                class="contact-form"
-                novalidate
-            >
-                <input type="checkbox" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none !important; position:absolute; left:-9999px;" />
-                <input type="hidden" name="_next" value="/obrigado-comentario" />
-
-                <div class="form-field">
-                    <label for="contact-name" class="label-caps">Nome</label>
-                    <input type="text" name="name" id="contact-name" placeholder="Seu nome" required />
+            <div class="relative">
+                <div class="pointer-events-none absolute -right-12 -top-12 h-64 w-64 rounded-full opacity-60 blur-3xl" style="background: color-mix(in srgb, var(--primary) 15%, transparent)" aria-hidden="true"></div>
+                <div class="pointer-events-none absolute -bottom-8 -left-8 h-48 w-48 rounded-full opacity-60 blur-3xl" style="background: color-mix(in srgb, var(--tertiary) 15%, transparent)" aria-hidden="true"></div>
+                <div class="relative z-10 aspect-square overflow-hidden rounded-3xl border border-border">
+                    <Image
+                        width={800}
+                        height={800}
+                        src={AboutHeroImage}
+                        alt="Foto de perfil"
+                        loading="lazy"
+                        decoding="async"
+                        class="h-full w-full object-cover grayscale transition-all duration-700 hover:grayscale-0"
+                    />
                 </div>
+            </div>
+        </section>
 
-                <div class="form-field">
-                    <label for="contact-email" class="label-caps">Email</label>
-                    <input type="email" name="email" id="contact-email" placeholder="email@exemplo.com" required />
+        <section class="mb-32">
+            <div class="mb-16 text-center">
+                <h2 class="m-0 font-display text-2xl font-bold tracking-tight md:text-3xl">Fundação &amp; Foco</h2>
+                <div class="mx-auto mb-0 mt-4 h-1 w-24 rounded-full bg-primary"></div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                <article class="flex flex-col rounded-3xl border border-border bg-card p-8 transition-colors hover:border-primary md:col-span-2">
+                    <svg class="mb-6 text-primary" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/>
+                        <path d="M9 9v.01M9 12v.01M9 15v.01M9 18v.01"/>
+                    </svg>
+                    <h3 class="m-0 mb-4 text-2xl font-semibold">Filosofia</h3>
+                    <p class="m-0 text-muted-foreground">
+                        Boa documentação não é sobre complexidade — é sobre
+                        clareza. Meu trabalho centra-se em eliminar o ruído para
+                        encontrar a essência de cada ferramenta ou conceito. Cada
+                        artigo aqui é um compromisso com essa intencionalidade.
+                    </p>
+                </article>
+
+                <article class="flex flex-col rounded-3xl border border-border bg-card p-8 transition-colors hover:border-primary">
+                    <svg class="mb-6 text-tertiary" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    </svg>
+                    <h3 class="m-0 mb-4 text-2xl font-semibold">Performance</h3>
+                    <p class="m-0 text-muted-foreground">
+                        Velocidade é uma funcionalidade. Otimo para uma web sem
+                        atrito.
+                    </p>
+                </article>
+
+                <article class="flex flex-col rounded-3xl border border-border bg-card p-8 transition-colors hover:border-primary">
+                    <svg class="mb-6 text-secondary-foreground" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                    <h3 class="m-0 mb-4 text-2xl font-semibold">Stack</h3>
+                    <ul class="m-0 flex list-none flex-col gap-3 p-0 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                        <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-primary"></span>TypeScript &amp; React</li>
+                        <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-primary"></span>Astro &amp; Design Systems</li>
+                        <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-primary"></span>Linux &amp; Automação</li>
+                        <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-primary"></span>Creative Coding</li>
+                    </ul>
+                </article>
+
+                <article class="flex flex-col rounded-3xl border border-border bg-card p-8 transition-colors hover:border-primary md:col-span-2">
+                    <svg class="mb-6 text-primary" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
+                        <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
+                    </svg>
+                    <h3 class="m-0 mb-4 text-2xl font-semibold">Curiosidade Intelectual</h3>
+                    <p class="m-0 text-muted-foreground">
+                        Além da tela, passo meu tempo explorando arte generativa,
+                        lendo ficção especulativa e estudando o impacto psicológico
+                        dos algoritmos na atenção moderna. Esses interesses alimentam
+                        os ensaios que você encontra na seção de artigos.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 items-start gap-16 md:grid-cols-2" id="contato">
+            <div>
+                <h2 class="m-0 mb-6 font-display text-2xl font-bold tracking-tight md:text-3xl">
+                    Vamos construir algo <span class="text-tertiary">significativo</span>.
+                </h2>
+                <p class="m-0 mb-12 max-w-lg text-lg text-muted-foreground">
+                    Tem um projeto em mente, uma dúvida sobre algum artigo ou quer
+                    apenas conversar sobre o futuro da web? Minha caixa de entrada
+                    está sempre aberta.
+                </p>
+
+                <div class="flex flex-col gap-6">
+                    <a href="mailto:hello@samuteg.dev" class="flex cursor-pointer items-center gap-4 no-underline">
+                        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect width="20" height="16" x="2" y="4" rx="2"/>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                            </svg>
+                        </span>
+                        <span class="font-mono text-xs uppercase tracking-widest">samuneveslopes@gmail.com</span>
+                    </a>
+                    <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" class="flex cursor-pointer items-center gap-4 no-underline">
+                        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary">
+                            <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true">
+                                <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                            </svg>
+                        </span>
+                        <span class="font-mono text-xs uppercase tracking-widest">@samuteg</span>
+                    </a>
                 </div>
+            </div>
 
-                <div class="form-field">
-                    <label for="contact-message" class="label-caps">Mensagem</label>
-                    <textarea name="message" id="contact-message" rows="4" placeholder="Conte o que você tem em mente..." required></textarea>
-                </div>
+            <div class="rounded-[2rem] border border-border bg-card p-8 md:p-12">
+                <form
+                    id="contact-form"
+                    method="POST"
+                    action="https://formspree.io/f/mgojzqob"
+                    class="flex flex-col gap-6"
+                    novalidate
+                >
+                    <input type="checkbox" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none !important; position:absolute; left:-9999px;" />
+                    <input type="hidden" name="_next" value="/obrigado-comentario" />
 
-                <button type="submit" class="btn-pill btn-pill-primary contact-submit">
-                    <span class="btn-text">Enviar mensagem</span>
-                    <span class="btn-loading" hidden>Enviando…</span>
-                </button>
+                    <div class="flex flex-col gap-2">
+                        <label for="contact-name" class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Nome</label>
+                        <input type="text" name="name" id="contact-name" placeholder="Seu nome" required class="rounded-md border border-input bg-background p-4 text-base transition-colors focus:outline-none focus:ring-2 focus:ring-ring" />
+                    </div>
 
-                <div id="contact-status" class="form-status" aria-live="polite"></div>
-            </form>
-        </div>
-    </section>
+                    <div class="flex flex-col gap-2">
+                        <label for="contact-email" class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Email</label>
+                        <input type="email" name="email" id="contact-email" placeholder="email@exemplo.com" required class="rounded-md border border-input bg-background p-4 text-base transition-colors focus:outline-none focus:ring-2 focus:ring-ring" />
+                    </div>
 
-    <style slot="head">
-        /* ── About page layout ── */
-        :global(main) {
-            max-width: 1200px;
-            padding: 8rem 2.5rem 8rem;
-        }
+                    <div class="flex flex-col gap-2">
+                        <label for="contact-message" class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Mensagem</label>
+                        <textarea name="message" id="contact-message" rows="4" placeholder="Conte o que você tem em mente..." required class="rounded-md border border-input bg-background p-4 text-base transition-colors focus:outline-none focus:ring-2 focus:ring-ring"></textarea>
+                    </div>
 
-        /* ── Hero ── */
-        .about-hero {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            margin-bottom: 8rem;
-            align-items: center;
-        }
-        .hero-label {
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-        }
-        .hero-title {
-            margin: 0 0 2rem 0;
-        }
-        .text-accent { color: var(--accent-color); }
-        .text-tertiary { color: var(--accent-tertiary); }
-        .hero-subtitle {
-            color: var(--text-muted);
-            max-width: 36rem;
-            margin: 0 0 3rem 0;
-        }
-        .hero-ctas {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
+                    <button type="submit" class="inline-flex w-full items-center justify-center rounded-full bg-primary p-4 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50">
+                        <span class="btn-text">Enviar mensagem</span>
+                        <span class="btn-loading hidden">Enviando…</span>
+                    </button>
 
-        .hero-image-wrap {
-            position: relative;
-        }
-        .hero-image {
-            aspect-ratio: 1;
-            border-radius: var(--border-radius-xl);
-            overflow: hidden;
-            position: relative;
-            z-index: 1;
-        }
-        .hero-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(100%) contrast(1.1);
-            transition: filter 0.7s ease;
-        }
-        .hero-image:hover img {
-            filter: grayscale(0%) contrast(1);
-        }
-
-        /* ── Values / Bento ── */
-        .values-section {
-            margin-bottom: 8rem;
-        }
-        .values-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-        .values-header h2 { margin: 0; }
-        .bento-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-        .bento-card {
-            padding: 2rem;
-            border-radius: var(--border-radius-xl);
-            display: flex;
-            flex-direction: column;
-        }
-        .bento-icon {
-            margin-bottom: 1.5rem;
-        }
-        .bento-card h3 {
-            margin: 0 0 1rem 0;
-            font-size: 1.5rem;
-        }
-        .bento-card p {
-            margin: 0;
-            color: var(--text-muted);
-        }
-        .stack-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            color: var(--text-muted);
-        }
-        .stack-list li {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .bullet {
-            width: 0.375rem;
-            height: 0.375rem;
-            border-radius: 9999px;
-            background: var(--accent-color);
-            flex-shrink: 0;
-        }
-
-        /* ── Contact ── */
-        .contact-section {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 4rem;
-            align-items: start;
-        }
-        .contact-text h2 { margin: 0 0 1.5rem 0; }
-        .contact-text .body-lg {
-            color: var(--text-muted);
-            margin: 0 0 3rem 0;
-            max-width: 32rem;
-        }
-        .contact-links {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        .contact-link {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-            color: var(--text-color);
-        }
-        .contact-icon {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 9999px;
-            border: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-            transition: border-color var(--transition-normal), color var(--transition-normal);
-            flex-shrink: 0;
-        }
-        .contact-link:hover .contact-icon {
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-        }
-
-        .contact-form-wrap {
-            padding: 2rem;
-            border-radius: 2rem;
-        }
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        .form-field {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        .form-field label {
-            color: var(--text-muted);
-            transition: color var(--transition-fast);
-        }
-        .form-field input,
-        .form-field textarea {
-            padding: 1rem;
-            border-radius: var(--border-radius-md);
-            font-family: var(--font-sans);
-            font-size: 1rem;
-            background: var(--bg-subtle);
-            color: var(--text-color);
-            border: 1px solid var(--glass-border);
-            transition: border-color var(--transition-fast);
-        }
-        .form-field input:focus,
-        .form-field textarea:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-        .form-field:focus-within label {
-            color: var(--accent-color);
-        }
-        .contact-submit {
-            width: 100%;
-            padding: 1rem;
-        }
-        .btn-loading { display: none; }
-        .contact-submit:disabled .btn-text { display: none; }
-        .contact-submit:disabled .btn-loading { display: inline; }
-
-        .form-status {
-            padding: 0.75rem 1rem;
-            border-radius: var(--border-radius-md);
-            font-size: 0.9rem;
-            display: none;
-        }
-        .form-status.visible { display: block; }
-        .form-status.success {
-            background: var(--accent-subtle);
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-        }
-        .form-status.error {
-            background: rgba(220, 38, 38, 0.15);
-            border: 1px solid #dc2626;
-            color: #f87171;
-        }
-
-        /* ── Desktop ── */
-        @media (min-width: 768px) {
-            .about-hero {
-                grid-template-columns: 7fr 5fr;
-                gap: 2rem;
-            }
-            .bento-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .bento-card--wide {
-                grid-column: span 2;
-            }
-            .contact-section {
-                grid-template-columns: 1fr 1fr;
-                gap: 8rem;
-            }
-            .contact-form-wrap {
-                padding: 3rem;
-            }
-        }
-
-        /* ── Mobile ── */
-        @media (max-width: 767px) {
-            :global(main) {
-                padding: 5rem 1rem 5rem;
-            }
-        }
-    </style>
+                    <div id="contact-status" class="form-status hidden rounded-md p-3 text-sm" aria-live="polite"></div>
+                </form>
+            </div>
+        </section>
+    </div>
 
     <script slot="head" is:inline src="/scripts/contact.js"></script>
 </BaseLayout>

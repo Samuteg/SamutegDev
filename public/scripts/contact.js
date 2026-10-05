@@ -6,17 +6,29 @@
 (() => {
     const form = document.getElementById("contact-form");
     const statusEl = document.getElementById("contact-status");
-    const submitBtn = form?.querySelector(".contact-submit");
+    const submitBtn = form?.querySelector('button[type="submit"]');
 
     if (!form || !statusEl || !submitBtn) return;
 
+    const btnText = submitBtn.querySelector(".btn-text");
+    const btnLoading = submitBtn.querySelector(".btn-loading");
+
     function showStatus(message, type = "success") {
         statusEl.textContent = message;
-        statusEl.className = "form-status visible " + type;
+        statusEl.classList.remove("hidden");
+        statusEl.style.display = "block";
         if (type === "success") {
+            statusEl.style.background = "color-mix(in srgb, var(--primary) 12%, transparent)";
+            statusEl.style.border = "1px solid var(--primary)";
+            statusEl.style.color = "var(--primary)";
             setTimeout(() => {
-                statusEl.classList.remove("visible");
+                statusEl.classList.add("hidden");
+                statusEl.style.display = "none";
             }, 6000);
+        } else {
+            statusEl.style.background = "rgba(220, 38, 38, 0.15)";
+            statusEl.style.border = "1px solid #dc2626";
+            statusEl.style.color = "#f87171";
         }
     }
 
@@ -54,7 +66,9 @@
         }
 
         submitBtn.disabled = true;
-        statusEl.classList.remove("visible");
+        if (btnText) btnText.style.display = "none";
+        if (btnLoading) btnLoading.style.display = "inline";
+        statusEl.classList.add("hidden");
 
         const formData = new FormData(form);
         try {
@@ -86,6 +100,8 @@
             showStatus("Erro de conexão. Verifique sua internet e tente novamente.", "error");
         } finally {
             submitBtn.disabled = false;
+            if (btnText) btnText.style.display = "";
+            if (btnLoading) btnLoading.style.display = "none";
         }
     });
 })();

@@ -6,6 +6,7 @@ var setupThemeToggle = function () {
         var newTheme = isDark ? "light" : "dark";
 
         element.setAttribute("data-theme", newTheme);
+        element.classList.toggle("dark", newTheme === "dark");
         localStorage.setItem("theme", newTheme);
     };
 
@@ -24,5 +25,6 @@ document.addEventListener("astro:after-swap", function () {
         "data-theme",
         isDark ? "dark" : "light",
     );
+    document.documentElement.classList.toggle("dark", isDark);
     setupThemeToggle();
 });

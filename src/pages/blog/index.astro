@@ -5,188 +5,90 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
 
-const posts = (await getCollection("blog")).sort(
+const allPosts = (await getCollection("blog")).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+const activeTag = Astro.url.searchParams.get("tag");
+const tagsOf = (p: (typeof allPosts)[number]): string[] => (p.data as { tags?: string[] }).tags ?? [];
+const allTags = [...new Set(allPosts.flatMap((p) => tagsOf(p)))].sort();
+const posts = activeTag ? allPosts.filter((p) => tagsOf(p).includes(activeTag)) : allPosts;
 ---
 
 <BaseLayout
     title={`Blog | ${SITE_TITLE}`}
     description={SITE_DESCRIPTION}
 >
-    <div class="blog-container">
-        <!-- ── Page Header ── -->
-        <section class="page-header fade-in-up">
-            <p class="label-caps header-label">Escritos</p>
-            <h1 class="display-lg header-title">
-                Todos os <span class="text-accent">artigos</span>
+    <div class="mx-auto w-full max-w-7xl px-4 lg:px-8 xl:px-16">
+        <section class="max-w-3xl py-16 md:py-24">
+            <p class="mb-4 font-mono text-xs uppercase tracking-widest text-primary">Escritos</p>
+            <h1 class="m-0 mb-8 font-display text-4xl font-extrabold tracking-tight md:text-6xl">
+                Todos os <span class="text-primary">artigos</span>
             </h1>
-            <p class="body-lg header-intro">
+            <p class="m-0 mb-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
                 Ensaios, tutoriais e explorações na interseção entre tecnologia,
                 design e experiência humana.
             </p>
+            <nav class="flex flex-wrap gap-2" aria-label="Filtrar por tag">
+                <a
+                    href="/blog"
+                    class={`inline-flex items-center rounded-full border border-input px-3.5 py-1.5 font-mono text-xs tracking-wide no-underline transition-colors ${!activeTag ? "bg-primary border-primary text-primary-foreground" : "text-muted-foreground hover:border-primary hover:text-primary"}`}
+                >
+                    Todos
+                </a>
+                {allTags.map((tag) => (
+                    <a
+                        href={`/blog?tag=${encodeURIComponent(tag)}`}
+                        class={`inline-flex items-center rounded-full border border-input px-3.5 py-1.5 font-mono text-xs tracking-wide no-underline transition-colors ${activeTag === tag ? "bg-primary border-primary text-primary-foreground" : "text-muted-foreground hover:border-primary hover:text-primary"}`}
+                        aria-current={activeTag === tag ? "true" : undefined}
+                    >
+                        {tag}
+                    </a>
+                ))}
+            </nav>
         </section>
 
-        <!-- ── Posts Grid ── -->
-        <section class="posts-grid-section fade-in-up delay-1">
-            <div class="posts-grid">
-                {
-                    posts.map((post, i) => (
-                        <a
-                            href={`/blog/${post.id}/`}
-                            class={`post-card glass-card glow-hover fade-in-up delay-${Math.min(i + 1, 5)}`}
-                        >
-                            <div class="post-card-image">
-                                {post.data.heroImage && (
-                                    <Image
-                                        width={600}
-                                        height={400}
-                                        src={post.data.heroImage}
-                                        alt=""
-                                        loading="lazy"
-                                        decoding="async"
-                                        class="post-card-img"
-                                    />
-                                )}
+        <section class="mb-32">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {posts.map((post) => (
+                    <a
+                        href={`/blog/${post.id}/`}
+                        class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card no-underline transition-colors hover:border-primary"
+                    >
+                        <div class="aspect-video overflow-hidden bg-muted">
+                            {post.data.heroImage && (
+                                <Image
+                                    width={600}
+                                    height={400}
+                                    src={post.data.heroImage}
+                                    alt=""
+                                    loading="lazy"
+                                    decoding="async"
+                                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                />
+                            )}
+                        </div>
+                        <div class="p-6">
+                            <div class="mb-3 flex items-center gap-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                                <span class="text-primary">Artigo</span>
+                                <span class="opacity-50">•</span>
+                                <FormattedDate date={post.data.pubDate} compact />
                             </div>
-                            <div class="post-card-body">
-                                <div class="post-meta-row">
-                                    <span class="label-caps text-accent">Artigo</span>
-                                    <span class="label-caps meta-dot">•</span>
-                                    <span class="label-caps">
-                                        <FormattedDate date={post.data.pubDate} compact />
-                                    </span>
+                            <h2 class="m-0 mb-3 line-clamp-2 text-lg font-semibold leading-snug transition-colors group-hover:text-primary">
+                                {post.data.title}
+                            </h2>
+                            <p class="m-0 mb-3 line-clamp-2 text-[0.95rem] text-muted-foreground">{post.data.description}</p>
+                            {tagsOf(post).length > 0 && (
+                                <div class="flex flex-wrap gap-1.5">
+                                    {tagsOf(post).map((tag: string) => (
+                                        <span class="rounded-full border border-border bg-muted px-2 py-0.5 font-mono text-[0.7rem] tracking-wide text-muted-foreground">{tag}</span>
+                                    ))}
                                 </div>
-                                <h2 class="headline-sm post-card-title">
-                                    {post.data.title}
-                                </h2>
-                                <p class="post-card-desc">{post.data.description}</p>
-                            </div>
-                        </a>
-                    ))
-                }
+                            )}
+                        </div>
+                    </a>
+                ))}
             </div>
         </section>
     </div>
-
-    <style>
-        .blog-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            padding: 0 2.5rem;
-        }
-
-        .text-accent { color: var(--accent-color); }
-
-        /* ── Page Header ── */
-        .page-header {
-            padding: 4rem 0 8rem;
-            max-width: 48rem;
-        }
-        .header-label {
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-        }
-        .header-title {
-            margin: 0 0 2rem 0;
-        }
-        .header-intro {
-            color: var(--text-muted);
-            margin: 0;
-        }
-
-        /* ── Posts Grid ── */
-        .posts-grid-section {
-            margin-bottom: 8rem;
-        }
-        .posts-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-            align-items: stretch;
-        }
-        .post-card {
-            border-radius: var(--border-radius-xl);
-            overflow: hidden;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .post-card-image {
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            background: var(--bg-subtle);
-        }
-        .post-card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border: none;
-            border-radius: 0;
-            transition: transform 0.7s ease;
-        }
-        .post-card:hover .post-card-img {
-            transform: scale(1.05);
-        }
-        .post-card-body {
-            padding: 1.5rem;
-        }
-        .post-meta-row {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.75rem;
-        }
-        .meta-dot {
-            color: var(--text-muted);
-            opacity: 0.5;
-        }
-        .post-card-title {
-            margin: 0 0 0.75rem 0;
-            transition: color var(--transition-fast);
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .post-card:hover .post-card-title {
-            color: var(--accent-color);
-        }
-        .post-card-desc {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin: 0;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        /* ── Responsive ── */
-        @media (min-width: 768px) {
-            .posts-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (min-width: 1024px) {
-            .posts-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 767px) {
-            .blog-container {
-                padding: 0 1rem;
-            }
-            .page-header {
-                padding: 2.5rem 0 4rem;
-            }
-            .posts-grid-section {
-                margin-bottom: 4rem;
-            }
-        }
-    </style>
 </BaseLayout>

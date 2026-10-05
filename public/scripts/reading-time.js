@@ -6,9 +6,13 @@ var setupBlogPostFeatures = function () {
         var text = proseEl.innerText || proseEl.textContent || "";
         var words = text.trim().split(/\s+/).length;
         var minutes = Math.max(1, Math.ceil(words / 200));
-        readingTimeEl.textContent = minutes + " min read";
+        readingTimeEl.textContent = minutes + " min de leitura";
     }
 };
 
-setupBlogPostFeatures();
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupBlogPostFeatures);
+} else {
+    setupBlogPostFeatures();
+}
 document.addEventListener("astro:after-swap", setupBlogPostFeatures);

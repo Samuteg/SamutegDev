@@ -5,29 +5,24 @@ import ThemeToggle from "./ThemeToggle.astro";
 import { SOCIAL_LINKS } from "../consts";
 ---
 
-<header>
-    <nav>
+<header class="sticky top-0 z-50 border-b border-border bg-background/65 backdrop-blur-xl">
+    <nav class="mx-auto flex h-[65px] max-w-3xl items-center justify-between px-6 max-md:px-4">
         <Logo />
-        <div class="nav-links" id="nav-links">
+        <div class="nav-links flex gap-2" id="nav-links">
             <HeaderLink href="/">Início</HeaderLink>
             <HeaderLink href="/blog">Blog</HeaderLink>
             <HeaderLink href="/about">Sobre</HeaderLink>
         </div>
-        <div class="actions">
+        <div class="flex items-center gap-2">
             <ThemeToggle />
             <a
-                class="github-link"
+                class="github-link flex items-center justify-center rounded-md bg-transparent p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground max-md:hidden"
                 href={SOCIAL_LINKS.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
             >
-                <svg
-                    viewBox="0 0 16 16"
-                    width="18"
-                    height="18"
-                    aria-hidden="true"
-                >
+                <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true">
                     <path
                         fill="currentColor"
                         d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0016 8c0-4.42-3.58-8-8-8z"
@@ -35,141 +30,45 @@ import { SOCIAL_LINKS } from "../consts";
                 </svg>
             </a>
             <button
-                class="hamburger"
+                class="hamburger hidden h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-md border-0 bg-transparent p-0 max-md:flex"
                 id="hamburger-btn"
                 aria-label="Abrir menu"
                 aria-expanded="false"
             >
-                <span></span><span></span>
+                <span class="block h-[1.5px] w-4 bg-foreground transition-transform"></span>
+                <span class="block h-[1.5px] w-4 bg-foreground transition-transform"></span>
             </button>
         </div>
     </nav>
 </header>
 
 <style>
-    header {
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        background: var(--header-bg);
-        border-bottom: 1px solid var(--header-border);
-        transition:
-            background var(--transition-fast),
-            border-color var(--transition-fast);
-    }
-
-    @supports (backdrop-filter: blur(1px)) {
-        header {
-            backdrop-filter: blur(var(--header-blur));
-            -webkit-backdrop-filter: blur(var(--header-blur));
-        }
-    }
-
-    nav {
-        max-width: 840px;
-        margin: 0 auto;
-        padding: 0 1.5rem;
-        height: 65px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .nav-links {
-        display: flex;
-        gap: 0.5rem;
-    }
-
-    .actions {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .github-link {
-        color: var(--text-muted);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.5rem;
-        border-radius: var(--border-radius-sm);
-        transition: color var(--transition-fast), background var(--transition-fast);
-        background: transparent;
-    }
-
-    .github-link:hover {
-        color: var(--text-color);
-        background: var(--bg-subtle);
-    }
-
-    /* Hamburger (mobile) */
-    .hamburger {
-        display: none;
-        flex-direction: column;
-        justify-content: center;
-        width: 36px;
-        height: 36px;
-        background: transparent;
-        border: none;
-        border-radius: var(--border-radius-sm);
-        cursor: pointer;
-        padding: 0;
-        transition: background var(--transition-fast);
-    }
-
-    .hamburger span {
-        display: block;
-        width: 16px;
-        height: 1.5px;
-        background: var(--text-color);
-        transition: transform var(--transition-fast);
-        transform-origin: center;
-    }
-
-    .hamburger:hover {
-        background: var(--bg-subtle);
-    }
-
-    .hamburger[aria-expanded="true"] span:nth-child(1) {
-        transform: translateY(2.75px) rotate(45deg);
-    }
-
-    .hamburger[aria-expanded="true"] span:nth-child(2) {
-        transform: translateY(-2.75px) rotate(-45deg);
-    }
-
-    /* Mobile layout */
-    @media (max-width: 680px) {
-        nav {
-            padding: 0 1rem;
-        }
-        .hamburger {
-            display: flex;
-        }
+    @media (max-width: 767px) {
         .nav-links {
             position: fixed;
             top: 65px;
             left: 0;
             right: 0;
-            background: var(--glass-bg);
-            backdrop-filter: blur(var(--header-blur));
-            -webkit-backdrop-filter: blur(var(--header-blur));
             flex-direction: column;
             padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--header-border);
+            background: var(--background);
+            border-bottom: 1px solid var(--border);
             transform: translateY(-110%);
             opacity: 0;
-            transition:
-                transform var(--transition-fast),
-                opacity var(--transition-fast);
+            pointer-events: none;
+            transition: transform 0.15s ease, opacity 0.15s ease;
             z-index: 49;
         }
         .nav-links.open {
             transform: translateY(0);
             opacity: 1;
+            pointer-events: auto;
         }
-        .github-link {
-            display: none;
+        .hamburger[aria-expanded="true"] span:nth-child(1) {
+            transform: translateY(3.25px) rotate(45deg);
+        }
+        .hamburger[aria-expanded="true"] span:nth-child(2) {
+            transform: translateY(-3.25px) rotate(-45deg);
         }
     }
 </style>

@@ -1,0 +1,97 @@
+---
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+const pageUrl = Astro.url.href;
+const shareText = `${title}`;
+const xHref = `https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`;
+const linkedinHref = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;
+---
+
+<div class="share-row" aria-label="Compartilhar artigo">
+    <span class="share-label">Compartilhar</span>
+    <a class="share-btn" href={xHref} target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no X">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a class="share-btn" href={linkedinHref} target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no LinkedIn">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0"/></svg>
+    </a>
+    <button class="share-btn" type="button" data-copy-link={pageUrl} aria-label="Copiar link">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <span class="copy-feedback" aria-live="polite"></span>
+    </button>
+</div>
+
+<style>
+    .share-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 2.5rem 0 0;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+    }
+    .share-label {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted-foreground);
+        margin-right: 0.5rem;
+    }
+    .share-btn {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 9999px;
+        border: 1px solid var(--border);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted-foreground);
+        background: transparent;
+        cursor: pointer;
+        transition: border-color 0.15s ease, color 0.15s ease;
+        text-decoration: none;
+        position: relative;
+    }
+    .share-btn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+    .copy-feedback {
+        position: absolute;
+        top: -1.75rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.7rem;
+        white-space: nowrap;
+        color: var(--primary);
+    }
+</style>
+
+<script is:inline>
+    (function () {
+        document.querySelectorAll("[data-copy-link]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                var url = btn.getAttribute("data-copy-link");
+                var done = function (msg) {
+                    var el = btn.querySelector(".copy-feedback");
+                    if (el) {
+                        el.textContent = msg;
+                        setTimeout(function () { el.textContent = ""; }, 2000);
+                    }
+                };
+                if (navigator.clipboard && url) {
+                    navigator.clipboard.writeText(url).then(
+                        function () { done("Copiado!"); },
+                        function () { done("Erro"); },
+                    );
+                } else if (url) {
+                    window.prompt("Copie o link:", url);
+                }
+            });
+        });
+    })();
+</script>

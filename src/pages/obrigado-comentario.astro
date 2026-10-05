@@ -6,13 +6,12 @@ import { SITE_TITLE } from "../consts";
 <BaseLayout
     title={`Obrigado | ${SITE_TITLE}`}
     description="Obrigado pela sua mensagem!"
-    hideScrollProgress={true}
 >
-    <section class="thank-you fade-in-up">
-        <div class="thank-card glass-card glow-hover">
-            <div class="icon-wrap">
+    <section class="flex min-h-[70vh] items-center justify-center px-6 py-8">
+        <div class="flex max-w-md flex-col items-center rounded-3xl border border-border bg-card p-10 text-center md:p-12">
+            <div class="mb-8 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full border border-border text-primary">
                 <svg
-                    class="icon"
+                    class="h-8 w-8"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -25,66 +24,14 @@ import { SITE_TITLE } from "../consts";
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
             </div>
-            <h1 class="headline-md">
-                <span class="gradient-text">Mensagem enviada!</span>
+            <h1 class="m-0 mb-4 font-display text-2xl font-bold tracking-tight md:text-3xl">
+                <span class="bg-gradient-to-br from-primary to-secondary-foreground bg-clip-text text-transparent">Mensagem enviada!</span>
             </h1>
-            <p class="body-lg">
+            <p class="m-0 mb-8 text-lg text-muted-foreground">
                 Obrigado pelo contato. Sua mensagem foi recebida e eu
                 responderei em breve.
             </p>
-            <a href="/" class="btn-pill btn-pill-primary">Voltar ao início</a>
+            <a href="/" class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 font-mono text-xs uppercase tracking-widest text-primary-foreground no-underline transition-opacity hover:opacity-90">Voltar ao início</a>
         </div>
     </section>
-
-    <style>
-        .thank-you {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 70vh;
-            padding: 2rem 1.5rem;
-        }
-        .thank-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            padding: 3rem 2.5rem;
-            border-radius: var(--border-radius-xl);
-            max-width: 30rem;
-        }
-        .icon-wrap {
-            width: 4.5rem;
-            height: 4.5rem;
-            border-radius: 9999px;
-            border: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 2rem;
-            color: var(--accent-color);
-        }
-        .icon {
-            width: 2rem;
-            height: 2rem;
-        }
-        .thank-card h1 {
-            margin: 0 0 1rem 0;
-        }
-        .gradient-text {
-            background: linear-gradient(
-                135deg,
-                var(--accent-color),
-                var(--accent-secondary)
-            );
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-        }
-        .thank-card p {
-            color: var(--text-muted);
-            margin: 0 0 2rem 0;
-        }
-    </style>
 </BaseLayout>

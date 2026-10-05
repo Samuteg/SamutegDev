@@ -12,9 +12,30 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+
+// ponytail: `render()` não retorna headings com `glob` loader (Astro 7).
+// Fallback: TableOfContents usa client DOM scan. Remover quando migrarem
+// para content layer com headings nativos ou corrigirem o loader.
+const tocHeadings = headings.length > 0 ? headings : [];
+
+const allPosts = await getCollection('blog');
+const postTags: string[] = (post.data as { tags?: string[] }).tags ?? [];
+const related = allPosts
+	.filter((p) => p.id !== post.id)
+	.map((p) => ({
+		post: p,
+		score: ((p.data as { tags?: string[] }).tags ?? []).filter((t: string) => postTags.includes(t)).length,
+	}))
+	.sort(
+		(a, b) =>
+			b.score - a.score ||
+			b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf(),
+	)
+	.slice(0, 3)
+	.map(({ post }) => post);
 ---
 
-<BlogPost id={post.id} {...post.data}>
+<BlogPost id={post.id} headings={headings} related={related} {...post.data}>
 	<Content />
 </BlogPost>

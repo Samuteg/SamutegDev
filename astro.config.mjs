@@ -4,6 +4,7 @@ import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
+import tailwindcss from "@tailwindcss/vite";
 import keystatic from "@keystatic/astro";
 
 const dev = process.env.NODE_ENV !== "production";
@@ -11,6 +12,14 @@ const dev = process.env.NODE_ENV !== "production";
 // https://astro.build/config
 export default defineConfig({
   site: "https://samuteg.dev",
+  vite: {
+    plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        "@": new URL("./src", import.meta.url).pathname,
+      },
+    },
+  },
   build: {
     // sourcemap is not a valid option here in newer Astro versions
   },

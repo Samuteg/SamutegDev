@@ -25,6 +25,10 @@ export default config({
           directory: "src/assets",
           publicPath: "../../assets/",
         }),
+        tags: fields.array(fields.text({ label: "Tag" }), {
+          label: "Tags",
+          itemLabel: (props) => props.value ?? "Tag",
+        }),
         content: fields.mdx({
           label: "Conteúdo",
           options: {
