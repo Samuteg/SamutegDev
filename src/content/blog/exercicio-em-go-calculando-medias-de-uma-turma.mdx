@@ -1,0 +1,238 @@
+---
+title: 'Exercício em Go: calculando médias de uma turma'
+description: >-
+  Neste exercício, desenvolvi um pequeno sistema em Go para representar alunos,
+  disciplinas e notas. 
+pubDate: 2026-09-28
+heroImage: ../../assets/exercicio-em-go-calculando-medias-de-uma-turma/heroImage.jpg
+---
+O programa calcula a média de cada disciplina, a média geral de cada aluno e identifica quem possui a maior média geral da turma.
+
+A proposta foi praticar alguns conceitos fundamentais da linguagem, como `structs`, `slices`, `maps`, funções, estruturas de repetição e retorno de valores.
+
+## Modelando os dados
+
+Comecei criando a struct `Disciplina`:
+
+```go
+type Disciplina struct {
+     Nome  string
+     Notas []float64 
+}
+```
+
+Cada disciplina possui um nome e uma lista de notas. O uso de `[]float64` permite armazenar várias notas com casas decimais.
+
+Depois, criei a struct `Aluno`:
+
+```go
+type Aluno struct {
+     Nome        string
+     Disciplinas map[string]Disciplina 
+}
+```
+
+Cada aluno possui um nome e um map de disciplinas. A chave do map é o nome da disciplina, enquanto o valor é uma struct `Disciplina`.
+
+Essa estrutura permite acessar rapidamente uma disciplina específica:
+
+```go
+aluno.Disciplinas["Matemática"]
+```
+
+## Calculando a média de uma disciplina
+
+A função `MediaDisciplina` recebe um aluno e o nome de uma disciplina:
+
+```go
+func MediaDisciplina(aluno Aluno, disciplina string) float64
+```
+
+Primeiro, o programa verifica se a disciplina existe no map:
+
+```go
+disc, ok := aluno.Disciplinas[disciplina]  
+if !ok {
+     return 0.0 
+}
+```
+
+Essa verificação evita problemas quando o aluno não possui a disciplina pesquisada. Nesse caso, a função retorna zero.
+
+Depois, percorro todas as notas usando `range`:
+
+```go
+soma := 0.0  for _, nota := range disc.Notas {
+     soma += nota 
+}
+```
+
+Por fim, divido a soma pela quantidade de notas:
+
+```go
+media := soma / float64(len(disc.Notas)) return media
+```
+
+A conversão para `float64` é necessária porque `len` retorna um inteiro, enquanto a divisão precisa produzir um resultado decimal.
+
+## Calculando a média geral
+
+A função `MediaGeral` calcula a média geral de um aluno considerando todas as suas disciplinas:
+
+```go
+func MediaGeral(aluno Aluno) float64
+```
+
+Antes de começar, verifico se o aluno possui disciplinas:
+
+```go
+if len(aluno.Disciplinas) == 0 {
+     return 0 
+}
+```
+
+Depois, percorro todas as disciplinas e somo suas médias:
+
+```go
+mediaTotal := 0.0  for _, disc := range aluno.Disciplinas {
+     mediaTotal += MediaDisciplina(aluno, disc.Nome) 
+}
+```
+
+Ao final, divido o total pela quantidade de disciplinas:
+
+```go
+mediaGeral := mediaTotal / float64(len(aluno.Disciplinas)) return mediaGeral
+```
+
+Neste exercício, todas as disciplinas possuem o mesmo peso. Ou seja, a média geral é calculada pela média das médias de cada disciplina.
+
+## Encontrando o aluno com maior média
+
+Para descobrir o aluno com a maior média geral, criei a função:
+
+```go
+func AlunoComMaiorMedia(turma []Aluno) Aluno
+```
+
+Ela recebe uma slice contendo todos os alunos da turma. Primeiro, trato o caso em que a slice está vazia:
+
+```go
+if len(turma) == 0 {
+     return Aluno{}
+}
+```
+
+Depois, considero o primeiro aluno como o melhor inicialmente:
+
+```go
+melhor := turma[0]
+```
+
+A partir daí, comparo os outros alunos:
+
+```go
+for _, aluno := range turma[1:] {
+     if MediaGeral(aluno) > MediaGeral(melhor) {
+         melhor = aluno
+     } 
+}
+```
+
+Sempre que encontro alguém com uma média maior, atualizo a variável `melhor`.
+
+## Criando os alunos
+
+No `main`, criei três alunos com disciplinas e notas diferentes:
+
+* Ana, com Matemática e História.
+* Bruno, com Matemática e Física.
+* Carla, com História e Física.
+
+Depois, coloquei todos em uma slice:
+
+```go
+turma := []Aluno{aluno1, aluno2, aluno3}
+```
+
+turma := \[]Aluno\{aluno1, aluno2, aluno3}
+
+Essa slice representa a turma que será analisada pelo programa.
+
+## Exibindo os resultados
+
+Para imprimir os dados, percorri cada aluno:
+
+```go
+for _, aluno := range turma {
+     fmt.Printf("Aluno: %s\n", aluno.Nome)
+     fmt.Printf("  Média em Matemática: %.2f\n",
+         MediaDisciplina(aluno, "Matemática"))
+     fmt.Printf("  Média em História: %.2f\n",
+         MediaDisciplina(aluno, "História"))
+     fmt.Printf("  Média em Física: %.2f\n",
+         MediaDisciplina(aluno, "Física"))
+     fmt.Printf("  Média geral: %.2f\n", MediaGeral(aluno))
+     fmt.Println()
+}
+```
+
+O formato `%.2f` faz com que as médias sejam exibidas com duas casas decimais. Quando o aluno não possui determinada disciplina, a função retorna `0.00`.
+
+No final, o programa identifica e exibe o aluno com maior média geral:
+
+```go
+melhor := AlunoComMaiorMedia(turma)
+fmt.Printf("Aluno com maior média geral: %s (%.2f)\n",
+     melhor.Nome,
+     MediaGeral(melhor),
+)
+```
+
+melhor := AlunoComMaiorMedia(turma)  fmt.Printf(     "Aluno com maior média geral: %s (%.2f)\n",     melhor.Nome,     MediaGeral(melhor), )
+
+## O que pratiquei
+
+Esse exercício foi útil para praticar vários conceitos importantes de Go:
+
+* Criação e uso de `structs`.
+* Organização de dados com `map`.
+* Armazenamento de valores com `slice`.
+* Iteração usando `for` e `range`.
+* Verificação de existência em maps.
+* Criação de funções reutilizáveis.
+* Retorno de structs e valores numéricos.
+* Formatação de saída com `fmt.Printf`.
+* Tratamento de listas vazias.
+
+Também pude perceber como structs, maps e slices podem ser combinados para representar dados mais próximos de uma aplicação real.
+
+## Possíveis melhorias
+
+Apesar de o programa funcionar para o objetivo do exercício, ainda existem alguns pontos que podem ser melhorados.
+
+Por exemplo, a função `MediaDisciplina` poderia verificar se a disciplina possui notas antes de fazer a divisão. Atualmente, uma disciplina sem notas poderia causar uma divisão por zero:
+
+```go
+if len(disc.Notas) == 0 {     
+  return 0
+}
+```
+
+Outra melhoria seria evitar calcular várias vezes a média do mesmo aluno dentro da função `AlunoComMaiorMedia`. Em uma turma pequena isso não faz muita diferença, mas em uma aplicação maior seria melhor armazenar os resultados ou criar uma estrutura mais eficiente.
+
+Também seria possível adicionar:
+
+* Validação de notas entre 0 e 10.
+* Cálculo de situação do aluno, como aprovado ou reprovado.
+* Média ponderada.
+* Inclusão de novas notas.
+* Cadastro de novos alunos.
+* Leitura dos dados pelo terminal.
+* Exportação dos resultados para JSON.
+
+## Conclusão
+
+Esse exercício foi uma boa forma de aplicar conceitos básicos e importantes de Go em um problema prático. A partir de structs, maps e slices, consegui montar uma pequena representação de uma turma e criar funções para analisar o desempenho dos alunos.
+
+Mesmo sendo um programa simples, ele mostra como organizar dados e dividir responsabilidades em funções. Também serve como base para evoluir futuramente para um sistema acadêmico mais completo, com cadastro, persistência em banco de dados e uma API backend.
