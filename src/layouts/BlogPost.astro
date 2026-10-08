@@ -123,7 +123,7 @@ const blogPostingJSON = JSON.stringify({
     <style slot="head">
         /* ── Blog post: article-5 two-column with sticky TOC ── */
         :global(main) {
-            max-width: 1080px;
+            max-width: 1280px;
             padding: 3rem 1.5rem 5rem;
         }
 
@@ -135,9 +135,15 @@ const blogPostingJSON = JSON.stringify({
         }
 
         @media (min-width: 1024px) {
+            /* Sai do container estreito (max-w-3xl) e ocupa até 1200px:
+               artigo de 720px à esquerda e TOC encostado no canto direito.
+               (margens negativas explícitas: `auto` não centraliza bloco
+               mais largo que o pai — o navegador zera um dos lados.) */
             .post-layout:has(.toc nav ul li) {
+                width: min(1200px, 100vw - 3rem);
+                margin-inline: calc((100% - min(1200px, 100vw - 3rem)) / 2);
                 grid-template-columns: minmax(0, 720px) 240px;
-                justify-content: center;
+                justify-content: space-between;
             }
         }
 
@@ -215,7 +221,9 @@ const blogPostingJSON = JSON.stringify({
             color: var(--muted-foreground);
         }
 
-        .prose :global(code) {
+        /* Somente código inline — o `code` dentro de `pre` (bloco Shiki)
+           usa o estilo de `pre code` do CSS global (sem caixa aninhada). */
+        .prose :global(:not(pre) > code) {
             font-family: var(--font-mono);
             font-size: 0.85em;
             padding: 0.2rem 0.4rem;

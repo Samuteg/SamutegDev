@@ -324,15 +324,17 @@ pre {
     font-family: var(--font-mono);
     padding: 1.25rem;
     border-radius: var(--radius-md);
-    background-color: #050505 !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Blocos de código ficam escuros nos dois temas (tokens Shiki github-dark) */
+    background-color: #0d1117;
+    border: 1px solid var(--border);
     overflow-x: auto;
     margin: 2rem 0;
 }
 
-/* Shiki / astro-code blocks — keep dark bg but preserve token colors */
+/* Shiki / astro-code blocks — fundo do próprio tema Shiki + borda do tema */
 pre.astro-code {
-    background-color: #050505 !important;
+    background-color: #0d1117;
+    border: 1px solid var(--border);
 }
 
 pre code {

@@ -33,7 +33,8 @@ const posts = activeTag ? allPosts.filter((p) => tagsOf(p).includes(activeTag)) 
                 <a
                     href="/blog"
                     data-tag-filter=""
-                    class={`inline-flex items-center rounded-full border border-input px-3.5 py-1.5 font-mono text-xs tracking-wide no-underline transition-colors ${!activeTag ? "bg-primary border-primary text-primary-foreground" : "text-muted-foreground hover:border-primary hover:text-primary"}`}
+                    data-tag-pill
+                    class={`inline-flex items-center rounded-full border px-3.5 py-1.5 font-mono text-xs tracking-wide no-underline transition-all duration-300 ${!activeTag ? "border-primary bg-primary text-primary-foreground" : "border-input text-muted-foreground hover:border-primary hover:text-primary"}`}
                 >
                     Todos
                 </a>
@@ -41,7 +42,8 @@ const posts = activeTag ? allPosts.filter((p) => tagsOf(p).includes(activeTag)) 
                     <a
                         href={`/blog?tag=${encodeURIComponent(tag)}`}
                         data-tag-filter={tag}
-                        class={`inline-flex items-center rounded-full border border-input px-3.5 py-1.5 font-mono text-xs tracking-wide no-underline transition-colors ${activeTag === tag ? "bg-primary border-primary text-primary-foreground" : "text-muted-foreground hover:border-primary hover:text-primary"}`}
+                        data-tag-pill
+                        class={`inline-flex items-center rounded-full border px-3.5 py-1.5 font-mono text-xs tracking-wide no-underline transition-all duration-300 ${activeTag === tag ? "border-primary bg-primary text-primary-foreground" : "border-input text-muted-foreground hover:border-primary hover:text-primary"}`}
                         aria-current={activeTag === tag ? "true" : undefined}
                     >
                         {tag}
@@ -50,14 +52,34 @@ const posts = activeTag ? allPosts.filter((p) => tagsOf(p).includes(activeTag)) 
             </nav>
         </section>
 
+        <section class="mb-10">
+            <div class="flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-center sm:justify-between">
+                <p class="m-0 text-sm text-muted-foreground" data-tag-status role="status" aria-live="polite">{posts.length === 1 ? "1 artigo para explorar" : `${posts.length} artigos para explorar`}</p>
+                <label class="flex items-center gap-2 text-sm text-muted-foreground" data-search-box>
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.3-4.3" />
+                    </svg>
+                    <span class="sr-only">Buscar artigos</span>
+                    <input
+                        type="search"
+                        data-search-input
+                        placeholder="Buscar um artigo..."
+                        autocomplete="off"
+                        class="w-48 border-0 bg-transparent p-0 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0"
+                    />
+                </label>
+            </div>
+        </section>
+
         <section class="mb-32">
-            <p class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground" data-tag-status role="status" aria-live="polite"></p>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" data-posts-grid>
                 {posts.map((post) => (
                     <a
                         href={`/blog/${post.id}/`}
                         data-post-card
                         data-post-tags={tagsOf(post).join(",")}
+                        data-search-text={`${post.data.title} ${post.data.description}`.toLowerCase()}
                         class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card no-underline transition-colors hover:border-primary"
                     >
                         <div class="aspect-video overflow-hidden bg-muted">
@@ -98,33 +120,55 @@ const posts = activeTag ? allPosts.filter((p) => tagsOf(p).includes(activeTag)) 
     </div>
 
     <script is:inline>
-        // SSG-safe tag filter: the static HTML always contains ALL posts;
-        // this enhances ?tag= client-side (Astro.url.searchParams is empty at build time).
+        // SSG-safe filters: the static HTML always contains ALL posts;
+        // this enhances ?tag= + live search client-side
+        // (Astro.url.searchParams is empty at build time).
         (function () {
             var params = new URLSearchParams(window.location.search);
             var active = params.get("tag");
-            if (!active) return;
             var grid = document.querySelector("[data-posts-grid]");
             var status = document.querySelector("[data-tag-status]");
+            var searchInput = document.querySelector("[data-search-input]");
             if (!grid) return;
-            var cards = Array.from(grid.querySelectorAll("[data-post-card]"));
-            var visible = 0;
-            cards.forEach(function (card) {
-                var tags = (card.getAttribute("data-post-tags") || "").split(",").filter(Boolean);
-                var show = tags.indexOf(active) !== -1;
-                card.style.display = show ? "" : "none";
-                if (show) visible++;
-            });
-            if (status) {
-                status.textContent = visible + " artigo(s) com a tag \u201c" + active + "\u201d";
+
+            var ACTIVE = ["border-primary", "bg-primary", "text-primary-foreground"];
+            var IDLE = ["border-input", "text-muted-foreground"];
+
+            function paintPills() {
+                document.querySelectorAll("[data-tag-pill]").forEach(function (link) {
+                    var isActive =
+                        link.getAttribute("data-tag-filter") === active ||
+                        ((active === null || active === "") && link.getAttribute("data-tag-filter") === "");
+                    link.classList.remove.apply(link.classList, ACTIVE.concat(IDLE));
+                    link.classList.add.apply(link.classList, isActive ? ACTIVE : IDLE);
+                    if (isActive) link.setAttribute("aria-current", "true");
+                    else link.removeAttribute("aria-current");
+                });
             }
-            document.querySelectorAll("[data-tag-filter]").forEach(function (link) {
-                var isActive =
-                    link.getAttribute("data-tag-filter") === active ||
-                    (active === null && link.getAttribute("data-tag-filter") === "");
-                link.removeAttribute("aria-current");
-                if (isActive) link.setAttribute("aria-current", "true");
-            });
+
+            function applyFilters() {
+                var q = searchInput ? searchInput.value.trim().toLowerCase() : "";
+                var cards = Array.from(grid.querySelectorAll("[data-post-card]"));
+                var visible = 0;
+                cards.forEach(function (card) {
+                    var tags = (card.getAttribute("data-post-tags") || "").split(",").filter(Boolean);
+                    var text = card.getAttribute("data-search-text") || "";
+                    var tagOk = !active || tags.indexOf(active) !== -1;
+                    var searchOk = !q || text.indexOf(q) !== -1;
+                    var show = tagOk && searchOk;
+                    card.style.display = show ? "" : "none";
+                    if (show) visible++;
+                });
+                if (status) {
+                    status.textContent = visible === 1 ? "1 artigo para explorar" : visible + " artigos para explorar";
+                }
+            }
+
+            paintPills();
+            applyFilters();
+            if (searchInput) {
+                searchInput.addEventListener("input", applyFilters);
+            }
         })();
     </script>
 </BaseLayout>
