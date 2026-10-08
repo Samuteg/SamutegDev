@@ -29,9 +29,10 @@ const posts = activeTag ? allPosts.filter((p) => tagsOf(p).includes(activeTag)) 
                 Ensaios, tutoriais e explorações na interseção entre tecnologia,
                 design e experiência humana.
             </p>
-            <nav class="flex flex-wrap gap-2" aria-label="Filtrar por tag">
+            <nav class="flex flex-wrap gap-2" aria-label="Filtrar por tag" data-tag-nav>
                 <a
                     href="/blog"
+                    data-tag-filter=""
                     class={`inline-flex items-center rounded-full border border-input px-3.5 py-1.5 font-mono text-xs tracking-wide no-underline transition-colors ${!activeTag ? "bg-primary border-primary text-primary-foreground" : "text-muted-foreground hover:border-primary hover:text-primary"}`}
                 >
                     Todos
@@ -39,6 +40,7 @@ const posts = activeTag ? allPosts.filter((p) => tagsOf(p).includes(activeTag)) 
                 {allTags.map((tag) => (
                     <a
                         href={`/blog?tag=${encodeURIComponent(tag)}`}
+                        data-tag-filter={tag}
                         class={`inline-flex items-center rounded-full border border-input px-3.5 py-1.5 font-mono text-xs tracking-wide no-underline transition-colors ${activeTag === tag ? "bg-primary border-primary text-primary-foreground" : "text-muted-foreground hover:border-primary hover:text-primary"}`}
                         aria-current={activeTag === tag ? "true" : undefined}
                     >
@@ -49,10 +51,13 @@ const posts = activeTag ? allPosts.filter((p) => tagsOf(p).includes(activeTag)) 
         </section>
 
         <section class="mb-32">
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <p class="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground" data-tag-status role="status" aria-live="polite"></p>
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" data-posts-grid>
                 {posts.map((post) => (
                     <a
                         href={`/blog/${post.id}/`}
+                        data-post-card
+                        data-post-tags={tagsOf(post).join(",")}
                         class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card no-underline transition-colors hover:border-primary"
                     >
                         <div class="aspect-video overflow-hidden bg-muted">
@@ -61,7 +66,7 @@ const posts = activeTag ? allPosts.filter((p) => tagsOf(p).includes(activeTag)) 
                                     width={600}
                                     height={400}
                                     src={post.data.heroImage}
-                                    alt=""
+                                    alt={post.data.title}
                                     loading="lazy"
                                     decoding="async"
                                     class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -91,4 +96,35 @@ const posts = activeTag ? allPosts.filter((p) => tagsOf(p).includes(activeTag)) 
             </div>
         </section>
     </div>
+
+    <script is:inline>
+        // SSG-safe tag filter: the static HTML always contains ALL posts;
+        // this enhances ?tag= client-side (Astro.url.searchParams is empty at build time).
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            var active = params.get("tag");
+            if (!active) return;
+            var grid = document.querySelector("[data-posts-grid]");
+            var status = document.querySelector("[data-tag-status]");
+            if (!grid) return;
+            var cards = Array.from(grid.querySelectorAll("[data-post-card]"));
+            var visible = 0;
+            cards.forEach(function (card) {
+                var tags = (card.getAttribute("data-post-tags") || "").split(",").filter(Boolean);
+                var show = tags.indexOf(active) !== -1;
+                card.style.display = show ? "" : "none";
+                if (show) visible++;
+            });
+            if (status) {
+                status.textContent = visible + " artigo(s) com a tag \u201c" + active + "\u201d";
+            }
+            document.querySelectorAll("[data-tag-filter]").forEach(function (link) {
+                var isActive =
+                    link.getAttribute("data-tag-filter") === active ||
+                    (active === null && link.getAttribute("data-tag-filter") === "");
+                link.removeAttribute("aria-current");
+                if (isActive) link.setAttribute("aria-current", "true");
+            });
+        })();
+    </script>
 </BaseLayout>

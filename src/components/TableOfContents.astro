@@ -78,21 +78,44 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 <script is:inline>
     (function () {
-        // ponytail: `render()` não retorna headings com `glob` loader.
-        // TOC monta via scan DOM (#prose-content h2/h3 com id). Se Astro
-        // corrigir, voltar a SSR via props.
+        // TOC funciona sem `headings` do SSR (glob loader retorna []):
+        // gera slugs para h2/h3 de #prose-content que não têm id, monta a lista e observa.
+        function slugify(text) {
+            return text
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-z0-9\s-]/g, "")
+                .trim()
+                .replace(/[\s_]+/g, "-")
+                .replace(/-+/g, "-");
+        }
         var aside = document.querySelector("[data-toc]");
         var list = document.querySelector("[data-toc-list]");
         if (!aside || !list) return;
-        if (list.children.length === 0) {
-            var prose = document.getElementById("prose-content");
-            var heads = prose ? prose.querySelectorAll("h2[id], h3[id]") : [];
+        var prose = document.getElementById("prose-content");
+        var heads = prose ? prose.querySelectorAll("h2, h3") : [];
+        var seen = {};
+        // Se o SSR já renderizou itens, apenas garante ids nos headings.
+        if (list.children.length > 0) {
             heads.forEach(function (h) {
+                if (!h.id) {
+                    var base = slugify(h.textContent || "secao") || "secao";
+                    var n = seen[base] = (seen[base] || 0) + 1;
+                    h.id = n > 1 ? base + "-" + n : base;
+                }
+            });
+        } else {
+            heads.forEach(function (h) {
+                var base = slugify(h.textContent || "secao") || "secao";
+                var n = seen[base] = (seen[base] || 0) + 1;
+                var id = h.id || (n > 1 ? base + "-" + n : base);
+                h.id = id;
                 var li = document.createElement("li");
                 li.className = "toc-item toc-depth-" + (h.tagName === "H3" ? 3 : 2);
                 var a = document.createElement("a");
-                a.href = "#" + h.id;
-                a.setAttribute("data-toc-link", h.id);
+                a.href = "#" + id;
+                a.setAttribute("data-toc-link", id);
                 a.textContent = h.textContent;
                 li.appendChild(a);
                 list.appendChild(li);

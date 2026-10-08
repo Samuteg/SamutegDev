@@ -22,8 +22,8 @@ export default config({
         }),
         heroImage: fields.image({
           label: "Imagem de Capa (opcional)",
-          directory: "src/assets",
-          publicPath: "../../assets/",
+          directory: "src/assets/blog",
+          publicPath: "../../assets/blog/",
         }),
         tags: fields.array(fields.text({ label: "Tag" }), {
           label: "Tags",
@@ -36,8 +36,8 @@ export default config({
             link: true,
             code: true,
             image: {
-              directory: "src/assets",
-              publicPath: "../../assets/",
+              directory: "src/assets/blog",
+              publicPath: "../../assets/blog/",
             },
           },
         }),

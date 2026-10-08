@@ -73,7 +73,9 @@ Fonts are served locally from `src/assets/fonts/` (Inter, JetBrains Mono, Manrop
 ## Gotchas
 
 - Keystatic integration only loads in dev (`NODE_ENV !== "production"`). Do not reference keystatic imports in production code paths.
-- No `.github/` workflows exist — no CI/CD configured.
 - `pnpm-workspace.yaml` has `allowBuilds` disabling esbuild and sharp native builds.
-- Security headers (CSP, HSTS, X-Frame-Options) are defined in both `vercel.json` and `docker/nginx.conf` — keep them in sync.
+- Security headers (CSP, HSTS, X-Frame-Options) are defined in both `vercel.json` and `docker/nginx.conf` — keep them in sync (both allow `https://formspree.io` in `connect-src`/`form-action`).
+- Blog tag filter (`/blog?tag=`) is client-side JS in `src/pages/blog/index.astro` (SSG emits all posts; do not use `Astro.url.searchParams` alone).
+- TOC is built client-side in `src/components/TableOfContents.astro` (slugs h2/h3 missing `id`); `render()` headings are empty with the `glob` loader.
+- Never commit `**/.obsidian/` (gitignored) or filenames with spaces — slugs must be kebab-case.
 - Performance work is tracked in `TODO.md` with checkboxes; check before starting optimization tasks.

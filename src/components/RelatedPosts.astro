@@ -25,7 +25,7 @@ const { posts } = Astro.props;
                                 width={600}
                                 height={400}
                                 src={post.data.heroImage}
-                                alt=""
+                                alt={post.data.title}
                                 loading="lazy"
                                 decoding="async"
                             />

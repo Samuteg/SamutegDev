@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { ArrowRight, LoaderCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -25,7 +25,7 @@ export function NewsletterSection({
 
   const isLoading = status === "loading";
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setStatus("loading");
     setMessage("");
@@ -76,6 +76,9 @@ export function NewsletterSection({
         <p className="mx-auto mb-6 max-w-md text-muted-foreground">{description}</p>
         <form onSubmit={handleSubmit} className="mx-auto max-w-md">
           <div className="flex gap-2 max-sm:flex-col">
+            <label htmlFor="newsletter-email" className="sr-only">
+              Email para newsletter
+            </label>
             <Input
               id="newsletter-email"
               className="flex-1"

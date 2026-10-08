@@ -1,6 +1,12 @@
 # TODO — Performance do SamutegDev
 
-> Auditoria feita em 2026-07-13. Cada item inclui o problema, a solução e o arquivo afetado.
+> Auditoria feita em 2026-07-13. Revisão em 2026-10-07: regressões do redesign
+> corrigidas — `@font-face` locais restaurados (`global.css`), filtro `?tag=`
+> refeito client-side (SSG), TOC com slugs via JS, `overflow-x: clip` (sticky
+> preservado), `scroll-behavior` no `html` com `prefers-reduced-motion`, alts
+> nas hero images, CSP liberando `formspree.io`, `sharp` atualizado para
+> `^0.35.5`, `.obsidian/` removido do git, `Primeiro Post.md` renomeado para
+> kebab-case, PNG duplicado do TaskNest removido.
 
 ---
 

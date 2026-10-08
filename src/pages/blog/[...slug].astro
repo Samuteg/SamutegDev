@@ -1,5 +1,5 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 
 export async function getStaticPaths() {
@@ -9,15 +9,11 @@ export async function getStaticPaths() {
 		props: post,
 	}));
 }
-type Props = CollectionEntry<'blog'>;
-
 const post = Astro.props;
 const { Content, headings } = await render(post);
 
-// ponytail: `render()` não retorna headings com `glob` loader (Astro 7).
-// Fallback: TableOfContents usa client DOM scan. Remover quando migrarem
-// para content layer com headings nativos ou corrigirem o loader.
-const tocHeadings = headings.length > 0 ? headings : [];
+// Nota: `render()` não retorna headings com o `glob` loader (Astro 7).
+// O TableOfContents monta via scan do DOM (#prose-content h2/h3) com slugs gerados em cliente.
 
 const allPosts = await getCollection('blog');
 const postTags: string[] = (post.data as { tags?: string[] }).tags ?? [];
