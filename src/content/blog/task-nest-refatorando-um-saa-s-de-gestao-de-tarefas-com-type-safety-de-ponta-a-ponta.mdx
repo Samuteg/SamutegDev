@@ -1,0 +1,266 @@
+---
+title: >-
+  TaskNest: refatorando um SaaS de gestão de tarefas com type-safety de ponta a
+  ponta
+description: Recentemente refatorei o TaskNest, minha plataforma SaaS de gestão de tarefas.
+pubDate: 2026-10-07
+heroImage: >-
+  ../../assets/blog/task-nest-refatorando-um-saa-s-de-gestao-de-tarefas-com-type-safety-de-ponta-a-ponta/heroImage.png
+tags:
+  - TaskNest
+  - Typescript
+  - SaaS
+---
+O projeto começou como um gerenciador de tarefas, mas evoluiu para um estudo prático sobre colaboração multiusuário, autorização no servidor, arquitetura de monorepo e type-safety de ponta a ponta.
+
+A maior parte do desafio nunca foi criar um CRUD de tarefas. O problema real estava em garantir que usuários, permissões, convites, comentários, tags e projetos funcionassem de forma segura e previsível.
+
+## O problema não era o CRUD
+
+Criar uma tarefa, mover um card ou alterar um status é relativamente simples. O que torna o TaskNest interessante é toda a lógica de colaboração:
+
+* Um projeto possui um dono.
+* O dono pode convidar outros membros.
+* Cada membro possui um papel, como `admin` ou `member`.
+* Cada papel possui permissões diferentes.
+* Tags pertencem a usuários.
+* Comentários podem ser editados pelo autor ou por um administrador.
+* Convites expiram depois de sete dias.
+
+Desde o início, defini uma regra importante: toda verificação de permissão deve acontecer no servidor.
+
+Esconder um botão no frontend melhora a experiência visual, mas não oferece segurança. Qualquer usuário pode tentar fazer uma requisição manualmente. Por isso, o backend precisa validar novamente se aquela operação é permitida.
+
+## A stack utilizada
+
+O TaskNest utiliza um monorepo full-stack em TypeScript, com tecnologias escolhidas para resolver problemas específicos:
+
+| Camada             | Tecnologia      | Motivo                                                  |
+| ------------------ | --------------- | ------------------------------------------------------- |
+| Runtime            | Bun             | Velocidade, workspaces nativos e compilação do servidor |
+| Monorepo           | Turborepo       | Cache de build entre aplicações e pacotes               |
+| Frontend           | React 19        | Base da interface                                       |
+| Roteamento         | TanStack Router | Rotas baseadas em arquivos e tipagem                    |
+| Estado do servidor | TanStack Query  | Cache e sincronização de dados                          |
+| Formulários        | TanStack Form   | Formulários tipados sem dependência extra               |
+| Estilos            | Tailwind CSS v4 | Desenvolvimento rápido e tokens customizáveis           |
+| Componentes        | shadcn/ui       | Componentes editáveis e não uma caixa-preta             |
+| Drag and drop      | dnd-kit         | Acessibilidade e flexibilidade                          |
+| API                | oRPC            | Contrato compartilhado entre backend e frontend         |
+| Banco              | PostgreSQL 16   | Persistência relacional                                 |
+| ORM                | Drizzle         | Schema como código e migrations versionadas             |
+| Autenticação       | Better Auth     | Sessão em cookie HTTP-only                              |
+| Validação          | Zod v4          | Validação em runtime e inferência de tipos              |
+
+As versões das dependências também ficam centralizadas no catálogo do Bun Workspaces. Dessa forma, existe um único lugar para controlar versões de bibliotecas como React, Zod e oRPC, evitando divergências entre os diferentes apps e packages.
+
+## Arquitetura do monorepo
+
+O repositório é dividido em quatro aplicações e cinco pacotes:
+
+* **Apps**:
+  * `web`
+  * `server`
+  * `docs`
+  * `fumadocs`
+* **Packages**:
+  * `api`
+  * `db`
+  * `auth`
+  * `ui`
+  * `config`
+
+O caminho principal de uma requisição é:
+
+```
+web   
+└── cliente oRPC tipado         
+ └── Fastify               
+  └── packages/api                     
+   └── packages/db                           
+    └── PostgreSQL
+```
+
+No servidor existe uma rota RPC principal:
+
+```
+fastify.all("/rpc/*")
+```
+
+Em vez de criar várias rotas REST manualmente, o oRPC recebe as chamadas e as encaminha para os routers responsáveis por projetos, tarefas, membros, convites, tags, comentários e perfil.
+
+A autenticação fica em uma rota separada, gerenciada pelo Better Auth:
+
+```text
+/api/auth/*
+```
+
+## Autorização no servidor
+
+A autorização foi organizada usando middlewares. O package da API possui uma `publicProcedure` e uma `protectedProcedure`.
+
+A `protectedProcedure` exige uma sessão válida. Caso o usuário não esteja autenticado, a API retorna um erro de não autorizado.
+
+Para operações relacionadas a projetos, existe também uma validação de membro. O servidor verifica se o usuário pertence ao projeto antes de permitir alterações. Caso não pertença, a operação retorna `FORBIDDEN`.
+
+Esse modelo impede que a segurança dependa apenas do frontend.
+
+## Type-safety sem codegen
+
+Um dos principais objetivos do TaskNest era ter type-safety de ponta a ponta sem precisar gerar tipos manualmente.
+
+Normalmente, um projeto pode exigir um fluxo parecido com:
+
+```
+rota → controller → serializer → schema → geração de tipos → frontend
+```
+
+Com o oRPC, o contrato é definido diretamente no código da API. O frontend consome esse contrato e recebe os tipos automaticamente.
+
+O fluxo de desenvolvimento fica mais simples:
+
+1. Defino ou altero um router no backend.
+2. O TypeScript verifica o contrato.
+3. O frontend passa a conhecer automaticamente a resposta.
+4. O editor aponta erros de tipo sem precisar executar um gerador separado.
+
+O comando de desenvolvimento de tipos usa `tsc -b packages/api --watch`, permitindo que as alterações sejam propagadas rapidamente durante o desenvolvimento.
+
+Além disso, o mesmo contrato gera documentação OpenAPI, disponibilizada em:
+
+```
+/api-reference/*
+```
+
+Assim, a documentação não precisa ser atualizada manualmente em separado: ela é derivada do próprio contrato da API.
+
+## Três decisões técnicas importantes
+
+## 1. oRPC em vez de REST manual
+
+A escolha do oRPC reduziu bastante o código de integração entre frontend e backend. Não precisei manter tipos duplicados nem lembrar de executar um script de codegen depois de cada alteração.
+
+O contrato da API é o próprio código, e o cliente frontend conhece os tipos diretamente.
+
+## 2. Estatísticas com SQL
+
+O dashboard mostra quantas tarefas existem em cada status dentro de cada projeto. Uma implementação ingênua poderia buscar os projetos e depois executar uma consulta para cada um.
+
+Isso criaria um problema clássico de N+1 queries.
+
+A solução foi mover a agregação para o PostgreSQL, usando uma subquery com contagem condicional:
+
+```sql
+count(*) filter (where status = 'done')
+```
+
+Assim, os contadores são obtidos em uma única consulta, evitando vários round-trips e loops desnecessários no Node.js.
+
+## 3. Substituição transacional de tags
+
+As tags do TaskNest são pessoais: cada membro pode criar e atribuir as próprias tags.
+
+Quando o usuário atualiza as tags de uma tarefa, as tags enviadas devem substituir apenas as tags pertencentes a ele. Uma implementação simples poderia apagar todas as tags da tarefa, afetando marcações feitas por outros membros.
+
+A solução foi executar a operação dentro de uma transação:
+
+1. Remover apenas as relações associadas a tags do usuário atual.
+2. Inserir as novas tags.
+3. Confirmar tudo como uma única operação.
+
+Esse é um exemplo de regra de multitenancy aplicada no nível da linha do banco de dados.
+
+## Desenvolvimento orientado por especificações
+
+Outra parte importante do projeto é o uso de uma abordagem spec-driven development.
+
+O repositório possui um diretório `.spec/` com:
+
+* Uma constituição contendo os princípios verificáveis do projeto.
+* Especificações de features em formato Gherkin.
+* Critérios de aceite numerados.
+* Verificações executáveis.
+* Rastreamento entre testes e critérios usando anotações como `@spec:AC-001`.
+
+Esses testes não representam uma suíte tradicional de cobertura de runtime. O objetivo é garantir rastreabilidade: saber quais critérios foram implementados e quais ainda precisam de cobertura.
+
+O resultado das verificações fica registrado em:
+
+```
+.spec/verification/
+```
+
+Esse processo também consegue apontar honestamente itens que ainda não possuem testes suficientes, em vez de simplesmente assumir que tudo está pronto.
+
+## Os números do projeto
+
+Atualmente, o TaskNest possui aproximadamente:
+
+* 9.800 linhas de TypeScript, TSX e CSS.
+* 103 arquivos.
+* 4 aplicações.
+* 5 packages compartilhados.
+* Cerca de 5.400 linhas no frontend.
+* Cerca de 1.200 linhas na API.
+* Aproximadamente 419 linhas no schema.
+* 20 commits ao longo de aproximadamente três semanas.
+* 8 testes de verificação de especificação.
+* Type-check passando.
+* Lint com Ultracite.
+* Hooks configurados no pre-commit.
+
+## Landing page interativa
+
+Um detalhe da landing page de que gostei bastante foi não depender apenas de screenshots do produto.
+
+Em vez disso, implementei um preview interativo com:
+
+* Quadro Kanban.
+* Tasks fictícias.
+* Filtros.
+* Drag and drop simulado.
+
+Isso permite que o visitante interaja com uma pequena demonstração do produto antes mesmo de criar uma conta.
+
+## Como executar localmente
+
+Para executar o projeto localmente:
+
+```bash
+bun install docker compose up -d db 
+bun run db:push 
+bun run dev
+```
+
+O ambiente de desenvolvimento inicia:
+
+* Web em `localhost:3001`.
+* Server em `localhost:3000`.
+* PostgreSQL 16 em container.
+
+Na produção, o frontend é servido pelo Nginx com fallback para SPA. O servidor é compilado como binário usando `bun build --compile --bytecode`, e os arquivos de ambiente são tratados como secrets do BuildKit para não ficarem gravados na camada da imagem.
+
+## O que ainda falta
+
+Apesar da refatoração, o projeto ainda possui pontos pendentes:
+
+* Ainda não existe CI com GitHub Actions.
+* Ainda não há uma suíte completa de integração ou testes end-to-end.
+* Os testes atuais verificam contratos por leitura de código, não o comportamento completo em runtime.
+* A feature de tags ainda está marcada como em implementação na especificação.
+* O projeto ainda não possui uma licença definida no README.
+
+Os próximos passos incluem:
+
+* Adicionar GitHub Actions com `turbo check`.
+* Criar testes de integração para o fluxo de convites.
+* Persistir o filtro de tags na URL.
+* Implementar notificações.
+
+## Conclusão
+
+A refatoração do TaskNest foi muito além de reorganizar componentes ou alterar a interface. O projeto se tornou um estudo prático sobre como construir um SaaS multiusuário com TypeScript, autorização no servidor, type-safety compartilhada e regras de negócio mais próximas de uma aplicação real.
+
+O que mais gostei foi perceber que os desafios mais interessantes aparecem depois do CRUD: permissões, concorrência, escopo de dados, consistência e rastreabilidade.
+
+O código está disponível no [GitHub](https://github.com/Samuteg/TaskNest). Para mim, as partes mais interessantes do projeto continuam sendo a autorização no servidor, a integração entre oRPC e o frontend e o modelo de verificação baseado em especificações.
