@@ -5,7 +5,7 @@ import ThemeToggle from "./ThemeToggle.astro";
 import { SOCIAL_LINKS } from "../consts";
 ---
 
-<header class="sticky top-0 z-50 border-b border-border bg-background supports-[backdrop-filter:blur(1px)]:bg-background/65 supports-[backdrop-filter:blur(1px)]:backdrop-blur-xl">
+<header class="sticky top-0 z-50 border-b border-border bg-background pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] supports-[backdrop-filter:blur(1px)]:bg-background/65 supports-[backdrop-filter:blur(1px)]:backdrop-blur-xl">
     <nav class="mx-auto flex h-[65px] max-w-3xl items-center justify-between px-6 max-md:px-4">
         <Logo />
         <div class="nav-links flex gap-2" id="nav-links">
@@ -30,7 +30,7 @@ import { SOCIAL_LINKS } from "../consts";
                 </svg>
             </a>
             <button
-                class="hamburger hidden h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-md border-0 bg-transparent p-0 max-md:flex"
+                class="hamburger hidden h-11 w-11 flex-col items-center justify-center gap-[5px] rounded-md border-0 bg-transparent p-0 max-md:flex"
                 id="hamburger-btn"
                 aria-label="Abrir menu"
                 aria-expanded="false"
@@ -47,11 +47,13 @@ import { SOCIAL_LINKS } from "../consts";
     @media (max-width: 767px) {
         .nav-links {
             position: fixed;
-            top: 65px;
+            top: calc(65px + env(safe-area-inset-top));
             left: 0;
             right: 0;
             flex-direction: column;
-            padding: 1rem 1.5rem;
+            padding: 1rem max(1.5rem, env(safe-area-inset-right))
+                calc(1rem + env(safe-area-inset-bottom))
+                max(1.5rem, env(safe-area-inset-left));
             background: var(--background);
             border-bottom: 1px solid var(--border);
             transform: translateY(-110%);
@@ -64,6 +66,12 @@ import { SOCIAL_LINKS } from "../consts";
             transform: translateY(0);
             opacity: 1;
             pointer-events: auto;
+        }
+        /* Alvos de toque >= 44px nos links do menu mobile */
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            min-height: 44px;
         }
         .hamburger[aria-expanded="true"] span:nth-child(1) {
             transform: translateY(3.25px) rotate(45deg);

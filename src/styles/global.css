@@ -218,6 +218,12 @@ html {
     }
 }
 
+/* Trava o scroll do fundo enquanto o menu mobile está aberto */
+html.nav-locked,
+html.nav-locked body {
+    overflow: hidden;
+}
+
 body {
     font-family: var(--font-sans);
     margin: 0;

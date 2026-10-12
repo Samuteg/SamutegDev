@@ -34,7 +34,7 @@ const posts = activeTag ? allPosts.filter((p) => tagsOf(p).includes(activeTag)) 
                     href="/blog"
                     data-tag-filter=""
                     data-tag-pill
-                    class={`inline-flex items-center rounded-full border px-3.5 py-1.5 font-mono text-xs tracking-wide no-underline transition-colors duration-300 ${!activeTag ? "border-primary bg-primary text-primary-foreground" : "border-input text-muted-foreground hover:border-primary hover:text-primary"}`}
+                    class={`inline-flex items-center rounded-full border px-3.5 py-1.5 font-mono text-xs tracking-wide no-underline transition-colors duration-300 max-md:min-h-11 ${!activeTag ? "border-primary bg-primary text-primary-foreground" : "border-input text-muted-foreground hover:border-primary hover:text-primary"}`}
                 >
                     Todos
                 </a>
@@ -43,7 +43,7 @@ const posts = activeTag ? allPosts.filter((p) => tagsOf(p).includes(activeTag)) 
                         href={`/blog?tag=${encodeURIComponent(tag)}`}
                         data-tag-filter={tag}
                         data-tag-pill
-                        class={`inline-flex items-center rounded-full border px-3.5 py-1.5 font-mono text-xs tracking-wide no-underline transition-colors duration-300 ${activeTag === tag ? "border-primary bg-primary text-primary-foreground" : "border-input text-muted-foreground hover:border-primary hover:text-primary"}`}
+                        class={`inline-flex items-center rounded-full border px-3.5 py-1.5 font-mono text-xs tracking-wide no-underline transition-colors duration-300 max-md:min-h-11 ${activeTag === tag ? "border-primary bg-primary text-primary-foreground" : "border-input text-muted-foreground hover:border-primary hover:text-primary"}`}
                         aria-current={activeTag === tag ? "true" : undefined}
                     >
                         {tag}

@@ -132,7 +132,9 @@ const blogPostingJSON = JSON.stringify({
 
         .post-layout {
             display: grid;
-            grid-template-columns: 1fr;
+            /* minmax(0,...) impede que conteúdo largo (pre, código inline)
+               estique a coluna além do viewport no mobile */
+            grid-template-columns: minmax(0, 1fr);
             gap: 2rem;
             align-items: start;
         }
@@ -155,6 +157,7 @@ const blogPostingJSON = JSON.stringify({
             color: var(--foreground);
             line-height: 1.7;
             font-size: 1.1rem;
+            overflow-wrap: break-word;
         }
 
         .prose :global(h2) {
@@ -210,6 +213,17 @@ const blogPostingJSON = JSON.stringify({
             font-size: 0.95rem;
         }
 
+        /* Em telas estreitas, a tabela vira um bloco rolável horizontalmente
+           em vez de estourar o layout */
+        @media (max-width: 767px) {
+            .prose :global(table) {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                white-space: nowrap;
+            }
+        }
+
         .prose :global(th) {
             border-bottom: 1px solid var(--border);
             padding: 0.75rem 1rem;
@@ -234,6 +248,8 @@ const blogPostingJSON = JSON.stringify({
             color: var(--foreground);
             border: 1px solid var(--border);
             border-radius: 4px;
+            /* Tokens longos (ex.: comandos) podem quebrar no mobile */
+            overflow-wrap: anywhere;
         }
 
         .prose :global(blockquote) {
