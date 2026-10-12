@@ -4,57 +4,70 @@
 */
 
 @import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
-/* ── Local fonts (served from src/assets/fonts, font-display: swap) ── */
+/* ── Local fonts (served from public/fonts, font-display: swap) ── */
 @font-face {
     font-family: "Inter";
-    src: url("../assets/fonts/inter/inter-latin.woff2") format("woff2");
+    src: url("/fonts/inter-latin-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Inter";
+    src: url("/fonts/inter-latin-600.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Inter";
+    src: url("/fonts/inter-latin-700.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Inter";
+    src: url("/fonts/inter-latin-800.woff2") format("woff2");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Manrope";
+    src: url("/fonts/manrope-latin-400.woff2") format("woff2");
     font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
 @font-face {
     font-family: "Manrope";
-    src: url("../assets/fonts/manrope/manrope-latin.woff2") format("woff2");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
-@font-face {
-    font-family: "JetBrains Mono";
-    src: url("../assets/fonts/jetbrains-mono/jetbrains-mono-latin.woff2") format("woff2");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
-@font-face {
-    font-family: "Space Grotesk";
-    src: url("../assets/fonts/space-grotesk/space-grotesk-latin-400.woff2") format("woff2");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
-@font-face {
-    font-family: "Space Grotesk";
-    src: url("../assets/fonts/space-grotesk/space-grotesk-latin-500.woff2") format("woff2");
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-}
-@font-face {
-    font-family: "Space Grotesk";
-    src: url("../assets/fonts/space-grotesk/space-grotesk-latin-600.woff2") format("woff2");
+    src: url("/fonts/manrope-latin-600.woff2") format("woff2");
     font-weight: 600;
     font-style: normal;
     font-display: swap;
 }
 @font-face {
-    font-family: "Space Grotesk";
-    src: url("../assets/fonts/space-grotesk/space-grotesk-latin-700.woff2") format("woff2");
+    font-family: "Manrope";
+    src: url("/fonts/manrope-latin-700.woff2") format("woff2");
     font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Manrope";
+    src: url("/fonts/manrope-latin-800.woff2") format("woff2");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("/fonts/jetbrains-mono-latin-400.woff2") format("woff2");
+    font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
@@ -268,46 +281,17 @@ p {
     font-size: 1.1rem;
 }
 
-/* ── Base: main layout default ── */
-
-/* ── Label caps (mono, uppercase metadata) ── */
-
 /* ───────── Links ───────── */
 a {
     color: inherit;
     text-decoration: none;
 }
 
-/* ───────── Buttons ───────── */
-
-
-
-
-
-/* ── Pill buttons (CTA, DESIGN.md rounded-lg / full) ── */
-
 /* ── Selection (matches Aetherial Modern: violet highlight) ── */
 ::selection {
     background: var(--primary);
     color: var(--primary-foreground);
 }
-
-/* ───────── Cards ───────── */
-
-
-/* Glow effect for interactive cards */
-
-/* ───────── Glassmorphism (Aetherial Modern) ───────── */
-
-/* Layer 1: cards — surface at 60% opacity, 12px backdrop blur, 1px border */
-
-/* Glow shadow on hover — violet at 5% opacity (no drop shadows per DESIGN.md) */
-
-/* Decorative blurred gradient orbs (hero sections) */
-
-/* Section divider — thin violet underline accent */
-
-/* ───────── Badges ───────── */
 
 /* ───────── Code & Pre Formatting ───────── */
 code {
@@ -372,12 +356,4 @@ hr {
     background: var(--border);
     margin: 3rem 0;
 }
-
-/* ───────── Scroll Progress Bar ───────── */
-
-/* ───────── Fade-in Animations ───────── */
-
-/* ───────── Animated Gradient (hero background) ───────── */
-
-    /* ───────── Smooth anchor scrolling: applied on `html` (the scroller) ───────── */
 }

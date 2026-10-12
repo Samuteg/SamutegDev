@@ -9,3 +9,6 @@ overrides:
 allowBuilds:
   esbuild: false
   sharp: false
+
+patchedDependencies:
+  astro@7.3.6: patches/astro@7.3.6.patch

@@ -1,30 +1,23 @@
 // Hamburger menu for mobile navigation
-var setupHamburger = function () {
+(function () {
     var btn = document.getElementById("hamburger-btn");
     var links = document.getElementById("nav-links");
     if (!btn || !links) return;
+
     var sync = function (expanded) {
         btn.setAttribute("aria-expanded", String(expanded));
         btn.setAttribute("aria-label", expanded ? "Fechar menu" : "Abrir menu");
         links.classList.toggle("open", expanded);
     };
-    var toggle = function () {
-        var expanded = btn.getAttribute("aria-expanded") === "true";
-        sync(!expanded);
-    };
-    var close = function () {
-        sync(false);
-    };
-    btn.removeEventListener("click", toggle);
-    btn.addEventListener("click", toggle);
-    links.querySelectorAll("a").forEach(function (a) {
-        a.addEventListener("click", close);
+    btn.addEventListener("click", function () {
+        sync(btn.getAttribute("aria-expanded") !== "true");
     });
-    document.removeEventListener("keydown", setupHamburger._onKey);
-    setupHamburger._onKey = function (e) {
-        if (e.key === "Escape") close();
-    };
-    document.addEventListener("keydown", setupHamburger._onKey);
-};
-setupHamburger();
-document.addEventListener("astro:after-swap", setupHamburger);
+    links.querySelectorAll("a").forEach(function (a) {
+        a.addEventListener("click", function () {
+            sync(false);
+        });
+    });
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") sync(false);
+    });
+})();

@@ -3,8 +3,6 @@ import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
-import { NewsletterSection } from "../components/NewsletterSection";
-import { Reveal } from "../components/Reveal";
 import { AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 
 const allPosts = (await getCollection("blog")).sort(
@@ -46,8 +44,7 @@ const recentGrid = recentPosts.slice(0, 3);
         </section>
 
         {featured && (
-            <Reveal client:load>
-            <section class="flex flex-col gap-8 py-10 md:py-14">
+            <section class="reveal flex flex-col gap-8 py-10 md:py-14">
                 <div class="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
                     <div class="flex grow flex-col items-start justify-center gap-4">
                         <span class="inline-flex h-7 items-center rounded-full border border-input px-3 py-1 text-sm font-normal">Destaque</span>
@@ -63,10 +60,11 @@ const recentGrid = recentPosts.slice(0, 3);
                         {featured.data.heroImage && (
                             <Image
                                 width={800}
-                                height={600}
+                                height={450}
                                 src={featured.data.heroImage}
                                 alt={featured.data.title}
-                                loading="lazy"
+                                loading="eager"
+                                fetchpriority="high"
                                 decoding="async"
                                 class="h-full w-full object-cover object-center transition-transform duration-500 ease-in-out group-hover:scale-105"
                             />
@@ -92,7 +90,6 @@ const recentGrid = recentPosts.slice(0, 3);
                     </div>
                 </a>
             </section>
-            </Reveal>
         )}
 
         <section class="flex flex-col gap-8 py-10 md:py-14">
@@ -108,7 +105,7 @@ const recentGrid = recentPosts.slice(0, 3);
                             {post.data.heroImage && (
                                 <Image
                                     width={600}
-                                    height={400}
+                                    height={338}
                                     src={post.data.heroImage}
                                     alt={post.data.title}
                                     loading="lazy"
@@ -131,6 +128,92 @@ const recentGrid = recentPosts.slice(0, 3);
             </div>
         </section>
 
-        <NewsletterSection client:load />
+        <section class="relative overflow-hidden py-12 md:py-16">
+            <div class="relative overflow-hidden rounded-2xl border border-border bg-card px-6 py-10 text-center sm:px-10">
+                <div class="pointer-events-none absolute -right-40 -top-32 opacity-60" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="500" height="430" fill="none">
+                        <g filter="url(#nl-a)">
+                            <path fill="url(#nl-b)" fill-rule="evenodd" d="m56 88 344 212-166 188L56 88Z" clip-rule="evenodd" />
+                        </g>
+                        <defs>
+                            <linearGradient id="nl-b" x1="210.5" x2="210.5" y1="88" y2="467" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="var(--primary)" stop-opacity="0.35" />
+                                <stop offset="1" stop-color="var(--primary)" stop-opacity="0" />
+                            </linearGradient>
+                            <filter id="nl-a" width="520" height="576" x="-32" y="0" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                                <feGaussianBlur result="effect1_foregroundBlur" stdDeviation="44" />
+                            </filter>
+                        </defs>
+                    </svg>
+                </div>
+                <h2 class="mb-3 font-display text-xl font-extrabold tracking-tight md:text-2xl">Fique por dentro</h2>
+                <p class="mx-auto mb-6 max-w-md text-muted-foreground">
+                    Receba uma notificação quando eu publicar novos artigos. Sem spam, cancele quando quiser.
+                </p>
+                <form id="newsletter-form" class="mx-auto max-w-md" novalidate>
+                    <input type="checkbox" name="_gotcha" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true" />
+                    <div class="flex gap-2 max-sm:flex-col">
+                        <label for="newsletter-email" class="sr-only">Email para newsletter</label>
+                        <input
+                            id="newsletter-email"
+                            name="email"
+                            type="email"
+                            required
+                            placeholder="seu@email.com"
+                            class="flex-1 rounded-md border border-input bg-background px-4 py-2.5 text-sm transition-colors placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                        />
+                        <button
+                            type="submit"
+                            class="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+                        >
+                            Inscrever
+                        </button>
+                    </div>
+                    <p id="newsletter-status" class="mt-2 hidden text-xs" role="status" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
     </div>
+    <script is:inline defer src="/scripts/newsletter.js"></script>
+    <style>
+        /* Entrada suave do card em destaque (substitui a ilha React Reveal/framer-motion) */
+        .reveal {
+            animation: reveal-in 0.6s ease-out both;
+        }
+        @keyframes reveal-in {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                animation: none;
+            }
+        }
+        /* Mini-spinner do botão da newsletter (feedback de loading) */
+        .btn-loading::after {
+            content: "";
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            margin-left: 0.5em;
+            vertical-align: -0.15em;
+            border: 2px solid currentColor;
+            border-right-color: transparent;
+            border-radius: 9999px;
+            animation: nl-spin 0.75s linear infinite;
+        }
+        @keyframes nl-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </BaseLayout>

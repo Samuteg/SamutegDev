@@ -1,0 +1,13 @@
+diff --git a/dist/env/vite-plugin-env.js b/dist/env/vite-plugin-env.js
+index acdd48cd2bfb6fcc61ed1b40d336ed1f79de8bbe..5ddbfaf2a59e726956684b581c558998febd313a 100644
+--- a/dist/env/vite-plugin-env.js
++++ b/dist/env/vite-plugin-env.js
+@@ -150,7 +150,7 @@ function getTemplates({
+   }
+   server = server.replace("// @@ON_SET_GET_ENV@@", onSetGetEnv);
+   if (loadedEnv) {
+-    server = server.replace("// @@GET_ENV@@", `return (${JSON.stringify(loadedEnv)})[key];`);
++    server = server.replace("// @@GET_ENV@@", () => `return (${JSON.stringify(loadedEnv)})[key];`);
+   } else {
+     server = server.replace("// @@GET_ENV@@", "return _getEnv(key);");
+   }

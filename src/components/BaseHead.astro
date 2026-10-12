@@ -14,6 +14,8 @@ interface Props {
     publishedTime?: Date;
     /** ISO 8601 modified date — adds article:modified_time when present. */
     modifiedTime?: Date;
+    /** Set false to emit noindex (404, thank-you pages, …). Defaults to index,follow. */
+    index?: boolean;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -26,6 +28,7 @@ const {
     ogType = "website",
     publishedTime,
     modifiedTime,
+    index = true,
 } = Astro.props;
 
 const ogImageURL = new URL(image.src, siteURL).href;
@@ -58,7 +61,7 @@ const personJSON = JSON.stringify({
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
-<meta name="robots" content="index,follow" />
+<meta name="robots" content={index ? "index,follow" : "noindex,nofollow"} />
 <meta name="theme-color" content="#7c3aed" />
 <meta name="color-scheme" content="light dark" />
 
@@ -73,6 +76,10 @@ const personJSON = JSON.stringify({
 <link rel="canonical" href={canonicalURL} />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link rel="preconnect" href="https://formspree.io" crossorigin />
+<!-- Preload das fontes críticas (corpo e títulos) -->
+<link rel="preload" href="/fonts/inter-latin-400.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/manrope-latin-700.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/manrope-latin-800.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href={rssURL} />
 
 <!-- Theme Load Script (synchronous, no flicker) -->
@@ -106,6 +113,6 @@ const personJSON = JSON.stringify({
 <meta name="twitter:image:alt" content={description} />
 
 <!-- JSON-LD: WebSite -->
-<script is:inline type="application/ld+json" set:html={websiteJSON} />
+<script is:inline type="application/ld+json" set:html={websiteJSON.replace(/</g, "\\u003c")} />
 <!-- JSON-LD: Person -->
-<script is:inline type="application/ld+json" set:html={personJSON} />
+<script is:inline type="application/ld+json" set:html={personJSON.replace(/</g, "\\u003c")} />

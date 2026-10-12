@@ -38,9 +38,10 @@ import { SITE_TITLE, SOCIAL_LINKS } from "../consts";
                         height={800}
                         src={AboutHeroImage}
                         alt="Foto de perfil"
-                        loading="lazy"
+                        loading="eager"
+                        fetchpriority="high"
                         decoding="async"
-                        class="h-full w-full object-cover grayscale transition-all duration-700 hover:grayscale-0"
+                        class="h-full w-full object-cover grayscale transition-[filter] duration-700 hover:grayscale-0"
                     />
                 </div>
             </div>
@@ -177,5 +178,5 @@ import { SITE_TITLE, SOCIAL_LINKS } from "../consts";
         </section>
     </div>
 
-    <script slot="head" is:inline src="/scripts/contact.js"></script>
+    <script slot="head" is:inline defer src="/scripts/contact.js"></script>
 </BaseLayout>

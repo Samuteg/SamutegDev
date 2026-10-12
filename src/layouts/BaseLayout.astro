@@ -16,6 +16,8 @@ interface Props {
     publishedTime?: Date;
     /** ISO modified date. */
     modifiedTime?: Date;
+    /** Set false to emit noindex (404, thank-you pages, …). */
+    index?: boolean;
 }
 
 const {
@@ -26,6 +28,7 @@ const {
     ogType,
     publishedTime,
     modifiedTime,
+    index,
 } = Astro.props;
 ---
 
@@ -39,13 +42,20 @@ const {
             ogType={ogType}
             publishedTime={publishedTime}
             modifiedTime={modifiedTime}
+            index={index}
         />
         {stylesheet && <link rel="stylesheet" href={stylesheet} />}
         <slot name="head" />
     </head>
     <body>
+        <a
+            href="#conteudo"
+            class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+        >
+            Pular para o conteúdo
+        </a>
         <Header />
-        <main>
+        <main id="conteudo">
             <slot />
         </main>
         <Footer />

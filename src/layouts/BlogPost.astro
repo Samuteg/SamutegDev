@@ -53,7 +53,7 @@ const blogPostingJSON = JSON.stringify({
     publishedTime={pubDate}
     modifiedTime={updatedDate}
 >
-    <script is:inline type="application/ld+json" set:html={blogPostingJSON} slot="head" />
+    <script is:inline type="application/ld+json" set:html={blogPostingJSON.replace(/</g, "\\u003c")} slot="head" />
     <div class="mx-auto w-full max-w-3xl">
         <div class="mb-10">
             <a href="/blog" class="inline-flex items-center justify-center rounded-full border border-input bg-background px-4 py-2 font-mono text-[0.7rem] uppercase tracking-widest no-underline transition-colors hover:bg-accent hover:text-accent-foreground">
@@ -98,6 +98,9 @@ const blogPostingJSON = JSON.stringify({
                                 height={510}
                                 src={heroImage}
                                 alt={title}
+                                loading="eager"
+                                fetchpriority="high"
+                                decoding="async"
                                 style={`view-transition-name: img-${id}`}
                                 class="block h-auto w-full"
                             />
@@ -118,7 +121,7 @@ const blogPostingJSON = JSON.stringify({
         <RelatedPosts posts={related} />
     </div>
 
-    <script is:inline slot="head" src="/scripts/reading-time.js"></script>
+    <script is:inline defer slot="head" src="/scripts/reading-time.js"></script>
 
     <style slot="head">
         /* ── Blog post: article-5 two-column with sticky TOC ── */
