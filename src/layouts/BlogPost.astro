@@ -55,14 +55,14 @@ const blogPostingJSON = JSON.stringify({
 >
     <script is:inline type="application/ld+json" set:html={blogPostingJSON.replace(/</g, "\\u003c")} slot="head" />
     <div class="mx-auto w-full max-w-3xl">
-        <div class="mb-10">
-            <a href="/blog" class="inline-flex items-center justify-center rounded-full border border-input bg-background px-4 py-2 font-mono text-[0.7rem] uppercase tracking-widest no-underline transition-colors hover:bg-accent hover:text-accent-foreground">
-                ← Voltar
-            </a>
-        </div>
-
         <div class="post-layout">
             <article>
+                <div class="mb-10">
+                    <a href="/blog" class="inline-flex items-center gap-2 rounded-md border border-input bg-transparent px-4 py-2 text-sm font-semibold no-underline transition-colors hover:border-foreground">
+                        <span aria-hidden="true">←</span> Voltar
+                    </a>
+                </div>
+
                 <div class="mb-10">
                     <div class="mb-5 flex items-center gap-3 text-muted-foreground">
                         <span class="font-mono text-xs uppercase tracking-widest">
@@ -253,11 +253,13 @@ const blogPostingJSON = JSON.stringify({
         }
 
         .prose :global(blockquote) {
-            border-left: 2px solid var(--primary);
-            padding: 0.5rem 1.5rem;
+            border-left: 3px solid var(--primary);
+            padding: 0.25rem 1.5rem;
             margin: 2rem 0;
-            color: var(--muted-foreground);
-            background: color-mix(in srgb, var(--primary) 8%, transparent);
+            color: var(--foreground);
+            font-family: var(--font-display);
+            font-weight: 500;
+            background: transparent;
         }
 
         .prose :global(blockquote p) {

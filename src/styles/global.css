@@ -1,6 +1,8 @@
 /*
-  SamutegDev — Aetherial Modern Design System
-  Focus: glassmorphism, violet/periwinkle/pink accents, Manrope/Inter/JetBrains Mono
+  SamutegDev — Editorial Design System
+  Focus: neutro quente (papel), um único acento (laranja queimado),
+  tipografia forte (Manrope display / Inter corpo / JetBrains Mono),
+  micro-interações discretas. Dark & light com o mesmo cuidado.
 */
 
 @import "tailwindcss";
@@ -105,95 +107,93 @@
 
 :root {
     --radius: 0.625rem;
-    --background: #faf9f6;
+    /* ── Light: papel quente + tinta escura + acento couro ── */
+    --background: #faf7f2;
     --foreground: #1c1917;
     --card: #ffffff;
     --card-foreground: #1c1917;
     --popover: #ffffff;
     --popover-foreground: #1c1917;
-    --primary: #7c3aed;
-    --primary-foreground: #ffffff;
-    --secondary: #f5f3ff;
+    --primary: #b8502a;
+    --primary-foreground: #fbf7f1;
+    --secondary: #f1ede4;
     --secondary-foreground: #1c1917;
-    --muted: #f5f3ff;
-    --muted-foreground: #78716c;
-    --accent: #f5f3ff;
+    --muted: #f1ede4;
+    --muted-foreground: #6f6659;
+    --accent: #f1ede4;
     --accent-foreground: #1c1917;
-    --tertiary: #ec4899;
-    --destructive: #dc2626;
+    --tertiary: #3e5641;
+    --destructive: #b91c1c;
     --destructive-foreground: #ffffff;
-    --border: #e9e4f0;
-    --input: #e9e4f0;
-    --ring: #7c3aed;
+    --border: #e5ded1;
+    --input: #d9d1c1;
+    --ring: #b8502a;
 }
 
 .dark,
 
 html[data-theme="dark"] {
     --radius: 0.625rem;
-    --background: #0a0a0f;
-    --foreground: #e4e1e9;
-    --card: #12121a;
-    --card-foreground: #e4e1e9;
-    --popover: #12121a;
-    --popover-foreground: #e4e1e9;
-    --primary: #cebdff;
-    --primary-foreground: #381385;
-    --secondary: #1e1b2e;
-    --secondary-foreground: #e4e1e9;
-    --muted: #1e1b2e;
-    --muted-foreground: #cac4d4;
-    --accent: #1e1b2e;
-    --accent-foreground: #e4e1e9;
-    --tertiary: #ffafd3;
+    /* ── Dark: tinta quente profunda (sem azul/violeta) ── */
+    --background: #171310;
+    --foreground: #ece5da;
+    --card: #1e1a15;
+    --card-foreground: #ece5da;
+    --popover: #1e1a15;
+    --popover-foreground: #ece5da;
+    --primary: #e8916e;
+    --primary-foreground: #241109;
+    --secondary: #262019;
+    --secondary-foreground: #ece5da;
+    --muted: #262019;
+    --muted-foreground: #b0a595;
+    --accent: #262019;
+    --accent-foreground: #ece5da;
+    --tertiary: #9fbf9f;
     --destructive: #f87171;
-    --destructive-foreground: #0a0a0f;
-    --border: #26232e;
-    --input: #26232e;
-    --ring: #cebdff;
-    /* ── Dark Theme (Aetherial Modern — default) ── */
-    --bg-color: #0a0a0f;
-    --bg-subtle: #12121a;
+    --destructive-foreground: #171310;
+    --border: #2e281f;
+    --input: #3a3226;
+    --ring: #e8916e;
+    --bg-color: #171310;
+    --bg-subtle: #1e1a15;
     --bg-radial: radial-gradient(
         ellipse 70% 40% at 50% -10%,
-        rgba(206, 189, 255, 0.08) 0%,
+        rgba(232, 145, 110, 0.06) 0%,
         transparent 80%
     );
 
-    --text-color: #e4e1e9;
-    --text-muted: #cac4d4;
-    --text-inverse: #381385;
+    --text-color: #ece5da;
+    --text-muted: #b0a595;
+    --text-inverse: #241109;
 
-    --card-bg: rgba(19, 19, 24, 0.6);
-    --card-bg-solid: #12121a;
-    --card-border: rgba(255, 255, 255, 0.1);
-    --card-hover-bg: rgba(26, 26, 36, 0.8);
-    --card-hover-border: rgba(206, 189, 255, 0.2);
+    --card-bg: #1e1a15;
+    --card-bg-solid: #1e1a15;
+    --card-border: #2e281f;
+    --card-hover-bg: #262119;
+    --card-hover-border: #4a3d2c;
 
-    --header-bg: rgba(19, 19, 24, 0.5);
-    --header-border: rgba(255, 255, 255, 0.05);
+    --header-bg: rgba(23, 19, 16, 0.72);
+    --header-border: #2a251d;
 
-    /* ── Glassmorphism (dark) ── */
-    --glass-bg: rgba(19, 19, 24, 0.6);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    /* ── Glassmorphism residual (header apenas) ── */
+    --glass-bg: rgba(30, 26, 21, 0.6);
+    --glass-border: #2e281f;
     --glass-blur: 12px;
-    --header-blur: 20px;
+    --header-blur: 16px;
 
     /* ── Accents ── */
-    /* Primary: Violet (luminous) */
-    --accent-rgb: 206, 189, 255; /* #cebdff */
+    --accent-rgb: 232, 145, 110; /* #e8916e */
     --accent-color: rgb(var(--accent-rgb));
-    --accent-hover: #a78bfa;
-    --accent-subtle: rgba(var(--accent-rgb), 0.15);
+    --accent-hover: #d97c54;
+    --accent-subtle: rgba(var(--accent-rgb), 0.14);
     --glow-violet: rgba(var(--accent-rgb), 0.05);
-    /* Secondary: Periwinkle */
-    --accent-secondary: #bdc2ff;
-    /* Tertiary: Pink */
-    --accent-tertiary: #ffafd3;
+    --accent-secondary: #b0a595;
+    --accent-tertiary: #9fbf9f;
 
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.8);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
     --shadow-md:
-        0 4px 6px -1px rgba(0, 0, 0, 0.6), 0 2px 4px -2px rgba(0, 0, 0, 0.5);
+        0 4px 6px -1px rgba(0, 0, 0, 0.45), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
     --shadow-glow:
         inset 0 0 0 1px var(--accent-color), 0 0 20px 0 var(--accent-subtle);
 }
@@ -239,14 +239,14 @@ body {
 /* ───────── Layout ───────── */
 main {
     width: 100%;
-    max-width: 80rem;
+    max-width: 72rem;
     margin: 0 auto;
     padding: 3rem 1.5rem;
     min-height: calc(100vh - 65px - 150px);
     overflow-x: clip;
 }
 
-/* ───────── Typography ───────── */
+/* ───────── Typography (editorial) ───────── */
 h1,
 h2,
 h3,
@@ -256,25 +256,26 @@ h6 {
     font-family: var(--font-display);
     color: var(--foreground);
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.15;
     margin-top: 0;
     margin-bottom: 1rem;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
 }
 
 h1 {
-    font-size: 2.75rem;
-    letter-spacing: -0.02em;
-    font-weight: 700;
+    font-size: 3rem;
+    letter-spacing: -0.035em;
+    font-weight: 800;
 }
 h2 {
     font-size: 2rem;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     font-weight: 700;
 }
 h3 {
     font-size: 1.5rem;
     font-weight: 600;
+    letter-spacing: -0.015em;
 }
 h4 {
     font-size: 1.1rem;
@@ -293,7 +294,7 @@ a {
     text-decoration: none;
 }
 
-/* ── Selection (matches Aetherial Modern: violet highlight) ── */
+/* ── Selection: acento em tom papel ── */
 ::selection {
     background: var(--primary);
     color: var(--primary-foreground);
@@ -339,11 +340,14 @@ pre code {
 }
 
 blockquote {
-    border-left: 2px solid var(--primary);
-    padding: 0.5rem 1.5rem;
+    border-left: 3px solid var(--primary);
+    padding: 0.25rem 1.5rem;
     margin: 2rem 0;
-    color: var(--muted-foreground);
-    background: color-mix(in srgb, var(--primary) 8%, transparent);
+    color: var(--foreground);
+    font-family: var(--font-display);
+    font-size: 1.15em;
+    font-weight: 500;
+    background: transparent;
 }
 
 blockquote p {

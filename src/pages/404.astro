@@ -8,26 +8,22 @@ import { SITE_TITLE } from "../consts";
     description="Ops! A página que você procura não existe ou foi movida."
     index={false}
 >
-    <section class="relative flex min-h-[70vh] items-center justify-center px-6 py-8 text-center">
-        <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-            <div class="absolute left-1/2 top-[10%] h-64 w-64 -translate-x-[90%] rounded-full opacity-60 blur-3xl" style="background: color-mix(in srgb, var(--primary) 12%, transparent)"></div>
-            <div class="absolute bottom-[5%] left-1/2 h-64 w-64 translate-x-[10%] rounded-full opacity-60 blur-3xl" style="background: color-mix(in srgb, var(--tertiary) 12%, transparent)"></div>
-        </div>
-
-        <div class="relative z-10 flex w-full max-w-xl flex-col items-center rounded-3xl border border-border bg-card p-10 md:p-12">
-            <p class="m-0 mb-4 font-mono text-xs uppercase tracking-widest text-primary">Erro 404</p>
-            <h1 class="m-0 mb-4 font-display text-4xl font-extrabold tracking-tight md:text-6xl">
-                Página <span class="text-primary">não encontrada</span>
-            </h1>
-            <p class="m-0 mb-4 bg-gradient-to-br from-primary via-secondary-foreground to-tertiary bg-clip-text font-mono text-7xl font-extrabold leading-none tracking-tight text-transparent md:text-8xl" aria-hidden="true">404</p>
-            <p class="m-0 mb-8 max-w-md text-lg text-muted-foreground">
-                Parece que você se perdeu na fronteira digital. A página que
-                você procura não existe ou foi movida para outro endereço.
-            </p>
-            <div class="flex flex-wrap justify-center gap-4 max-sm:w-full max-sm:flex-col">
-                <a href="/" class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 font-mono text-xs uppercase tracking-widest text-primary-foreground no-underline transition-opacity hover:opacity-90 max-sm:w-full">Voltar ao início</a>
-                <a href="/blog" class="inline-flex items-center justify-center rounded-full border border-input bg-background px-6 py-3 font-mono text-xs uppercase tracking-widest no-underline transition-colors hover:bg-accent hover:text-accent-foreground max-sm:w-full">Ver artigos</a>
-            </div>
+    <section class="mx-auto flex min-h-[70vh] w-full max-w-5xl flex-col items-start justify-center px-4 py-16 lg:px-8">
+        <p class="mb-6 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-primary">
+            <span class="inline-block h-px w-10 bg-primary" aria-hidden="true"></span>
+            Erro 404
+        </p>
+        <p class="m-0 font-display text-7xl font-extrabold leading-none tracking-tight text-border md:text-9xl" aria-hidden="true">404</p>
+        <h1 class="m-0 mt-4 font-display text-3xl font-extrabold tracking-tight md:text-5xl">
+            Página não encontrada
+        </h1>
+        <p class="mb-10 mt-6 max-w-lg text-lg text-muted-foreground">
+            Parece que você se perdeu na fronteira digital. A página que
+            você procura não existe ou foi movida para outro endereço.
+        </p>
+        <div class="flex flex-wrap gap-4 max-sm:w-full max-sm:flex-col">
+            <a href="/" class="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground no-underline transition-opacity hover:opacity-85 max-sm:w-full">Voltar ao início</a>
+            <a href="/blog" class="inline-flex items-center justify-center rounded-md border border-input bg-transparent px-6 py-3 text-sm font-semibold no-underline transition-colors hover:border-foreground max-sm:w-full">Ver artigos</a>
         </div>
     </section>
 </BaseLayout>
