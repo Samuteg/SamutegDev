@@ -1,0 +1,86 @@
+---
+title: 'Menos brilho, mais tipografia: o redesign editorial do SamutegDev'
+description: >-
+  Você está lendo este post dentro do próprio redesign. Essa é a melhor forma de
+  mostrar a mudança: antes, o blog usava glassmorphism, gradientes e três cores
+  de destaque; agora, ele segue uma direção editorial, com papel quente,
+  tipografia maior e um único laranja queimado como acento.
+pubDate: 2026-10-12
+tags:
+  - blog
+---
+A mudança não foi apenas estética. O objetivo era deixar o blog mais legível, mais focado no conteúdo e mais coerente com o tipo de texto que eu escrevo: posts técnicos, longos e pensados para leitura.
+
+## O ponto de partida
+
+O design anterior tinha uma identidade visual interessante, mas não era a mais adequada para um blog composto principalmente por texto. Eu usava efeitos de blur, glassmorphism, gradientes e múltiplas cores de acento.
+
+O problema é que esses elementos competem com o conteúdo. Em uma landing page ou em uma interface de produto, eles podem criar impacto. Já em um blog, onde a maior parte da experiência é ler parágrafos, títulos, listas e blocos de código, o excesso de decoração pode atrapalhar.
+
+Eu percebi que estava priorizando o visual do container em vez da legibilidade do conteúdo.
+
+## A decisão: um visual editorial
+
+A nova direção foi inspirada em interfaces editoriais e em sites de produtos que colocam tipografia no centro da experiência. A referência não era transformar o blog em uma página minimalista sem personalidade, mas reduzir ruído visual e valorizar o texto.
+
+Em vez de vários acentos, agora existe um único laranja queimado. Em vez de cartões translúcidos, o layout usa mais espaçamento, hierarquia tipográfica e separadores discretos. O resultado é um design mais calmo, mas ainda com identidade própria.
+
+## Tokens antes e depois
+
+Uma das mudanças mais importantes aconteceu nos design tokens do `global.css`. Antes, o violeta era a cor principal de destaque:
+
+```css
+--accent: #7c3aed;
+```
+
+Depois, ele foi substituído por um laranja queimado:
+
+```css
+--accent: #b8502a;
+```
+
+No dark mode, a mudança também não foi apenas inverter cores. Em vez de usar tons frios e azulados, o fundo escuro passou a ter uma tinta quente:
+
+```css
+--background: #171310;
+```
+
+Essa escolha evita aquele contraste duro entre um fundo escuro azulado e textos claros. O resultado é um dark mode mais confortável e mais coerente com a paleta clara do blog.
+
+## O que a tipografia faz sozinha
+
+A maior parte da mudança não veio de animações ou efeitos, mas de decisões tipográficas.
+
+O `h1` ficou maior, o espaçamento entre elementos foi ajustado e o tracking recebeu um ajuste negativo de `-0.03em`. Também passei a usar pull quotes para destacar trechos importantes.
+
+A ideia foi simples: usar tipografia como decoração. Um título bem dimensionado, um parágrafo com boa medida de leitura e um espaçamento consistente conseguem criar hierarquia sem precisar de gradientes, sombras ou elementos decorativos.
+
+## Listas numeradas no lugar de cards
+
+A mudança mais visível da home foi trocar um grid de cards por listas numeradas.
+
+Antes, cada post aparecia como um cartão. Agora, os posts aparecem como itens de uma lista editorial, com numeração, título, descrição e separadores tracejados. O post mais recente recebe destaque com a numeração `№ 001`.
+
+Essa mudança reforça a ideia de um blog como uma sequência de leitura, e não apenas como uma coleção de blocos visuais. Ela também deixa a hierarquia mais clara: o leitor entende rapidamente qual é o conteúdo mais recente e como os demais posts se organizam.
+
+## Dark mode sem azular
+
+Muitos dark modes acabam usando azul, roxo ou cinza frio como base. No redesign, eu quis seguir a mesma tinta quente da versão clara.
+
+O fundo escuro usa tons próximos ao marrom, enquanto o laranja queimado continua funcionando como acento. Isso cria continuidade entre os dois modos e evita a sensação de que o dark mode é uma versão completamente diferente do site.
+
+## O que ficou de fora
+
+Reduzir também foi uma decisão de design.
+
+Ficaram de fora animações de scroll, efeitos de entrada mais elaborados e novos scripts JavaScript. O blog manteve apenas micro-interações necessárias, como estados de hover e transições discretas.
+
+O resultado foi uma mudança visual relevante sem aumentar a complexidade do projeto. Foram cerca de 23 linhas a menos no CSS, nenhum JavaScript novo e o build permaneceu praticamente igual.
+
+## Resultado
+
+O redesign deixou o blog mais focado no que realmente importa: os posts.
+
+A combinação de papel quente, tipografia maior, um único acento laranja e listas numeradas criou uma identidade mais editorial. Em vez de tentar parecer uma interface de produto moderna, o blog agora se comporta como um lugar pensado para leitura.
+
+A lição principal foi entender que menos brilho pode significar mais clareza. Nem todo projeto precisa de gradientes, blur e animações para ter personalidade. Às vezes, a melhor decisão de design é remover o excesso e deixar a tipografia falar.
